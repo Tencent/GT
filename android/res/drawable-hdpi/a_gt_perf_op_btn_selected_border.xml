@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+   android:shape="rectangle" >
+   <size
+       android:height="36dp"
+       android:width="76dp"
+       />
+    <stroke
+       android:width="2dp"
+       android:color="@drawable/selected_Blue" 
+       />
+    <solid android:background="@drawable/btn_gray"/>
+</shape> 

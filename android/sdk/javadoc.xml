@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" additionalparam=" -encoding UTF-8 -charset UTF-8" author="true" classpath="." destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="com.tencent.wstt.gt.client" source="1.6" sourcepath="gen;test;src" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

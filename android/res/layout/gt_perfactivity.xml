@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="48dip"
+        android:background="@drawable/bottom_gray"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/perf_title"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/prof_title"
+            android:textColor="@drawable/white"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/perf_start"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/gw_start"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/perf_stop"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/gw_pause"
+            android:visibility="invisible" />
+
+        <ImageButton
+            android:id="@+id/perf_save"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@id/perf_start"
+            android:background="#00000000"
+            android:src="@drawable/a_gt_imgbtn_save_selector"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/perf_delete"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@id/perf_save"
+            android:background="#00000000"
+            android:src="@drawable/a_gt_imgbtn_clear_selector"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#00000000" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="30dip"
+        android:background="#29292d"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/perf_text_times"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/prof_counts"
+            android:textColor="#cb7418"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/perf_text_total_time"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/prof_sum"
+            android:textColor="#cb7418"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/perf_text_max"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/prof_max"
+            android:textColor="#cb7418"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/perf_text_ave"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/prof_ave"
+            android:textColor="#cb7418"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#00000000" />-->
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="1dp"
+        android:background="#29292d" />
+
+    <!-- <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#00000000"
+        android:orientation="vertical" >-->
+		<LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="fill_parent"
+        	android:orientation="vertical" >
+        <TextView
+            android:id="@+id/perf_no_start_toast"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:textColor="#616676"
+            android:textSize="20dp" />
+
+        <ListView
+            android:id="@+id/perf_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="@drawable/transparent"
+            android:completionThreshold="1"
+            android:divider="@drawable/transparent"
+            android:fastScrollEnabled="false"
+            android:paddingLeft="13dp"
+            android:paddingRight="10dp"
+            android:scrollbars="none"
+            android:transcriptMode="normal" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#CF000000"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/log_search_rl"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="#29292d"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/log_msg_search_cancel"
+            android:layout_width="76dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/a_gt_log_btn_default_border"
+            android:text="@string/back"
+            android:textColor="#878c98"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/log_search_msg"
+            android:layout_width="262dip"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="3dp"
+            android:layout_toRightOf="@id/log_msg_search_cancel"
+            android:background="@drawable/a_gt_log_ed_default_border"
+            android:hint="@string/log_search_hint"
+            android:paddingLeft="9dp"
+            android:paddingRight="20dp"
+            android:singleLine="true"
+            android:textColor="#9398a6"
+            android:textColorHint="#AF616676"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/log_msg_search_clear"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignRight="@id/log_search_msg"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:background="#00181818"
+            android:src="@drawable/a_delete_search"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#00000000" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#29292d" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#00000000"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/log_search_bottom_rl"
+            android:layout_width="fill_parent"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:background="#29292d"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/log_search_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:text="@string/search_count"
+                android:textColor="#878c98"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/log_search_count_toast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/log_search_count"
+                android:text="@string/log_search_results"
+                android:textColor="#878c98"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/log_msg_next"
+                android:layout_width="64dp"
+                android:layout_height="39dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/a_gt_log_search_next_btn_border"
+                android:src="@drawable/a_gt_imgbtn_next_selector" />
+
+            <ImageButton
+                android:id="@+id/log_msg_pre"
+                android:layout_width="64dp"
+                android:layout_height="39dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="2dp"
+                android:layout_toLeftOf="@id/log_msg_next"
+                android:background="@drawable/a_gt_log_search_next_btn_border"
+                android:src="@drawable/a_gt_imgbtn_pre_selector" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/log_search_list_rl"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/log_search_bottom_rl"
+            android:background="#00000000"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/log_search_list_empty"
+                android:layout_width="fill_parent"
+                android:layout_height="16dp"
+                android:background="#FC000000" />
+
+            <ListView
+                android:id="@+id/log_search_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:choiceMode="singleChoice"
+                android:completionThreshold="1"
+                android:divider="#00000000"
+                android:dividerHeight="15dp"
+                android:fastScrollEnabled="true"
+                android:stackFromBottom="true"
+                android:transcriptMode="normal" />
+
+            <ImageView
+                android:id="@+id/log_search_view_empty"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#9C000000"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:background="#00000000"
+                android:orientation="vertical" >
+
+                <ListView
+                    android:id="@+id/log_search_spinner_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#35353b"
+                    android:cacheColorHint="#35353b"
+                    android:completionThreshold="1"
+                    android:drawSelectorOnTop="false"
+                    android:fastScrollEnabled="true"
+                    android:stackFromBottom="false"
+                    android:transcriptMode="normal"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

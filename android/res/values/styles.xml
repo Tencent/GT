@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <style name="translucent" parent="android:Theme.Holo">
+        <item name="android:windowBackground">@drawable/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item>
+    </style>
+
+    <style name="translucentWithTitle" parent="translucent">
+        <item name="android:windowBackground">@drawable/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item>
+    </style>
+
+    <style name="Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:layout_width">@dimen/dialog_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">@dimen/dialog_width</item>
+        <item name="android:maxHeight">@dimen/dialog_width</item>
+        <item name="android:layout_marginTop">20dp</item> <!-- marginTop属性必须有，否则Andorid4.4UI效果不对 -->
+        <item name="android:layout_marginBottom">15dp</item><!-- 与top对称 -->
+        <item name="android:gravity">center</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/dialog_window_bg</item>
+    </style>
+
+    <style name="Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@drawable/button_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">7dip</item>
+        <item name="android:paddingBottom">7dip</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="DialogButton" parent="Button">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/button_text_blue</item>
+        <item name="android:minWidth">100dp</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+</resources>
