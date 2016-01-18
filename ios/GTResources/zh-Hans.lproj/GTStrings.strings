@@ -1,0 +1,101 @@
+/*
+ 
+ Localization.strings
+ 
+ GTKit
+ 
+ 
+ 
+ Created   on 14-8-29.
+ 
+ Copyright ©[Insert Year of First Publication] - 2014 Tencent.All Rights Reserved. This software is licensed under the terms in the LICENSE.TXT file that accompanies this software.
+ 
+ */
+
+"Para."     = "参数";
+"Profiler"  = "耗时";
+"Log"       = "日志";
+"Plugin"    = "插件";
+"Setting"   = "设置";
+"Time"      = "时间";
+"s"       = "秒";
+"In"   = "入参";
+"Out"  = "出参";
+"Done" = "完成";
+"Edit" = "编辑";
+"Input Para Items"      ="入参列表";
+"Input" = "入参";
+"Top"              = "置顶";
+"Drag"             = "拖拽";
+"Output Para Items"     = "出参列表";
+"Gather & Warning(G&W)"    = "数据采集与告警操作栏(G&W)";
+"Show on Air-console(≤3)"         = "悬浮框展示的参数(≤3)";
+"Optional Parameters"       = "已关注的参数";
+"Disabled Parameters"       = "已取消关注的参数";
+"Empty"       = "空";
+"Please drag para here"       = "请拖动此处";
+"Warning(Disabled)"       = "告警区(停用)";
+"Warning(Enable)"      = "告警区(可用)";
+"Warning Count"       = "告警次数";
+"Lasting Time(s)"       = "时间(s)";
+"Out Of Range"       = "告警阈值";
+"Clear"       = "清理";
+"Clear the datas"       = "清理数据？";
+"Save"       = "保存";
+"Please input the saved file name"       = "请输入您要保存的文件名";
+"File Exist"       = "文件已存在";
+"OK"       = "确定";
+"Start"       = "开始";
+"Stop"       = "停止";
+"Exit"       = "退出";
+"Preparing"       = "准备";
+"Cancel"       = "取消";
+"Back"       = "返回";
+"Send"       = "发送";
+"Sending"       = "发送中";
+"Send Success!"       = "发送成功";
+"Send Error!"       = "发送失败!";
+"File Name empty"       = "文件名为空";
+"Please input file name"       = "请输入文件名";
+"Passwd" = "密码";
+"Please input root passwd"       = "请输入root密码";
+"Reminder"       = "Reminder";
+"You have input 1000 words"       = "必须输入1000字";
+"I know"       = "确定";
+"New GT available"       = "有新版本可用";
+"Detail Information"       = "详情";
+"Counts"       = "次数";
+"Sum"       = "合计";
+"Avg"       = "平均值";
+"Max"       = "最大值";
+"Min"       = "最小值";
+"Detail"       = "详情";
+"Not Start Profiling"       = "耗时统计未启动";
+"Start"       = "启动";
+"End"       = "停止";
+"Profiling..."       = "分析中";
+"by message"       = "按文本过滤";
+"ALL"       = "ALL";
+"TAG"       = "TAG";
+"input keyword here"       = "请输入搜索关键字";
+"AC Setting"       = "悬浮框";
+"Log Setting"       = "日志";
+"Para Setting"       = "参数";
+"About GT"       = "关于 GT";
+"AC Show"       = "显示悬浮框";
+"AC Quick Switch"       = "快速切换";
+"G&W"       = "G&W";
+"Switch"       = "开关";
+"Auto Save"       = "自动保存";
+"Feedback"       = "反馈";
+"Lightly drag stars to score"       = "评分";
+"Sandbox"       = "沙箱";
+"GTPcap"       = "抓包";
+"capture the network traffic by tcpdump"       = "通过tcpdump捕获网络流量";
+"capture"       = "抓取";
+"Capture Error"       = "抓取错误";
+"Need iOS6 jailbreak system."       = "需要越狱iOS6系统";
+"Monitor Interval"       = "监听间隔";
+"Gather Duration"       = "收集时间";
+
+

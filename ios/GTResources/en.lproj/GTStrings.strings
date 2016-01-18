@@ -1,0 +1,111 @@
+/*
+ 
+ Localization.strings
+ 
+ GTKit
+ 
+ 
+ 
+ Created   on 14-8-29.
+ 
+ Copyright ©[Insert Year of First Publication] - 2014 Tencent.All Rights Reserved. This software is licensed under the terms in the LICENSE.TXT file that accompanies this software.
+ 
+ */
+
+"Para."                  = "Para.";
+"Profiler"              = "Profiler";
+"Log"                   = "Log";
+"Plugin"                = "Plugin";
+"Setting"               = "Setting";
+"Time"                  = "Time";
+"s"                   = "s";
+"In"               = "In";
+"Out"              = "Out";
+"Done"             = "Done";
+"Edit"             = "Edit";
+"Input Para Items"      = "Input Para Items";
+"Input" = "Input";
+"Top"              = "Top";
+"Drag"             = "Drag";
+"Output Para Items"     = "Output Para Items";
+"Gather & Warning(G&W)"    = "Gather & Warning(G&W)";
+"Show on Air-console(≤3)"         = "Show on Air-console(≤3)";
+"Optional Parameters"       = "Optional Parameters";
+"Disabled Parameters"          = "Disabled Parameters";
+"Empty"    = "Empty";
+"Please drag para here"    = "Please drag para here";
+"Warning(Disabled)"      = "Warning(Disabled)";
+"Warning(Enable)"        = "Warning(Enable)";
+"Warning Count"         = "Warning Count";
+"Lasting Time(s)"          = "Lasting Time(s)";
+"Out Of Range"         = "Out Of Range";
+"Clear"     = "Clear";
+"Clear the datas"      = "Clear the datas";
+"Save"      = "Save";
+"Please input the saved file name"  = "Please input the saved file name";
+"File Exist" = "File Exist";
+"OK"              = "OK";
+"Start"           = "Start";
+"Stop"            = "Stop";
+"Exit"            = "Exit";
+"Preparing"       = "Preparing";
+"Cancel"          = "Cancel";
+"Back"            = "Back";
+"Send"            = "Send";
+"Sending"         = "Sending";
+"Send Success!"    = "Send Success!";
+"Send Error!"      = "Send Error!";
+"File Name empty" = "File Name empty";
+"Please input file name"        = "Please input file name";
+"Passwd"                      = "Passwd";
+"Please input root passwd"   = "Please input root passwd";
+"Reminder"               = "Reminder";
+"You have input 1000 words"    = "You have input 1000 words";
+"I know"          = "I know";
+"New GT available"          = "New GT available";
+"Detail Information"            = "Detail Information";
+"Counts"           = "Counts";
+"Sum"              = "Sum";
+"Avg"              = "Avg";
+"Max"              = "Max";
+"Min"              = "Min";
+"Detail"     = "Detail";
+"Not Start Profiling"        = "Not Start Profiling";
+"End"              = "End";
+"Profiling..."        = "Profiling...";
+"by message"     = "by message";
+"ALL"        = "ALL";
+"TAG"     = "TAG";
+"input keyword here"    = "input keyword here";
+"AC Setting"            = "AC Setting";
+"Log Setting"           = "Log Setting";
+"Para Setting"          = "Para Setting";
+"About GT"         = "About GT";
+"AC Show"       = "AC Show";
+"AC Quick Switch"   = "AC Quick Switch";
+"G&W"         = "G&W";
+"Switch"    = "Switch";
+"Auto Save" = "Auto Save";
+"Feedback"        = "Feedback";
+"Lightly drag stars to score"           = "Lightly drag stars to score";
+"Sandbox"                = "Sandbox";
+"GTPcap"                    = "GTPcap";
+"capture the network traffic by tcpdump"               = "capture the network traffic by tcpdump";
+"capture"            = "capture";
+"Capture Error"      = "Capture Error";
+"Need iOS6 jailbreak system."          = "Need iOS6 jailbreak system.";
+"Monitor Interval"              = "Monitor Interval";
+"Gather Duration"               = "Gather Duration";
+
+
+
+
+
+
+
+
+
+
+
+
+
