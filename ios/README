@@ -1,0 +1,22 @@
+
+版本号：v2.1
+编译环境：Xcode5; iOS SDK 5.0及以上
+
+GT详细介绍官网：http://gt.tencent.com/
+iOS GT SDK下载地址：http://gt.tencent.com/download/iphone/
+
+GT的代码实现请详见GT/Sources目录
+
+GT/Sources
+|-- Headers: GT对外开放接口
+|-- Kit: GT主要功能代码
+|  |-- Comm: 通信模块
+|  |-- Common: 通用模块
+|  |-- Core: 核心指标管理模块，如电量，内存，流畅度等实现
+|  |-- Log: 日志管理模块
+|  |-- Manager: 展示管理模块
+|  |-- Para: 参数管理模块，包括入参和出参
+|  |-- Plugin: 插件管理模块
+|  |-- Profiler: profiler管理模块
+|  |-- Setting: 设置管理模块
+|-- Plugins: 插件模块实现代码
