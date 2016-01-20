@@ -1,4 +1,23 @@
-﻿1.本Andorid工程主体源码是GT Console的源码。
+﻿[English]
+1.The main part of this project is the source code of GT Console.
+
+2.This project relies on 3 jars:
+(1)android-support-v13.jar
+(2)mid-sdk-2.xx.jar, download: mta.qq.com
+(3)mta-sdk-2.x.x.jar, download: mta.qq.com
+Before building the project, please make sure those 3 jars are in the libs folder under the root directory.
+
+To use GT for network traffic capture, please download tcpdump(download: http://www.androidtcpdump.com/android-tcpdump/downloads) to the /res/raw/ folder under the root directory. 
+
+3.The detailed description of each module can be found in the package-info.java, which is located in every package under the src directory.
+
+4.The sdk folder under the root directory includes the source code of GT SDK and the shell project for debug use. To export the GT SDK as a jar, please select both the src folder and the com.tencent.wstt.gt folder in gen folder, click the right key, select export as a jar.
+
+5.The demo folder under the root directory is a sample app project packaged with GT SDK. It can be imported into Eclipse.
+
+
+[Chinese]
+1.本Andorid工程主体源码是GT Console的源码。
 
 2.本工程依赖于三个jar:
     (1)android-support-v13.jar

@@ -1,6 +1,30 @@
+[English]
+Version code: v2.2.3
+Build environment: Xcode7; iOS SDK 6.0 or higher
 
-版本号：v2.1
-编译环境：Xcode5; iOS SDK 5.0及以上
+Official website: http://gt.tencent.com/
+iOS GT SDK download：http://gt.tencent.com/download/iphone/
+
+Source code: GT/Sources
+
+GT/Sources
+|-- Headers: open APIs
+|-- Kit: main function code
+| |-- Comm: communication module
+| |-- Common: common function module
+| |-- Core: key indexes management module, such as battery, memory, fluency etc.
+| |-- Log: log management module
+| |-- Manager: UI management module
+| |-- Para: paraments management module, including input and output  paraments
+| |-- Plugin: plugins management module 
+| |-- Profiler: profiler management module 
+| |-- Setting: settings management module 
+|-- Plugins: source code of plugin module
+
+
+[Chinese]
+版本号：v2.2.3
+编译环境：Xcode7; iOS SDK 6.0及以上
 
 GT详细介绍官网：http://gt.tencent.com/
 iOS GT SDK下载地址：http://gt.tencent.com/download/iphone/
