@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: APT_Eclipse_Plugin
+Bundle-SymbolicName: APT_Eclipse_Plugin;singleton:=true
+Bundle-Version: 1.1.9
+Bundle-Activator: com.tencent.wstt.apt.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console;bundle-version="3.5.100"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: .,
+ libs/jcommon-1.0.17.jar,
+ libs/jfreechart-1.0.14.jar,
+ libs/ddmlib-r16.jar
+Bundle-Vendor: com.tencent.wstt
