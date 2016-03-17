@@ -285,6 +285,8 @@
 		91F5CBFF19B7FED500883B21 /* GTLang.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F5CBFC19B7FED500883B21 /* GTLang.m */; };
 		91F5CC0019B7FED500883B21 /* GTLangDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 91F5CBFD19B7FED500883B21 /* GTLangDef.h */; };
 		91F60D4718F68DA700FB35CA /* EULA.html in Resources */ = {isa = PBXBuildFile; fileRef = 91F60D4618F68DA700FB35CA /* EULA.html */; };
+		E942854A1C993B5C003B9967 /* UIScreen+Bounds.h in Headers */ = {isa = PBXBuildFile; fileRef = E94285481C993B5C003B9967 /* UIScreen+Bounds.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E942854B1C993B5C003B9967 /* UIScreen+Bounds.m in Sources */ = {isa = PBXBuildFile; fileRef = E94285491C993B5C003B9967 /* UIScreen+Bounds.m */; };
 		F874174A1B86CEC500CEBBA0 /* libmtasdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F87417471B86CEC500CEBBA0 /* libmtasdk.a */; };
 		F874174B1B86CEC500CEBBA0 /* GTMTA.h in Headers */ = {isa = PBXBuildFile; fileRef = F87417481B86CEC500CEBBA0 /* GTMTA.h */; };
 		F874174C1B86CEC500CEBBA0 /* GTMTAConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = F87417491B86CEC500CEBBA0 /* GTMTAConfig.h */; };
@@ -595,6 +597,8 @@
 		91F5CBFD19B7FED500883B21 /* GTLangDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLangDef.h; sourceTree = "<group>"; };
 		91F5CC0119B7FF3F00883B21 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/GTStrings.strings"; sourceTree = "<group>"; };
 		91F60D4618F68DA700FB35CA /* EULA.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = EULA.html; sourceTree = "<group>"; };
+		E94285481C993B5C003B9967 /* UIScreen+Bounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+Bounds.h"; sourceTree = "<group>"; };
+		E94285491C993B5C003B9967 /* UIScreen+Bounds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+Bounds.m"; sourceTree = "<group>"; };
 		F874171F1B86C89900CEBBA0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		F87417211B86C8A800CEBBA0 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		F87417231B86C8C000CEBBA0 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -934,6 +938,8 @@
 				91A9F3DB18387D62004B911E /* GTUtility.h */,
 				91A9F3DC18387D62004B911E /* GTUtility.m */,
 				91A9F14C183870B3004B911E /* GTDebugDef.h */,
+				E94285481C993B5C003B9967 /* UIScreen+Bounds.h */,
+				E94285491C993B5C003B9967 /* UIScreen+Bounds.m */,
 				91A83716183C669B00F8A779 /* GTNotificationDef.h */,
 				91A83717183C67E000F8A779 /* GTAlertDef.h */,
 				91D1395C183EFFE600062C6E /* GTParaOutDef.h */,
@@ -1503,6 +1509,7 @@
 				91A8371A183CE58600F8A779 /* GTParaWarningView.h in Headers */,
 				91A9F26C183870B4004B911E /* GTProfilerApiForOC.h in Headers */,
 				9111179E18556D3A007D0AC0 /* GTDataInfo.h in Headers */,
+				E942854A1C993B5C003B9967 /* UIScreen+Bounds.h in Headers */,
 				91A9F262183870B4004B911E /* GTLogApiForOC.h in Headers */,
 				91A9F3EB18387E12004B911E /* GTTabBarController.h in Headers */,
 				91A9F264183870B4004B911E /* GTParaInApi.h in Headers */,
@@ -1801,6 +1808,7 @@
 				F87417521B86CF6100CEBBA0 /* GTList.m in Sources */,
 				91A9F273183870B4004B911E /* GTAccessoryView.m in Sources */,
 				91C97F191839FDBA0059BBE6 /* GTSandboxBoard.m in Sources */,
+				E942854B1C993B5C003B9967 /* UIScreen+Bounds.m in Sources */,
 				91A9F2FB183870B5004B911E /* GTAboutBoard.m in Sources */,
 				91A83715183C654400F8A779 /* GTParaOutputCell.m in Sources */,
 				91F5CBFF19B7FED500883B21 /* GTLang.m in Sources */,

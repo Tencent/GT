@@ -36,6 +36,7 @@
 #import "GTACWindow.h"
 #import "GTLogoWindow.h"
 
+typedef void (* onCallBack)(void); // navy add
 
 @interface GTUIManager : NSObject <UIGestureRecognizerDelegate, GTLogoDelegate,GTACDelegate, GTDetailDelegate, GTParaInSelectDelegate>
 {
@@ -66,6 +67,13 @@ M_GT_AS_SINGLETION(GTUIManager)
 @property (nonatomic, assign) BOOL hidden;
 @property (nonatomic, assign) NSUInteger detailedIndex;
 @property (nonatomic, assign) BOOL inputExtended;
+
+// navy add，定义Logo图标打开和关闭的回调
+@property (nonatomic, assign) onCallBack onOpenCallBack;
+@property (nonatomic, assign) onCallBack onCloseCallBack;
+// navy add, 定义变量临时存储shouldAutorotate状态
+@property (nonatomic, assign) BOOL shouldAutorotate;
+
 
 - (void)setGTHidden:(BOOL)hidden;
 
