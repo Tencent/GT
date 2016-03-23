@@ -38,6 +38,7 @@
 #ifdef __OBJC__
 #import <GT/GTPluginApiForOC.h>
 #import <GT/GTPluginViewController.h>
+#import <GT/UIScreen+Bounds.h>
 #endif
 
 

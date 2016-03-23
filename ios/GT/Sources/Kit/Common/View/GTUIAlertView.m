@@ -50,15 +50,21 @@
 
 - (id)initWithImage:(UIImage*)img
 {
-	if(self = [super initWithFrame:[UIScreen mainScreen].bounds]){
+    CGRect frame = [UIScreen mainScreen].fullScreenBounds;
+    
+//    if(self = [super initWithFrame:[UIScreen mainScreen].bounds]){
+    if(self = [super initWithFrame:frame]){  // navy modified
 		_shown = FALSE;
 		self.appKeyWindow = [[UIApplication sharedApplication] keyWindow];
-		_imageView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+//		_imageView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        _imageView = [[UIImageView alloc] initWithFrame:frame]; // navy modified
+        
         _imageView.backgroundColor = [UIColor blackColor];
         _imageView.alpha = 0.5;
         [self makeKeyAndVisible];
 		[self addSubview:_imageView];
-		self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor clearColor];
 		self.windowLevel = UIWindowLevelStatusBar + 300;
 		self.hidden = YES;
 	}

@@ -51,9 +51,14 @@ M_GT_DEF_SINGLETION(GTUIManager);
 @synthesize detailedIndex = _detailedIndex;
 @synthesize inputExtended = _inputExtended;
 
+@synthesize onOpenCallBack = _onOpenCallBack;
+@synthesize onCloseCallBack = _onCloseCallBack;
+@synthesize shouldAutorotate = _shouldAutorotate;
+
 - (id)init
 {
-	CGRect screenBound = [UIScreen mainScreen].bounds;
+//	CGRect screenBound = [UIScreen mainScreen].bounds;
+    CGRect screenBound = [[UIScreen mainScreen] fullScreenBounds];
 	
     CGRect shortcutFrame;
 	shortcutFrame.size.width = M_GT_LOGO_WIDTH;
@@ -162,8 +167,16 @@ M_GT_DEF_SINGLETION(GTUIManager);
         [self switchFloating:NO];
     }
     
-    [self layoutFrame];
+    // navy add，在关闭后，恢复状态栏方向，必须在[self layoutFrame]之前设置，不然退出后，logo图标就会消失在屏幕中
+    if ([GTConfig sharedInstance].supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscape) { // 如果支持横屏
+        [[UIApplication sharedApplication] setStatusBarOrientation:[GTConfig sharedInstance].appStatusBarOrientation]; // 恢复当前状态栏方向
+        [[GTConfig sharedInstance] setShouldAutorotate:self.shouldAutorotate]; // 设置完方向后，恢复Rotate设置
+        if (self.onCloseCallBack) {
+            self.onCloseCallBack(); // 调用关闭回调函数，回调函数里需要设置用户的rootViewController的shouldAutorotate恢复默认返回值
+        }
+    }
     
+    [self layoutFrame];
 }
 
 #pragma mark - GTLogoDelegate
@@ -201,6 +214,22 @@ M_GT_DEF_SINGLETION(GTUIManager);
 
 - (void)onIconDetailWindow
 {
+    // navy add，打开后保存状态栏方向，在横屏时，需要强制设置为竖屏来显示GTDetailedWindow
+    if ([GTConfig sharedInstance].supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscape) { // 如果支持横屏
+        self.shouldAutorotate = [GTConfig sharedInstance].shouldAutorotate;
+        UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (statusBarOrientation == UIInterfaceOrientationLandscapeLeft || statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
+            if (self.onOpenCallBack) {
+                self.onOpenCallBack(); // 调用打开回调函数，回调函数里需要设置用户的rootViewController的shouldAutorotate返回NO
+            }
+            // 保存当前状态栏方向，以便退出后恢复
+            [[GTConfig sharedInstance] setAppStatusBarOrientation:[UIApplication sharedApplication].statusBarOrientation];
+            
+            [[GTConfig sharedInstance] setShouldAutorotate:NO]; // 设置为NO，禁止旋转才能设置状态栏方向
+            [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait]; // 默认只支持Portrait，UI显示才正常
+        }
+    }
+
     //记录进入前的状态
     [[GTConfig sharedInstance] setAppStatusBarHidden:[UIApplication sharedApplication].statusBarHidden];
     [[GTConfig sharedInstance] setAppKeyWindow:[[UIApplication sharedApplication] keyWindow]];
@@ -222,9 +251,12 @@ M_GT_DEF_SINGLETION(GTUIManager);
     
     if (_detailedWindow == nil) {
         if ([[GTUtility sharedInstance] systemVersion] >= 7) {
-            _detailedWindow = [[GTDetailedWindow alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] boardIndex:_detailedIndex delegate:self];
+//            _detailedWindow = [[GTDetailedWindow alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] boardIndex:_detailedIndex delegate:self];
+            _detailedWindow = [[GTDetailedWindow alloc] initWithFrame:[[UIScreen mainScreen] screenBounds] boardIndex:_detailedIndex delegate:self]; // navy modified
+
         } else {
-            _detailedWindow = [[GTDetailedWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds] boardIndex:_detailedIndex delegate:self];
+//            _detailedWindow = [[GTDetailedWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds] boardIndex:_detailedIndex delegate:self];
+            _detailedWindow = [[GTDetailedWindow alloc] initWithFrame:[[UIScreen mainScreen] fullScreenBounds] boardIndex:_detailedIndex delegate:self]; // navy modified
         }
     }
     _detailedWindow.hidden = NO;
@@ -253,7 +285,8 @@ M_GT_DEF_SINGLETION(GTUIManager);
     [_logoWindow setHidden:YES];
     [self switchFloating:NO];
     
-    CGRect screenBound = [UIScreen mainScreen].bounds;
+//    CGRect screenBound = [UIScreen mainScreen].bounds;
+    CGRect screenBound = [[UIScreen mainScreen] fullScreenBounds]; // navy modified
     _editWindow = [[UIWindow alloc] initWithFrame:screenBound];
     _editWindow.windowLevel = UIWindowLevelStatusBar + 200.0f;
     _editWindow.backgroundColor = [UIColor clearColor];
@@ -662,6 +695,12 @@ void func_closeGTDetail()
         [[GTUIManager sharedInstance] closeDetailedWindow];
     }
     
+}
+
+void func_setLogoCallBack(void(* onOpenCallBack)(void), void(* onCloseCallBack)(void))
+{
+    [GTUIManager sharedInstance].onOpenCallBack = onOpenCallBack;
+    [GTUIManager sharedInstance].onCloseCallBack = onCloseCallBack;
 }
 
 #endif

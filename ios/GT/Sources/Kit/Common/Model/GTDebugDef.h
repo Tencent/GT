@@ -96,6 +96,7 @@ va_end( args );
 #pragma mark -
 
 /************************屏幕尺寸相关*************************/
+#if 0
 //Portrait状态下屏幕宽度
 #define M_GT_FULL_SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -107,6 +108,21 @@ va_end( args );
 
 //Portrait状态下屏幕高度（不含电池条）
 #define M_GT_SCREEN_HEIGHT ([[UIScreen mainScreen] applicationFrame].size.height)
+
+#else // navy modified
+
+//Portrait状态下屏幕宽度
+#define M_GT_FULL_SCREEN_WIDTH ([UIScreen mainScreen].fullScreenBounds.size.width)
+
+//Portrait状态下屏幕高度
+#define M_GT_FULL_SCREEN_HEIGHT ([UIScreen mainScreen].fullScreenBounds.size.height)
+
+//Portrait状态下屏幕宽度（不含电池条）
+#define M_GT_SCREEN_WIDTH ([[UIScreen mainScreen] screenBounds].size.width)
+
+//Portrait状态下屏幕高度（不含电池条）
+#define M_GT_SCREEN_HEIGHT ([[UIScreen mainScreen] screenBounds].size.height)
+#endif
 
 //顶部标题栏的高度
 #define M_GT_HEADER_HEIGHT 44

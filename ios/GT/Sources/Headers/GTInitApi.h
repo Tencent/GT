@@ -123,6 +123,20 @@ extern void func_setGTHidden(bool hidden);
 #define GT_DEBUG_ALERT_HIDE func_hideAlert()
 extern void func_hideAlert();
 
+/**
+ * @brief   设置点击LOGO的打开和关闭回调函数，一般用于横屏时显示GT，来控制App的rootViewController禁止和允许Rotate
+ * @ingroup GT启动使用说明
+ *
+ * @return
+ *
+ * Example Usage:
+ * @code
+ *    //设置点击LOGO的打开和关闭回调函数
+ *    GT_LOGO_CALL_BACK_SET(onOpenCallBack, onCloseCallBack);
+ * @endcode
+ */
+#define GT_LOGO_CALL_BACK_SET(onOpenCallBack, onCloseCallBack) func_setLogoCallBack(onOpenCallBack, onCloseCallBack)
+extern void func_setLogoCallBack(void(* onOpenCallBack)(void), void(* onCloseCallBack)(void));
 
 /**
  * @brief   设置logo显示位置

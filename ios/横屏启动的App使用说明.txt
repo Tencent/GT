@@ -1,0 +1,22 @@
+// 注意：目前横屏启动的App大部分UI显示能兼容，如果出现UI异常的情况，请设置GT支持竖屏，并且将设备垂直放置，切换到竖屏，则可解决
+
+// 初始化步骤:
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    GT_DEBUG_INIT;
+    GT_DEBUG_SET_SUPPORT_ORIENTATIONS(UIInterfaceOrientationMaskLandscape); // 只支持横屏,如果需要都支持，则此项不用设置
+    GT_LOGO_CALL_BACK_SET(onOpenCallBack, onCloseCallBack); // 如果是横屏，则需要设置回调，来控制rootViewController的Rotate，不然UI可能会显示异常
+}
+
+void onOpenCallBack(void)
+{
+    // rootViewController里的shouldAutorotate方法返回NO
+    [RootViewController setSupportRotate:NO];
+}
+
+void onCloseCallBack(void)
+{
+    // rootViewController里的shouldAutorotate方法返回YES
+    [RootViewController setSupportRotate:YES];
+}
+
