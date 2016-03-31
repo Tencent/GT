@@ -32,6 +32,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.tencent.wstt.gt.AidlEntry;
+import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.InPara;
 import com.tencent.wstt.gt.OutPara;
 import com.tencent.wstt.gt.R;
@@ -64,9 +65,9 @@ public abstract class GTParamListBaseAdapter extends BaseAdapter {
 
 	public GTParamListBaseAdapter(Context context, List<? extends AidlEntry> list)
 	{
-		this.context = context;
+		this.context = context == null ? GTApp.getContext() : context;
 		this.list = list;
-		this.mInflater = LayoutInflater.from(context);
+		this.mInflater = LayoutInflater.from(this.context);
 
 		PROMPT_ITEM_convertView = mInflater.inflate(R.layout.gt_listrow_prompt_title, null);
 		DIVIDE_ITEM_convertView = mInflater.inflate(R.layout.gt_listrow_title, null);

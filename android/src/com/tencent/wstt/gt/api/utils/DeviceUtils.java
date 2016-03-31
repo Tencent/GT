@@ -1,4 +1,3 @@
-
 /*
  * Tencent is pleased to support the open source community by making
  * Tencent GT (Version 2.4 and subsequent versions) available.

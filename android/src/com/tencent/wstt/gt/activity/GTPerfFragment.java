@@ -141,7 +141,7 @@ public class GTPerfFragment extends Fragment {
 		 * 保存相关控件
 		 */
 		RelativeLayout rl_save = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(
-				R.layout.gt_save_editor, null, false);
+				R.layout.gt_dailog_save, null, false);
 		ImageButton btn_cleanSavePath = (ImageButton) rl_save.findViewById(R.id.save_clean);
 		btn_cleanSavePath.setOnClickListener(new OnClickListener() {
 			

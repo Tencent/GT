@@ -676,7 +676,7 @@ public class GTPerfDetailView extends View {
 
 	private long calcY(long timeY)
 	{
-		return absY - (h * (timeY - curYMin) / (curYMax - curYMin));
+		return curYMax - curYMin == 0 ? 0 : absY - (h * (timeY - curYMin) / (curYMax - curYMin));
 	}
 
 	public boolean isAutoRefresh()

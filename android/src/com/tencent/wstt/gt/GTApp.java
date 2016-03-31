@@ -25,16 +25,13 @@ package com.tencent.wstt.gt;
 
 import java.lang.ref.WeakReference;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.util.Log;
-
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.stat.MtaSDkException;
 import com.tencent.stat.StatConfig;
 import com.tencent.stat.StatService;
 import com.tencent.wstt.gt.activity.GTEntrance;
+import com.tencent.wstt.gt.api.utils.DeviceUtils;
+import com.tencent.wstt.gt.api.utils.Env;
 import com.tencent.wstt.gt.api.utils.NetUtils;
 import com.tencent.wstt.gt.api.utils.ProcessUtils;
 import com.tencent.wstt.gt.api.utils.SignalUtils;
@@ -53,13 +50,17 @@ import com.tencent.wstt.gt.plugin.gps.GTGPSPluginItem;
 import com.tencent.wstt.gt.plugin.gps.GTGPSReplayEngine;
 import com.tencent.wstt.gt.plugin.internal.PluginService;
 import com.tencent.wstt.gt.plugin.memfill.GTMemFillPluginItem;
-import com.tencent.wstt.gt.plugin.netswitch.GTNetSwitchActivity;
-import com.tencent.wstt.gt.plugin.netswitch.GTNetSwitchFloatview;
-import com.tencent.wstt.gt.plugin.netswitch.NetSwitchPluginItem;
+import com.tencent.wstt.gt.plugin.octopus.GTOctopusPluginItem;
 import com.tencent.wstt.gt.plugin.screenlock.ScreenlockPluginItem;
 import com.tencent.wstt.gt.plugin.smtools.SMToolsPluginItem;
 import com.tencent.wstt.gt.plugin.tcpdump.TcpdumpPluginItem;
 import com.tencent.wstt.gt.utils.GTUtils;
+
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.util.Log;
 
 public class GTApp extends Application {
 	private static Context mContext;
@@ -67,17 +68,15 @@ public class GTApp extends Application {
 	public static DaemonHandler daemonHandler;
 
 	static Handler emptyHandler = new Handler();
-	
+
 	// 是否在GT的UI中
 	private static boolean isInGT = false;
 
-	public static boolean isInGT()
-	{
+	public static boolean isInGT() {
 		return isInGT;
 	}
 
-	public static void setInGT(boolean inGT)
-	{
+	public static void setInGT(boolean inGT) {
 		isInGT = inGT;
 	}
 
@@ -86,10 +85,8 @@ public class GTApp extends Application {
 		if (null == daemonHandler) {
 			daemonHandler = new DaemonHandler();
 		}
-		if (!GTDaemonThreadManager.getInstance().contains(
-				GTMemoryDaemonThread.key)) {
-			GTDaemonThreadManager.getInstance().put(GTMemoryDaemonThread.key,
-					new GTMemoryDaemonThread());
+		if (!GTDaemonThreadManager.getInstance().contains(GTMemoryDaemonThread.key)) {
+			GTDaemonThreadManager.getInstance().put(GTMemoryDaemonThread.key, new GTMemoryDaemonThread());
 			GTDaemonThreadManager.getInstance().start(GTMemoryDaemonThread.key);
 		}
 	}
@@ -99,8 +96,11 @@ public class GTApp extends Application {
 		super.onCreate();
 		mContext = getApplicationContext();
 
+		Env.init();
+
 		// 设置主线程的未捕获异常记录
-		GTUtils.setGTUncaughtExceptionHandler();
+//		GTUtils.setGTUncaughtExceptionHandler();
+		CrashReport.initCrashReport(mContext, "900010910", false);
 
 		// 初始化适配Android4.x和5.x以上的ProcessUtils
 		ProcessUtils.init();
@@ -112,14 +112,15 @@ public class GTApp extends Application {
 		NetUtils.initNetValue();
 		// 在GT启动时，把默认提供的出参注册了
 		registerGTDefaultOutParas();
-		
+
 		// 初始化全局客户端
 		ClientFactory cf = new SingleInstanceClientFactory();
-		cf.orderClient(
-				ClientManager.GLOBAL_CLIENT, ClientManager.GLOBAL_CLIENT.hashCode(), null, null);
-		
+		cf.orderClient(ClientManager.GLOBAL_CLIENT, ClientManager.GLOBAL_CLIENT.hashCode(), null, null);
+
 		// 加载插件，这句要在初始化全局客户端之后执行
 		loadPlugins();
+
+		loadEnvInfo();
 
 		// 使用MAT平台进行统计上报
 		// 第二个参数是null，标识读取manifest里配置的appKey
@@ -128,12 +129,15 @@ public class GTApp extends Application {
 		// 是否WIFI网络下实时上报，如果是false，则在GT第二次启动上报
 		StatConfig.setEnableSmartReporting(true);
 		try {
-			StatService.startStatService(this, null,
-					com.tencent.stat.common.StatConstants.VERSION);
+			StatService.startStatService(this, null, com.tencent.stat.common.StatConstants.VERSION);
 		} catch (MtaSDkException e) {
 			// MTA初始化失败
 			Log.e("gt_mta", "MTA start failed.");
 		}
+	}
+
+	private void loadEnvInfo() {
+		Env.CUR_APP_VER = DeviceUtils.getSDKVersion(); // Android版本名
 	}
 
 	private void loadPlugins() {
@@ -147,10 +151,10 @@ public class GTApp extends Application {
 		pm.register(new BatteryPluginItem());
 		pm.register(new TcpdumpPluginItem());
 		pm.register(new ScreenlockPluginItem());
-		pm.register(new NetSwitchPluginItem());
 		pm.register(new GTMemFillPluginItem());
 		pm.register(new SMToolsPluginItem());
 		pm.register(new GTGPSPluginItem());
+		pm.register(new GTOctopusPluginItem());
 	}
 
 	public static Context getContext() {
@@ -173,7 +177,7 @@ public class GTApp extends Application {
 		/*
 		 * 作为内置应用时， 第一次运行要拷贝so到data/data/com.tencent.wstt.gt/files下并加载
 		 */
-		GTUtils.copySoToDest(mContext);
+//		GTUtils.copySoToDest(mContext);
 
 		GTUtils.copyTcpdump(mContext);
 		GTUtils.copyalarm(mContext);
@@ -194,17 +198,6 @@ public class GTApp extends Application {
 	 * 关闭GT开启的service, 关闭GT应用
 	 */
 	public static void exitGT() {
-
-		if (null != GTNetSwitchActivity.intent) {
-			getContext().stopService(GTNetSwitchActivity.intent);
-			GTNetSwitchActivity.intent = null;
-		}
-
-		if (null != GTNetSwitchFloatview.getInstance()) {
-			PluginManager.getInstance().getPluginControler()
-					.stopService(GTNetSwitchFloatview.getInstance());
-		}
-
 		// 将缓存中的日志信息保存到文件
 		GTLogInternal.endAllLog();
 

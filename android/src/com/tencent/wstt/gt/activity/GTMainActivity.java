@@ -23,21 +23,29 @@
  */
 package com.tencent.wstt.gt.activity;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+import com.tencent.wstt.gt.GTApp;
+import com.tencent.wstt.gt.R;
+import com.tencent.wstt.gt.api.utils.Env;
+import com.tencent.wstt.gt.dao.GTPref;
+import com.tencent.wstt.gt.service.GTFloatView;
+import com.tencent.wstt.gt.service.GTLogo;
+import com.tencent.wstt.gt.utils.ToastUtil;
+import com.tencent.wstt.gt.utils.WtloginUtil;
+
+import android.Manifest;
 import android.app.Notification;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.view.Gravity;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,11 +54,39 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.tencent.wstt.gt.GTApp;
-import com.tencent.wstt.gt.R;
+import oicq.wlogin_sdk.request.WUserSigInfo;
+import oicq.wlogin_sdk.request.WtloginListener;
+import oicq.wlogin_sdk.tools.ErrMsg;
+import oicq.wlogin_sdk.tools.util;
 
 public class GTMainActivity extends GTBaseFragmentActivity implements OnClickListener {
+	/*
+	 * 转菊花Dialog
+	 */
+	private ProgressDialog proDialog;
+
+	// 显示菊花
+	private void showProDialog(String title, String message)
+	{
+		proDialog = ProgressDialog.show(this, title, message, true, true);
+	}
+
+	// 取消菊花
+	private void dismissProDialog()
+	{
+		if (null != proDialog)
+		{
+			proDialog.dismiss();
+			proDialog = null;
+		}
+	}
+
+	// Android6.x之后，需要由用户明确授权的权限，放在MainActivity里提前做申请交互
+	private static final int REQUEST_NEED_PERMISSION = 101;
+	// 悬浮窗的权限是特殊权限，需要单独处理
+	private static final int REQUEST_FLOAT_VIEW = 102;
+	private static boolean isFloatViewAllowed = GTPref.getGTPref().getBoolean(GTPref.FLOAT_ALLOWED, false);
+
 	// 页面碎片对象
 	private GTAUTFragment autFragment;
 	private GTParamTopFragment paramFragment;
@@ -93,7 +129,7 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 	{
 		instance = this;
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -114,8 +150,64 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 			setTabSelection(0);
 		}
 		isActived = true;
-	}
+
+		boolean hasPermission = (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
 	
+		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+
+		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
+
+		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED);
+
+		if (!hasPermission) {
+			ActivityCompat.requestPermissions(
+					this,
+					new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE,
+							Manifest.permission.ACCESS_FINE_LOCATION,
+							Manifest.permission.READ_PHONE_STATE},
+					REQUEST_NEED_PERMISSION);
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		switch (requestCode) {
+		case REQUEST_NEED_PERMISSION: {
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				// 授权了就可以保存了，do nothing即可
+				// 接收了危险权限后，再弹出悬浮窗处理特殊权限，这样还可以避过ACTION_MANAGE_OVERLAY_PERMISSION不支持API23之前的问题
+				if (! isFloatViewAllowed)
+				{
+					requestAlertWindowPermission();
+				}
+				// 在授权后，需要将之前没权限创建的目录重新创建一次
+				Env.init();
+			} else {
+				ToastUtil.ShowLongToast(GTApp.getContext(),
+						"Permission not enough. Please consider granting it this permission.");
+			}
+		}
+		}
+	}
+
+	private void requestAlertWindowPermission() {
+		Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+		intent.setData(Uri.parse("package:" + getPackageName()));
+		try{
+			startActivityForResult(intent, REQUEST_FLOAT_VIEW);
+		}
+		catch(Exception e)
+		{
+			// 有的定制系统会抛异常，这样的系统也不需要额外的悬浮窗授权
+		}
+		
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -308,7 +400,7 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 	 * 清除掉所有的选中状态。
 	 */
 	private void clearSelection() {
-		int defaultColor = getResources().getColor(R.drawable.tab_default_textcolor);
+		int defaultColor = getResources().getColor(R.color.tab_default_textcolor);
 		autImage.setImageResource(R.drawable.tab_default_border);
 		autText.setTextColor(defaultColor);
 		paramImage.setImageResource(R.drawable.tab_default_border);
@@ -346,49 +438,6 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 		}
 	}
 
-	public void dialog(String newVersion, String suggest) {
-		String msg = "New version:" + newVersion + "\n" + suggest + "\n"
-				+ "\n" + "Suggest to get it from gt.tencent.com ASAP.";
-		int start_pos = 12 + newVersion.length() + 1 + suggest.length() + 1
-				+ 1 + 23 - 1;
-		int end_pos = 12 + newVersion.length() + 1 + suggest.length() + 1
-				+ 1 + 38 - 1;
-
-		SpannableString style = new SpannableString(msg);
-		style.setSpan(
-				new ForegroundColorSpan(Color.argb(0xff, 0xcb, 0x74, 0x18)),
-				start_pos, end_pos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-		AlertDialog.Builder builder = new Builder(GTMainActivity.this);
-		builder.setMessage(style);
-
-		TextView title = new TextView(getApplicationContext());
-		title.setText("New GT Avaliable");
-		title.setTextColor(Color.WHITE);
-		title.setTextSize(25);
-		title.setGravity(Gravity.CENTER);
-		builder.setCustomTitle(title);
-
-		builder.setPositiveButton(getString(R.string.eula_accept), new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dlgIsShow = false;
-			}
-		});
-
-		builder.create().show();
-		dlgIsShow = true;
-		
-		builder.setOnCancelListener(new OnCancelListener() {
-			
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				dlgIsShow = false;
-			}
-		});
-	}
-	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK){
@@ -431,6 +480,19 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
+		case R.id.account:
+			intent = WtloginUtil.getIntent();
+			boolean canQlogin = (intent!=null);
+			if (!canQlogin) {
+				ToastUtil.ShowLongToast(this, R.string.qq_need_install);
+				break;
+			}
+			try {
+				startActivityForResult(intent, WtloginUtil.REQ_QLOGIN);
+			} catch (Exception e) {
+				ToastUtil.ShowLongToast(this, R.string.qq_quicklogin_error);
+			}
+			break;
 		case R.id.about:
 			intent = new Intent(this, GTAboutActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -440,4 +502,86 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 
 		return false;
 	}
+
+	/* 进行验证码验证，或者进行快速登录的回调，这两个是进行快速登录可能遇到的情况 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case WtloginUtil.REQ_QLOGIN: // 快速登录返回
+			try {
+				if (data == null) { // 这种情况下用户多半是直接按了返回按钮，没有进行快速登录；快速登录失败可提醒用户输入密码登录
+					break;
+				}
+				WtloginUtil.getHelper().SetListener(wtloginListener);
+
+				WUserSigInfo sigInfo = WtloginUtil.getSigInfo(data);
+				if (sigInfo == null) {
+					ToastUtil.ShowLongToast(GTApp.getContext(), R.string.pi_octopus_login_user_quickerror);
+					break;
+				}
+
+				// getStWithPasswd之前要先setUin，因为用到这个参数
+				WtloginUtil.setUin(sigInfo.uin);
+
+				// 快速登录只是从手Q换取了A1票据，A1则相当于用户密码，在此仍需要再发起一次A1换票的流程，才能拿到目标票据
+				WtloginUtil.getStWithPasswd(sigInfo);
+
+				showProDialog(getString(R.string.qq_quicklogin_trying)
+						, getString(R.string.qq_quicklogin_trying_content));
+			} catch (Exception e) {
+				util.printException(e);
+			}
+			break;
+		case REQUEST_FLOAT_VIEW:
+			// 得到权限，置标志位，相应的提示用户重启GT等
+			isFloatViewAllowed = true;
+			GTPref.getGTPref().edit().putBoolean(GTPref.FLOAT_ALLOWED, true).commit();
+			
+			// 因为授权之前的启动悬浮窗会报异常关闭，所以这里重新启动悬浮窗服务
+			if ( GTPref.getGTPref().getBoolean(GTPref.AC_SWITCH_FLAG, true))
+			{
+				Intent intent = new Intent(this, GTLogo.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startService(intent);
+
+				Intent mintent = new Intent(this, GTFloatView.class);
+				mintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startService(mintent);
+			}
+
+			break;
+		default:
+			break;
+		}
+	}
+
+	/*
+	 * 各种请求的回调在这里实现，安全起见，GT不独立完成登录事务，只实现快速登录成功的回调
+	 */
+	WtloginListener wtloginListener = new WtloginListener() {
+		@Override
+		public void OnGetStWithPasswd(String userAccount, long dwSrcAppid,
+				int dwMainSigMap, long dwSubDstAppid, String userPasswd,
+				WUserSigInfo userSigInfo, int ret, ErrMsg errMsg) {
+			switch (ret) {
+			case util.S_GET_IMAGE:
+			case util.S_GET_SMS:
+				break;
+			case util.S_SUCCESS:
+				// 取消菊花
+				dismissProDialog();
+				ToastUtil.ShowLongToast(GTApp.getContext(), R.string.qq_quicklogin_succ);
+				break;
+			case util.S_BABYLH_EXPIRED:
+			case util.S_LH_EXPIRED:
+				break;
+			default:
+				WtloginUtil.setUin(null);
+				// 取消菊花
+				dismissProDialog();
+				ToastUtil.ShowLongToast(GTApp.getContext(), errMsg.getTitle() + "，" + errMsg.getMessage());
+				break;
+			}
+		}
+	};
 }

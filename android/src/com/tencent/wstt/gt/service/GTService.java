@@ -69,7 +69,7 @@ public class GTService extends Service {
 				GTApp.getContext(), 0, R.drawable.gt_entrlogo, "GT", 1,
 				"Version: " + version_type + " " + GTConfig.VERSION,
 				"GT is running", GTMainActivity.class,
-				NotificationHelper.FLAG_ONGOING_EVENT, 0);
+				true, false, 0);
 		startForeground(10, GTMainActivity.notification);
 		return super.onStartCommand(intent, flags, startId);
 	}

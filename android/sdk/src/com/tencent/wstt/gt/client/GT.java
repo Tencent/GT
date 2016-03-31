@@ -138,16 +138,7 @@ public class GT {
 		}
 		GTInternal.INSTANCE.disconnect(hostContext);
 	}
-	
-//	/**
-//	 * 当前是否可以尝试去连接GT TODO 这个判断并不适合用户使用
-//	 * @return
-//	 */
-//	public static boolean isCanTryConnect()
-//	{
-//		return GTInternal.INSTANCE.isCanTryConnect();
-//	}
-	
+
 	/**
 	 * 设置性能开关状态，主要用于性能开关随GT启动开启的设置
 	 * 该方法在connect方法之后调用，即可保证GT控制台启动时即开启性能统计开关
@@ -191,7 +182,7 @@ public class GT {
 		}
 		GTInternal.INSTANCE.setCommand(receiver, bundle);
 	}
-	//=======================================关于输出参数=======================================================
+	//=======================================关于输出参数===========================
 	/**
 	 * 设置输出参数的值，更新的输出参数值会在GT的输出参数界面显示（若该参数被放到了悬浮窗中，则悬浮窗中也会显示）。<P>
 	 * 注意使用该方法前，对应ParaName的参数要先在connect方法中注册。
@@ -201,10 +192,8 @@ public class GT {
 	 *            输出参数的名称
 	 * @param value
 	 *            输出参数的值，支持任意类型，显示时都会被作为字符串处理
-	 * @param inlog
-	 *            是否要在控制台打印
-	 *
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
+	 * @param extras
+	 *            扩展参数，如果extras[0]是boolean型，则标明该参数是否是Global类型的
 	 */
 	public static void setOutPara(String paraName, Object value, Object...extras){
 		if (!ENABLE)
@@ -241,7 +230,7 @@ public class GT {
 		}
 	}
 
-	//=======================================关于输入参数=======================================================
+	//=======================================关于输入参数===========================
 	/**
 	 * 设置输入参数的值，更新的输入参数值会在GT的输入参数界面显示（若该参数被放到了悬浮窗中，则悬浮窗中也会显示）。<P>
 	 * 注意使用该方法前，对应paraName的参数要先在connect方法中加载。
@@ -280,9 +269,16 @@ public class GT {
 	}
 
 	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
-	 * @deprecated
+	 * 设置输入参数的值，更新的输入参数值会在GT的输入参数界面显示（若该参数被放到了悬浮窗中，则悬浮窗中也会显示）。<P>
+	 * 注意使用该方法前，对应paraName的参数要先在connect方法中加载。
+	 * <p>
+	 * (*)该方法不常用。
+	 * 
+	 * @param paraName
+	 *            输入参数的名称
+	 * @param newValue
+	 *            输入参数的值，支持任意类型，内部会被转成字符串处理
+	 * @deprecated 该方法不能保证时序性，测试逻辑也不应改变原有被测逻辑的时序
 	 */
 	public static void setInPara(String paraName, Object newValue) {
 		if (!ENABLE)
@@ -290,6 +286,7 @@ public class GT {
 			return;
 		}
 		if(null != newValue){
+			// 入参目前不支持注册成全局的，只会在一个APP内有效
 			GTInternal.INSTANCE.setInPara(paraName, newValue.toString(), false);
 		}
 	}
@@ -304,35 +301,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static String getInPara(String paraName, String origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return "";
-		}
-		if(null != paraName && null != origVal){
-			if (null != extras && extras.length > 0)
-			{
-				if (extras[0] instanceof Boolean)
-				{
-					boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-					return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-				}
-			}
-			return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-		}
-		return "";
-	}
-
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static String getInPara(String paraName, String origVal){
 		if (!ENABLE)
@@ -340,10 +310,12 @@ public class GT {
 			return "";
 		}
 		if(null != paraName && null != origVal){
+			// 入参目前不支持注册成全局的，只会在一个APP内有效
 			return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
 		}
 		return "";
 	}
+
 
 	/**
 	 * 获取GT中存储的该输入参数的值，输入参数类型是boolean的接口。
@@ -355,32 +327,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static boolean getInPara(String paraName, boolean origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return origVal;
-		}
-		if (null != extras && extras.length > 0)
-		{
-			if (extras[0] instanceof Boolean)
-			{
-				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-				return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-			}
-		}
-		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-	}
-	
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static boolean getInPara(String paraName, boolean origVal){
 		if (!ENABLE)
@@ -389,7 +337,7 @@ public class GT {
 		}
 		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
 	}
-	
+
 	/**
 	 * 获取GT中存储的该输入参数的值，输入参数类型是int的接口。
 	 * <P>
@@ -400,32 +348,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static int getInPara(String paraName, int origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return origVal;
-		}
-		if (null != extras && extras.length > 0)
-		{
-			if (extras[0] instanceof Boolean)
-			{
-				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-				return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-			}
-		}
-		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-	}
-
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static int getInPara(String paraName, int origVal){
 		if (!ENABLE)
@@ -445,32 +369,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static double getInPara(String paraName, double origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return origVal;
-		}
-		if (null != extras && extras.length > 0)
-		{
-			if (extras[0] instanceof Boolean)
-			{
-				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-				return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-			}
-		}
-		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-	}
-
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static double getInPara(String paraName, double origVal){
 		if (!ENABLE)
@@ -490,32 +390,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static float getInPara(String paraName, float origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return origVal;
-		}
-		if (null != extras && extras.length > 0)
-		{
-			if (extras[0] instanceof Boolean)
-			{
-				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-				return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-			}
-		}
-		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-	}
-
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static float getInPara(String paraName, float origVal){
 		if (!ENABLE)
@@ -535,32 +411,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static long getInPara(String paraName, long origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return origVal;
-		}
-		if (null != extras && extras.length > 0)
-		{
-			if (extras[0] instanceof Boolean)
-			{
-				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-				return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-			}
-		}
-		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-	}
-
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static long getInPara(String paraName, long origVal){
 		if (!ENABLE)
@@ -569,7 +421,7 @@ public class GT {
 		}
 		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
 	}
-	
+
 	/**
 	 * 获取GT中存储的该输入参数的值，输入参数类型是short的接口。
 	 * <P>
@@ -580,32 +432,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static short getInPara(String paraName, short origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return origVal;
-		}
-		if (null != extras && extras.length > 0)
-		{
-			if (extras[0] instanceof Boolean)
-			{
-				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-				return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-			}
-		}
-		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-	}
-
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static short getInPara(String paraName, short origVal){
 		if (!ENABLE)
@@ -625,32 +453,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static byte getInPara(String paraName, byte origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return origVal;
-		}
-		if (null != extras && extras.length > 0)
-		{
-			if (extras[0] instanceof Boolean)
-			{
-				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-				return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-			}
-		}
-		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-	}
-
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static byte getInPara(String paraName, byte origVal){
 		if (!ENABLE)
@@ -670,32 +474,8 @@ public class GT {
 	 *            输入参数的名称
 	 * @param origVal
 	 *            此处建议使用原被测代码中的对应变量的原始值
-	 * @param inlog
-	 *            是否要在控制台打印
 	 * 
 	 * @return 该入参的当前值
-	 * 
-	 * @since 2.1 去掉是否在控制台打印日志的参数，因为以前版本中该参数的tag不好确定，沦为无用的鸡肋了
-	 */
-	public static char getInPara(String paraName, char origVal, Object...extras){
-		if (!ENABLE)
-		{
-			return origVal;
-		}
-		if (null != extras && extras.length > 0)
-		{
-			if (extras[0] instanceof Boolean)
-			{
-				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
-				return GTInternal.INSTANCE.getInPara(paraName, origVal, isGlobal);
-			}
-		}
-		return GTInternal.INSTANCE.getInPara(paraName, origVal, false);
-	}
-
-	/**
-	 * 同名方法的无扩展参数版，主要是为了规避java5编译器，无法正确处理Object...extras这种参数的bug
-	 * java6编译器不需要此方法
 	 */
 	public static char getInPara(String paraName, char origVal){
 		if (!ENABLE)

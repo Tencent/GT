@@ -100,7 +100,7 @@ public class OpWarningManager {
 									"Version: " + version_type + " "
 											+ GTConfig.VERSION, ov_name +" exceeds the threshold",
 									GTMainActivity.class,
-									NotificationHelper.FLAG_ONGOING_EVENT,
+									true, false,
 									NotificationHelper.DEFAULT_VB);
 					
 					NotificationHelper.notify(GTApp.getContext(), 10,

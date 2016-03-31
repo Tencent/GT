@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Notwithstanding anything to the contrary herein, any previous version
      of Tencent GT shall not be subject to the license hereunder.
      All right, title, and interest, including all intellectual property rights,
@@ -23,10 +23,6 @@
     <drawable name="transparent">#E6000000</drawable>
     <drawable name="text_title_gray">#878c98</drawable>
     <drawable name="text_content_gray">#b7bdcf</drawable>
-    <drawable name="swbtn_select_textcolor">#ffffff</drawable>
-    <drawable name="swbtn_default_textcolor">#878c98</drawable>
-    <drawable name="tab_default_textcolor">#9398a6</drawable>
-    <drawable name="tab_select_textcolor">#ffffff</drawable>
     <drawable name="area_title_orange">#DD843F</drawable>
     <drawable name="white">#FFFFFF</drawable>
     <drawable name="black">#000000</drawable>
@@ -37,9 +33,16 @@
     <drawable name="top_line_gray">#35353b</drawable>
     <drawable name="btn_gray">#35353b</drawable>
     <drawable name="text_green">#38ad29</drawable>
+    <drawable name="text_bluegreen">#607d8b</drawable>
     <drawable name="text_hint_gray">#616676</drawable>
 
     <color name="orange">#FF9900</color>
+    <color name="red">#FF0000</color>
     <color name="page_dark_bg">#ffe7e7e7</color>
+
+    <color name="swbtn_select_textcolor">#ffffff</color>
+    <color name="swbtn_default_textcolor">#878c98</color>
+    <color name="tab_default_textcolor">#9398a6</color>
+    <color name="tab_select_textcolor">#ffffff</color>
 
 </resources>

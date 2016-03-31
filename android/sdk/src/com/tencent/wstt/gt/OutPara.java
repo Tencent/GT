@@ -44,7 +44,7 @@ public class OutPara extends AidlEntry {
 
 	// 本地属性
 	private boolean isRegistering; // 本地用于区分是否是注册的对象
-	private boolean isGlobal; // 是否注册为全局属性
+	private boolean isGlobal; // 是否注册为全局参数，全局参数即可以跨APP共享，非全局参数只在单个APP内有效
 
 	private boolean monitor; // 标记是否监控
 	public boolean hasMonitorOnce; // 标记是否曾监控过

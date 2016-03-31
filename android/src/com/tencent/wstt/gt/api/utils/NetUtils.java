@@ -26,9 +26,12 @@ package com.tencent.wstt.gt.api.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.tencent.wstt.gt.GTApp;
+import com.tencent.wstt.gt.utils.CommonString;
+import com.tencent.wstt.gt.utils.FileUtil;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -36,16 +39,18 @@ import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.telephony.TelephonyManager;
 
-import com.tencent.wstt.gt.GTApp;
-import com.tencent.wstt.gt.utils.CommonString;
-import com.tencent.wstt.gt.utils.FileUtil;
-
 public class NetUtils {
 	public static Map<String, NetUtils> netInfoMap = new HashMap<String, NetUtils>();
 	private static final int TYPE_WIFI = 0;
 	private static final int TYPE_3G = 1;
 	private static final int TYPE_GPRS = 2;
 	private static final float B2K = 1024.00f;
+
+	// 采集应用流量的方案
+	private static final int TYPE_CASE1 = 1;
+	private static final int TYPE_CASE2 = 2;
+	private static final int TYPE_CASE3 = 3;
+	private static int netCase = TYPE_CASE1;
 
 	/**
 	 * 获取整体的网络接收流量，包括wifi和Mobile
@@ -116,28 +121,44 @@ public class NetUtils {
 		int uid = ProcessUtils.getProcessUID(pName);
 		String netPath = "/proc/uid_stat/" + uid + "/tcp_snd";
 
-		// TrafficStats接口在Andorid4.4.4，Nexus4上依然不好用，uid_stat下依然没有udp的流量统计
-//		long tcpR = TrafficStats.getUidTcpRxBytes(uid);
-//		long tcpS = TrafficStats.getUidTcpTxBytes(uid);
-//		long udpR = TrafficStats.getUidUdpRxBytes(uid);
-//		long udpS = TrafficStats.getUidUdpTxBytes(uid);
-//		Log.d("net", "tcpR=" + tcpR + " tcpS=" + tcpS + " udpR=" + udpR + " udpS=" + udpS);
+		switch (netCase)
+		{
+		case TYPE_CASE1:
+			File f = new File(netPath);
+			if (!f.exists()) {
+				// 转方案2
+				netCase = TYPE_CASE2;
+			}
+			else
+			{
+				try {
+					String ret = "0";
+					FileReader fr = new FileReader(netPath);
+					BufferedReader localBufferedReader = new BufferedReader(fr, 8192);
+					ret = localBufferedReader.readLine();
+					FileUtil.closeReader(localBufferedReader);
+					return Long.parseLong(ret);
+				} catch (Exception e) {
+					netCase = TYPE_CASE2;
+				}
+			}
 
-		File f = new File(netPath);
-		if (!f.exists()) {
-			return 0;
-		}
+			// 如果方案1判断不支持，不需要break直接跳方案2
+//			break;
 
-		String ret = "0";
-		try {
-			FileReader fr = new FileReader(netPath);
-			BufferedReader localBufferedReader = new BufferedReader(fr, 8192);
-			ret = localBufferedReader.readLine();
-			FileUtil.closeReader(localBufferedReader);
-		} catch (IOException e) {
-			e.printStackTrace();
+		case TYPE_CASE2:
+			long s = TrafficStats.getUidTxBytes(uid);
+			if (s >= 0)
+			{
+				return s;
+			}
+			netCase = TYPE_CASE3;
+			
+		case TYPE_CASE3:
+		default:
+			break;
 		}
-		return Long.parseLong(ret);
+		return 0;
 	}
 
 	/**
@@ -149,22 +170,44 @@ public class NetUtils {
 		int uid = ProcessUtils.getProcessUID(pName);
 		String netPath = "/proc/uid_stat/" + uid + "/tcp_rcv";
 
-		File f = new File(netPath);
-		if (!f.exists()) {
-			return 0;
-		}
+		switch (netCase)
+		{
+		case TYPE_CASE1:
+			File f = new File(netPath);
+			if (!f.exists()) {
+				// 转方案2
+				netCase = TYPE_CASE2;
+			}
+			else
+			{
+				try {
+					String ret = "0";
+					FileReader fr = new FileReader(netPath);
+					BufferedReader localBufferedReader = new BufferedReader(fr, 8192);
+					ret = localBufferedReader.readLine();
+					FileUtil.closeReader(localBufferedReader);
+					return Long.parseLong(ret);
+				} catch (Exception e) {
+					netCase = TYPE_CASE2;
+				}
+			}
 
-		String ret = "0";
+			// 如果方案1判断不支持，不需要break直接跳方案2
+//			break;
 
-		try {
-			FileReader fr = new FileReader(netPath);
-			BufferedReader localBufferedReader = new BufferedReader(fr, 8192);
-			ret = localBufferedReader.readLine();
-			FileUtil.closeReader(localBufferedReader);
-		} catch (IOException e) {
-			e.printStackTrace();
+		case TYPE_CASE2:
+			long r = TrafficStats.getUidRxBytes(uid);
+			if (r >= 0)
+			{
+				return r;
+			}
+			netCase = TYPE_CASE3;
+			
+		case TYPE_CASE3:
+		default:
+			break;
 		}
-		return Long.parseLong(ret);
+		return 0;
 	}
 
 	/**

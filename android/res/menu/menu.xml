@@ -18,9 +18,13 @@
      specific language governing permissions and limitations under the License.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <item
         android:id="@+id/about"
         android:title="@string/setting_about_tab"/>
+    <item
+        android:id="@+id/account"
+        android:title="@string/setting_account_tab"/>
     <item
         android:id="@+id/log_switch"
         android:title="@string/setting_log_tab"/>

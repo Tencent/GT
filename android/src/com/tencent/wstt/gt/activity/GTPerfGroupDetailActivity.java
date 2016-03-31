@@ -76,12 +76,20 @@ public class GTPerfGroupDetailActivity extends GTBaseActivity {
 		setContentView(R.layout.gt_perf_detail);
 		
 		Intent intent = this.getIntent();
-		
+		if (intent == null)
+		{
+			finish();
+		}
+
 		Bundle extras = intent.getExtras();
+		if (extras == null)
+		{
+			finish();
+		}
 		String name = extras.getString("name");
 		String parentName = extras.getString("parent_name");
 		long tid = extras.getLong("tid");
-		
+
 		dataSet = GTTimeInternal.findTagTimeEntry(tid, parentName, name);
 		
 		btn_back = (ImageButton)findViewById(R.id.perf_detail_back);
@@ -109,7 +117,7 @@ public class GTPerfGroupDetailActivity extends GTBaseActivity {
 		});
 		
 		RelativeLayout rl_save = (RelativeLayout) LayoutInflater.from(this).inflate(
-				R.layout.gt_save_editor, null, false);
+				R.layout.gt_dailog_save, null, false);
 		ImageButton btn_cleanSavePath = (ImageButton) rl_save.findViewById(R.id.save_clean);
 		btn_cleanSavePath.setOnClickListener(new OnClickListener() {
 			

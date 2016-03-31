@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.Environment;
-
 import com.tencent.wstt.gt.Functions;
 import com.tencent.wstt.gt.api.utils.Env;
 import com.tencent.wstt.gt.api.utils.SMUtils;
@@ -45,158 +43,139 @@ import com.tencent.wstt.gt.utils.FileUtil;
 import com.tencent.wstt.gt.utils.GTUtils;
 
 public class LogUtils {
-	
-	public static final long CAPACITY = 4*1024*1024;
+
+	public static final long CAPACITY = 4 * 1024 * 1024;
 	public static int CACHE = 1000;
 	public static final String LOG_POSFIX = ".log";
 	public static final String LOG_FILE_MATCHE = "\\d+.log";
 	public static final String TLOG_POSFIX = ".csv";
 	public static final String GW_POSFIX = ".csv";
+	public static final String GW_DESC_PREFIX = "gtdesc_";
+	public static final String GW_DESC_POSFIX = ".txt";
 
 	// 是否即时将自动保存日志更新到存储
-	private static boolean autoSaveQuickFlush = GTPref.getGTPref().getBoolean(
-			GTPref.LOG_AUTOSAVEFLUSH_SWITCH, true); 
-	
-	public static void setAutoSaveQuickFlush(boolean flag)
-	{
+	private static boolean autoSaveQuickFlush = GTPref.getGTPref().getBoolean(GTPref.LOG_AUTOSAVEFLUSH_SWITCH, true);
+
+	public static void setAutoSaveQuickFlush(boolean flag) {
 		autoSaveQuickFlush = flag;
 	}
-	
-	public static boolean isAutoSaveQuickFlush()
-	{
+
+	public static boolean isAutoSaveQuickFlush() {
 		return autoSaveQuickFlush;
 	}
-	
+
 	/**
 	 * GT中的日志保存
+	 * 
 	 * @param list
 	 * @param path
 	 */
-	public static void writeLog(List<LogEntry> list, String fileName, boolean append){
-		
-		if(!GTUtils.isSDCardExist())
-		{
+	public static void writeLog(List<LogEntry> list, String fileName, boolean append) {
+
+		if (!GTUtils.isSDCardExist()) {
 			return;
 		}
-		
+
 		File f = null;
-		if (fileName.contains("/") || fileName.contains("\\"))
-		{
+		if (fileName.contains(FileUtil.separator) || fileName.contains("\\")) {
 			f = new File(fileName);
-		}
-		else
-		{
+		} else {
 			f = new File(Env.ROOT_LOG_FOLDER, fileName);
 		}
-		
-		if (f.exists() && ! append)
-		{
+
+		if (f.exists() && !append) {
 			f.delete();
 		}
-		
+
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(f, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		for(LogEntry entry : list){
-			writeNotClose(entry.msg, f , fw);
-			writeNotClose("\r\n", f , fw);
+
+		for (LogEntry entry : list) {
+			writeNotClose(entry.msg, f, fw);
+			writeNotClose("\r\n", f, fw);
 		}
 		FileUtil.closeWriter(fw);
 	}
-	
-	public static void writeLog(List<LogEntry> list, File f, boolean append){
-		
-		if(!GTUtils.isSDCardExist())
-		{
+
+	public static void writeLog(List<LogEntry> list, File f, boolean append) {
+
+		if (!GTUtils.isSDCardExist()) {
 			return;
 		}
-		
-		if (f.exists() && ! append)
-		{
+
+		if (f.exists() && !append) {
 			f.delete();
 		}
-		
+
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(f, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for(LogEntry entry : list){
-			writeNotClose(entry.msg, f , fw);
-			writeNotClose("\r\n", f , fw);
+		for (LogEntry entry : list) {
+			writeNotClose(entry.msg, f, fw);
+			writeNotClose("\r\n", f, fw);
 		}
 		FileUtil.closeWriter(fw);
 	}
-	
-	public static void writeFilterLog(List<String> list, File f, boolean append)
-	{
-		if(!GTUtils.isSDCardExist())
-		{
+
+	public static void writeFilterLog(List<String> list, File f, boolean append) {
+		if (!GTUtils.isSDCardExist()) {
 			return;
 		}
-		
-		if (f.exists() && ! append)
-		{
+
+		if (f.exists() && !append) {
 			f.delete();
 		}
-		
+
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(f, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for(int i = 0 ; i < list.size() ; i++) {
-			writeNotClose(list.get(i), f , fw);
-			writeNotClose("\r\n", f , fw);
+		for (int i = 0; i < list.size(); i++) {
+			writeNotClose(list.get(i), f, fw);
+			writeNotClose("\r\n", f, fw);
 		}
 		FileUtil.closeWriter(fw);
 	}
-	
-	public static void writeTimeLog(List<GroupTimeEntry> list, String fileName){
-		
-		if(!GTUtils.isSDCardExist())
-		{
+
+	public static void writeTimeLog(List<GroupTimeEntry> list, String fileName) {
+
+		if (!GTUtils.isSDCardExist()) {
 			return;
 		}
-		
+
 		int la = fileName.lastIndexOf(".");
-		if (la < 0)
-		{
+		if (la < 0) {
 			fileName = fileName + LogUtils.TLOG_POSFIX;
-		}
-		else
-		{
+		} else {
 			String temp = fileName.substring(la);
-			if (temp.contains("/") || temp.contains("\\"))
-			{
+			if (temp.contains(FileUtil.separator) || temp.contains("\\")) {
 				// "."是目录名的一部分而不是后缀名的情况
 				fileName = fileName + LogUtils.TLOG_POSFIX;
 			}
 			// else fileName = fileName
 		}
-		
+
 		File f = null;
-		if (fileName.contains("/") || fileName.contains("\\"))
-		{
+		if (fileName.contains(FileUtil.separator) || fileName.contains("\\")) {
 			f = new File(fileName);
-		}
-		else
-		{
+		} else {
 			Env.ROOT_TIME_FOLDER.mkdirs();
 			f = new File(Env.ROOT_TIME_FOLDER, fileName);
 		}
-		
-		if (f.exists())
-		{
+
+		if (f.exists()) {
 			f.delete();
 		}
-		
+
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(f, true);
@@ -205,11 +184,9 @@ public class LogUtils {
 		}
 
 		StringBuffer sb = null;
-		
-		for (GroupTimeEntry gte : list)
-		{
-			for (TagTimeEntry tte : gte.entrys())
-			{
+
+		for (GroupTimeEntry gte : list) {
+			for (TagTimeEntry tte : gte.entrys()) {
 				sb = new StringBuffer();
 				sb.append("group,");
 				sb.append(gte.getName());
@@ -220,23 +197,20 @@ public class LogUtils {
 				sb.append("isInThread,");
 				sb.append(tte.getTid() == 0 ? "false" : "true");
 				sb.append("\r\n");
-				
+
 				ArrayList<TimeEntry> tempRecordList = tte.getRecordList();
-				
-				for (TimeEntry time : tempRecordList)
-				{
-					if (sb.length() > 8192)
-					{
+
+				for (TimeEntry time : tempRecordList) {
+					if (sb.length() > 8192) {
 						writeNotClose(sb.toString(), f, fw);
 						sb = new StringBuffer();
 					}
 					sb.append(time);
-//					sb.append(",");
+					// sb.append(",");
 					sb.append("\r\n");
 				}
-				
-				if (!tempRecordList.isEmpty())
-				{
+
+				if (!tempRecordList.isEmpty()) {
 					sb.deleteCharAt(sb.length() - 1);
 				}
 				tempRecordList = null; // 可以及时释放
@@ -244,60 +218,50 @@ public class LogUtils {
 				writeNotClose(sb.toString(), f, fw);
 			}
 		}
-		
+
 		FileUtil.closeWriter(fw);
 	}
-	
-	public static void writeTimeDetail(TagTimeEntry tte, String fileName){
-		
-		if(!GTUtils.isSDCardExist())
-		{
+
+	public static void writeTimeDetail(TagTimeEntry tte, String fileName) {
+
+		if (!GTUtils.isSDCardExist()) {
 			return;
 		}
-		
+
 		int la = fileName.lastIndexOf(".");
-		if (la < 0)
-		{
+		if (la < 0) {
 			fileName = fileName + LogUtils.TLOG_POSFIX;
-		}
-		else
-		{
+		} else {
 			String temp = fileName.substring(la);
-			if (temp.contains("/") || temp.contains("\\"))
-			{
+			if (temp.contains(FileUtil.separator) || temp.contains("\\")) {
 				// "."是目录名的一部分而不是后缀名的情况
 				fileName = fileName + LogUtils.TLOG_POSFIX;
 			}
 			// else fileName = fileName
 		}
-		
+
 		File f = null;
-		if (fileName.contains("/") || fileName.contains("\\"))
-		{
+		if (fileName.contains(FileUtil.separator) || fileName.contains("\\")) {
 			f = new File(fileName);
-		}
-		else
-		{
+		} else {
 			Env.ROOT_TIME_FOLDER.mkdirs();
 			f = new File(Env.ROOT_TIME_FOLDER, fileName);
 		}
-		
-		if (f.exists())
-		{
+
+		if (f.exists()) {
 			f.delete();
 		}
-		
+
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(f, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		StringBuffer sb = new StringBuffer();
-		
-		if (null != tte.getParent() && tte.getParent() instanceof GroupTimeEntry)
-		{
+
+		if (null != tte.getParent() && tte.getParent() instanceof GroupTimeEntry) {
 			sb.append("group,");
 			sb.append(tte.getParent().getName());
 			sb.append("\r\n");
@@ -308,125 +272,76 @@ public class LogUtils {
 		sb.append("isInThread,");
 		sb.append(tte.getTid() == 0 ? "false" : "true");
 		sb.append("\r\n");
-		
-		if (! tte.hasChild())
-		{
-			for (TimeEntry time : tte.getRecordList())
-			{
-				if (sb.length() > 8192)
-				{
+
+		if (!tte.hasChild()) {
+			for (TimeEntry time : tte.getRecordList()) {
+				if (sb.length() > 8192) {
 					writeNotClose(sb.toString(), f, fw);
 					sb = new StringBuffer();
 				}
 				sb.append(time);
 				sb.append("\r\n");
 			}
-		}
-		else // 支持多组数据的保存
+		} else // 支持多组数据的保存
 		{
-			for (int i = 0; i < tte.getSubTagEntrys()[0].getRecordSize(); i++)
-			{
-				for (int j = 0; j < tte.getSubTagEntrys().length; j++)
-				{
+			for (int i = 0; i < tte.getSubTagEntrys()[0].getRecordSize(); i++) {
+				for (int j = 0; j < tte.getSubTagEntrys().length; j++) {
 					TagTimeEntry subEntry = tte.getSubTagEntrys()[j];
-					
+
 					TimeEntry time = subEntry.getRecord(i);
-					
-					if (sb.length() > 8192)
-					{
+
+					if (sb.length() > 8192) {
 						writeNotClose(sb.toString(), f, fw);
 						sb = new StringBuffer();
 					}
-					
-					if (j == 0)
-					{
+
+					if (j == 0) {
 						sb.append(time);
-					}
-					else
-					{
+					} else {
 						sb.append(time.reduce);
 					}
 
-					if (j == tte.getSubTagEntrys().length - 1)
-					{
+					if (j == tte.getSubTagEntrys().length - 1) {
 						sb.append("\r\n");
-					}
-					else
-					{
+					} else {
 						sb.append(",");
 					}
 				}
 			}
 		}
 
-		if (tte.getRecordSize() != 0)
-		{
+		if (tte.getRecordSize() != 0) {
 			sb.deleteCharAt(sb.length() - 1);
 		}
 		sb.append("\r\n");
 		writeNotClose(sb.toString(), f, fw);
-		
+
 		FileUtil.closeWriter(fw);
 	}
-	
-	public static void writeGWDataToTxt(ArrayList<TimeEntry> smList,String fileName){
-		
-		if (!GTUtils.isSDCardExist() || smList == null) {
-			return;
-		}
 
-		String rootGWFolder = Environment.getExternalStorageDirectory().getAbsolutePath()  + "/";
+	public static void writeGWData(final GWSaveEntry saveEntry, TagTimeEntry tte) {
 
-		File f = new File(rootGWFolder + fileName + ".txt");
-
-		FileWriter fw = null;
-		
-		try {
-			fw = new FileWriter(f, false);
-			StringBuffer sb = new StringBuffer();
-			
-			for(int i = 0; i < smList.size(); ++i){
-				
-				sb.append(smList.get(i).reduce);
-				sb.append("\r\n");
-				
-				if (sb.length() > 8192) {
-					writeNotClose(sb.toString(), f, fw);
-					sb = new StringBuffer();
-				}
-			}
-			writeNotClose(sb.toString(), f, fw);	
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			FileUtil.closeWriter(fw);
-		}
-	}
-	
-	public static void writeGWData(TagTimeEntry tte, final String folderName, final String now){
-		
 		if (!GTUtils.isSDCardExist() || tte == null) {
 			return;
 		}
-		
-		if (!tte.hasChild() && tte.getRecordSize() == 0)
-		{
+
+		if (!tte.hasChild() && tte.getRecordSize() == 0) {
 			return;
-		}
-		else if (tte.hasChild() && tte.getSubTagEntrys()[0].getRecordSize() == 0)
-		{
+		} else if (tte.hasChild() && tte.getSubTagEntrys()[0].getRecordSize() == 0) {
 			return;
 		}
 
-		String rootGWFolder = Env.S_ROOT_GW_FOLDER + Env.CUR_APP_NAME + "/";
-		String sFolder = rootGWFolder + folderName + "/";
+		String sFolder = Env.S_ROOT_GW_FOLDER +
+				saveEntry.path1 + FileUtil.separator + saveEntry.path2 + FileUtil.separator + saveEntry.path3 + FileUtil.separator;
 		File folder = new File(sFolder);
 		folder.mkdirs();
 
-		String fName = tte.getName() + "_" + now + LogUtils.GW_POSFIX;
-		fName = fName.replace(':', '_');
+		String fName = getTagTimeEntryFileName(tte, saveEntry);
 		File f = new File(folder, fName);
+		if (f.exists())
+		{
+			return;
+		}
 
 		FileWriter fw = null;
 		try {
@@ -440,14 +355,11 @@ public class LogUtils {
 			sb.append(tte.getAlias());
 			sb.append("\r\n");
 			sb.append("unit,");
-			
+
 			// PSS和PD的单位特殊，保存的KB，曲线图上显示的MB
-			if (tte.getFunctionId() == Functions.PERF_DIGITAL_MULT_MEM)
-			{
-				sb.append("KB");
-			}
-			else
-			{
+			if (tte.getFunctionId() == Functions.PERF_DIGITAL_MULT_MEM) {
+				sb.append("(KB)");
+			} else {
 				sb.append(tte.getUnit());
 			}
 			sb.append("\r\n");
@@ -479,7 +391,7 @@ public class LogUtils {
 				sb.append(tte.getAve());
 				sb.append("\r\n");
 				sb.append("\r\n");
-				
+
 				for (TimeEntry time : tempRecordList) {
 					if (sb.length() > 8192) {
 						writeNotClose(sb.toString(), f, fw);
@@ -488,10 +400,9 @@ public class LogUtils {
 					sb.append(time);
 					sb.append("\r\n");
 				}
-			}
-			else // 支持多组数据的保存
+			} else // 支持多组数据的保存
 			{
-				TagTimeEntry temp =  tte.getChildren()[0];
+				TagTimeEntry temp = tte.getChildren()[0];
 				int size = temp.getRecordSize();
 				long firstTime = temp.getRecord(0).time;
 				long lastTime = temp.getRecord(size - 1).time;
@@ -506,19 +417,17 @@ public class LogUtils {
 				sb.append(size);
 				sb.append("\r\n");
 				sb.append("\r\n");
-				
+
 				sb.append(",");
-				for (TagTimeEntry child : tte.getChildren())
-				{
+				for (TagTimeEntry child : tte.getChildren()) {
 					sb.append(child.getName());
 					sb.append(",");
 				}
 				sb.deleteCharAt(sb.length() - 1);
 				sb.append("\r\n");
-				
+
 				sb.append("min,");
-				for (TagTimeEntry child : tte.getChildren())
-				{
+				for (TagTimeEntry child : tte.getChildren()) {
 					sb.append(child.getMin());
 					sb.append(",");
 				}
@@ -526,24 +435,22 @@ public class LogUtils {
 				sb.append("\r\n");
 
 				sb.append("max,");
-				for (TagTimeEntry child : tte.getChildren())
-				{
+				for (TagTimeEntry child : tte.getChildren()) {
 					sb.append(child.getMax());
 					sb.append(",");
 				}
 				sb.deleteCharAt(sb.length() - 1);
 				sb.append("\r\n");
-				
+
 				sb.append("avg,");
-				for (TagTimeEntry child : tte.getChildren())
-				{
+				for (TagTimeEntry child : tte.getChildren()) {
 					sb.append(child.getAve());
 					sb.append(",");
 				}
 				sb.deleteCharAt(sb.length() - 1);
 				sb.append("\r\n");
 				sb.append("\r\n");
-				
+
 				for (int i = 0; i < size; i++) {
 					for (int j = 0; j < tte.getSubTagEntrys().length; j++) {
 						TagTimeEntry subEntry = tte.getSubTagEntrys()[j];
@@ -573,26 +480,22 @@ public class LogUtils {
 			}
 			sb.append("\r\n");
 			writeNotClose(sb.toString(), f, fw);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			FileUtil.closeWriter(fw);
 		}
-		
+
 		// add on 20131225 有手动tag记录内存值的情况，先把tag的内存值保存了 start
 		// 简单过滤保存
-		if (GTMemHelperFloatview.memInfoList.size() <= 0)
-		{
+		if (GTMemHelperFloatview.memInfoList.size() <= 0) {
 			return; // 不存在这种数据直接return
 		}
-		File tagFile = new File(folder, "tagMem_" + now + LogUtils.GW_POSFIX);
-		if (tagFile.exists())
-		{
+		File tagFile = new File(folder, "tagMem_" + saveEntry.now + LogUtils.GW_POSFIX);
+		if (tagFile.exists()) {
 			tagFile.delete();
 		}
-		
+
 		FileWriter fwTagFile = null;
 		try {
 			fwTagFile = new FileWriter(tagFile, true);
@@ -601,7 +504,7 @@ public class LogUtils {
 		}
 
 		StringBuffer sb = null;
-		
+
 		sb = new StringBuffer();
 		sb.append("time(ms)");
 		sb.append(",");
@@ -625,7 +528,7 @@ public class LogUtils {
 		sb.append(",");
 		sb.append("PSS_Unknow(KB)");
 		sb.append("\r\n");
-		
+
 		for (MemInfo mem : GTMemHelperFloatview.memInfoList) {
 			if (sb.length() > 8192) {
 				writeNotClose(sb.toString(), tagFile, fwTagFile);
@@ -659,33 +562,33 @@ public class LogUtils {
 		// add on 20131225 有手动tag记录内存值的情况，先把tag的内存值保存了 end
 	}
 
-	public static void writeGWDataForSM(TagTimeEntry tte, final String folderName, final String now){
-		
+	public static void writeGWDataForSM(final GWSaveEntry saveEntry, TagTimeEntry tte) {
+
 		if (!GTUtils.isSDCardExist() || tte == null) {
 			return;
 		}
-		
-		if (!tte.hasChild() && tte.getRecordSize() == 0)
-		{
+
+		if (!tte.hasChild() && tte.getRecordSize() == 0) {
 			return;
-		}
-		else if (tte.hasChild() && tte.getSubTagEntrys()[0].getRecordSize() == 0)
-		{
+		} else if (tte.hasChild() && tte.getSubTagEntrys()[0].getRecordSize() == 0) {
 			return;
 		}
 
-		String rootGWFolder = Env.S_ROOT_GW_FOLDER + Env.CUR_APP_NAME + "/";
-		String sFolder = rootGWFolder + folderName + "/";
+		String sFolder = Env.S_ROOT_GW_FOLDER 
+				+ saveEntry.path1 + FileUtil.separator + saveEntry.path2 + FileUtil.separator + saveEntry.path3 + FileUtil.separator;
 		File folder = new File(sFolder);
 		folder.mkdirs();
 
 		// SM的保存文件名使用出参名，这样多个Client同时保存不会出现重名覆盖问题
-		String fName = tte.getName() + "_" + now + LogUtils.GW_POSFIX;
-		fName = fName.replace(':', '_');
+		String fName = getTagTimeEntryFileName(tte, saveEntry);
 		File f = new File(folder, fName);
+		if (f.exists())
+		{
+			return;
+		}
 
 		FileWriter fw = null;
-		
+
 		// 在这里最后算一下分，否则没进具体页没有算分的机会
 		List<Integer> smrs = SMUtils.getSmDetail(tte.getRecordList());
 		tte.exInt_1 = smrs.get(1);
@@ -703,7 +606,7 @@ public class LogUtils {
 			sb.append(tte.getAlias());
 			sb.append("\r\n");
 			sb.append("unit,");
-			
+
 			// PSS和PD的单位特殊，保存的KB，曲线图上显示的MB
 			sb.append(tte.getUnit());
 			sb.append("\r\n");
@@ -733,8 +636,14 @@ public class LogUtils {
 			sb.append("score,");
 			sb.append(tte.exInt_3);
 			sb.append("\r\n");
+			sb.append("min,");
+			sb.append(tte.getMin());
 			sb.append("\r\n");
-			
+			sb.append("avg,");
+			sb.append(tte.getAve());
+			sb.append("\r\n");
+			sb.append("\r\n");
+
 			for (TimeEntry time : tempRecordList) {
 				if (sb.length() > 8192) {
 					writeNotClose(sb.toString(), f, fw);
@@ -748,56 +657,109 @@ public class LogUtils {
 			}
 			sb.append("\r\n");
 			writeNotClose(sb.toString(), f, fw);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			FileUtil.closeWriter(fw);
 		}
 	}
 
-	public static void writeTagMemData(String pkgName, String fileName){
-		if(!GTUtils.isSDCardExist())
+	public static void writeGWDesc(final GWSaveEntry saveEntry, final TagTimeEntry...ttes) {
+		String sFolder = Env.S_ROOT_GW_FOLDER
+				+ saveEntry.path1 + FileUtil.separator + saveEntry.path2 + FileUtil.separator + saveEntry.path3 + FileUtil.separator;
+		File folder = new File(sFolder);
+		folder.mkdirs();
+
+		String fName =  GW_DESC_PREFIX + saveEntry.now + GW_DESC_POSFIX;
+		File f = new File(folder, fName);
+
+		FileWriter fw = null;
+		try {
+			StringBuffer sb = new StringBuffer();
+			sb.append("gtdesc:=");
+			sb.append(saveEntry.desc);
+			sb.append("\r\n");
+			sb.append("\r\n");
+			sb.append("opfiles:=");
+			sb.append("\r\n");
+			// 本次测试提交的文件
+			boolean hasValidData = false;
+			for (TagTimeEntry tte : ttes)
+			{
+				String tteFileName = getTagTimeEntryFileName(tte, saveEntry);
+				if (!tte.hasChild() && tte.getRecordSize() > 0
+						|| tte.hasChild() && tte.getSubTagEntrys()[0].getRecordSize() > 0)
+				{
+					hasValidData = true;
+					sb.append(tteFileName);
+					sb.append("\r\n");
+				}
+			}
+			if (hasValidData)
+			{
+				fw = new FileWriter(f, true);
+				writeNotClose(sb.toString(), f, fw);
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			FileUtil.closeWriter(fw);
+		}
+	}
+
+	private static String getTagTimeEntryFileName(final TagTimeEntry tte, final GWSaveEntry saveEntry)
+	{
+		long lastDataTime = 0;
+		if (!tte.hasChild() && tte.getRecordSize() > 0)
 		{
+			ArrayList<TimeEntry> dataList = tte.getRecordList();
+			lastDataTime = dataList.get(dataList.size() -1).time;
+		}
+		else if (tte.hasChild() && tte.getSubTagEntrys()[0].getRecordSize() > 0)
+		{
+			ArrayList<TimeEntry> dataList = tte.getSubTagEntrys()[0].getRecordList();
+			lastDataTime = dataList.get(dataList.size() -1).time;
+		}
+
+		String recordTime = lastDataTime == 0 ? saveEntry.now : GTUtils.getSaveDate(lastDataTime);
+		String tteFileName = tte.getName() + "_" + recordTime + LogUtils.GW_POSFIX;
+		tteFileName = tteFileName.replace(':', '_');
+		return tteFileName;
+	}
+
+	public static void writeTagMemData(String pkgName, String fileName) {
+		if (!GTUtils.isSDCardExist()) {
 			return;
 		}
-		
+
 		int la = fileName.lastIndexOf(".");
-		if (la < 0)
-		{
+		if (la < 0) {
 			fileName = fileName + LogUtils.TLOG_POSFIX;
-		}
-		else
-		{
+		} else {
 			String temp = fileName.substring(la);
-			if (temp.contains("/") || temp.contains("\\"))
-			{
+			if (temp.contains(FileUtil.separator) || temp.contains("\\")) {
 				// "."是目录名的一部分而不是后缀名的情况
 				fileName = fileName + LogUtils.TLOG_POSFIX;
 			}
 			// else fileName = fileName
 		}
-		
+
 		File f = null;
-		if (fileName.contains("/") || fileName.contains("\\"))
-		{
+		if (fileName.contains(FileUtil.separator) || fileName.contains("\\")) {
 			f = new File(fileName);
-		}
-		else
-		{
-			String parentFolder = Env.S_ROOT_GW_MAN_FOLDER + Env.CUR_APP_NAME + "/";
+		} else {
+			String parentFolder = Env.S_ROOT_GW_MAN_FOLDER + Env.CUR_APP_NAME + FileUtil.separator;
 			File folder = new File(parentFolder);
 			folder.mkdirs();
 
 			f = new File(folder, fileName);
 		}
-		
-		if (f.exists())
-		{
+
+		if (f.exists()) {
 			f.delete();
 		}
-		
+
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(f, true);
@@ -806,7 +768,7 @@ public class LogUtils {
 		}
 
 		StringBuffer sb = null;
-		
+
 		sb = new StringBuffer();
 		sb.append(pkgName);
 		sb.append("\r\n");
@@ -836,7 +798,7 @@ public class LogUtils {
 		sb.append(",");
 		sb.append("PSS_Unknow(KB)");
 		sb.append("\r\n");
-		
+
 		for (MemInfo mem : GTMemHelperFloatview.memInfoList) {
 			if (sb.length() > 8192) {
 				writeNotClose(sb.toString(), f, fw);
@@ -876,34 +838,28 @@ public class LogUtils {
 	/**
 	 * 用于自动保存，一般writer在上层长时间不会关闭
 	 */
-	public static void writeBuff(CharSequence sb, File f, FileWriter writer)
-	{
-		if (!f.exists())
-		{
+	public static void writeBuff(CharSequence sb, File f, FileWriter writer) {
+		if (!f.exists()) {
 			return; // 放弃本次记录直接返回，等待下次保存时重新选定自动保存的日志文件
 		}
-		
+
 		try {
 			// TODO writer如果长时间不写只能等关闭GT时做writer的全close操作
 			writer.write(sb.toString());
-			if (autoSaveQuickFlush)
-			{
+			if (autoSaveQuickFlush) {
 				writer.flush(); // 不flush是8k一存
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
-	 * 不关闭输入输出流连接的写文件方式，用于保存日志快速读写的方式
-	 * 但要保证调用该方法的事务都是完成即关闭输出流。
-	 * 20140517 已查明本日以前调用该方法的地方，都是事务完成即关闭输出流的，所以不需要flush
+	 * 不关闭输入输出流连接的写文件方式，用于保存日志快速读写的方式 但要保证调用该方法的事务都是完成即关闭输出流。 20140517
+	 * 已查明本日以前调用该方法的地方，都是事务完成即关闭输出流的，所以不需要flush
 	 */
-	private static void writeNotClose(CharSequence sb, File f, FileWriter writer)
-	{
-		if(!f.exists()){
+	private static void writeNotClose(CharSequence sb, File f, FileWriter writer) {
+		if (!f.exists()) {
 			try {
 				f.getParentFile().mkdirs();
 				f.createNewFile();
@@ -916,9 +872,8 @@ public class LogUtils {
 		try {
 			// TODO writer如果长时间不写只能等关闭GT时做writer的全close操作
 			writer.write(sb.toString());
-//			writer.flush(); // 不flush是8k一存
-		}
-		catch (Exception e) {
+			// writer.flush(); // 不flush是8k一存
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

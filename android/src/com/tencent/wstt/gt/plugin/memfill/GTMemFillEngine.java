@@ -93,6 +93,7 @@ public class GTMemFillEngine implements PluginTaskExecutor {
 					{
 						listener.onFillFail("");
 					}
+					return;
 				}
 				for (GTMemFillListener listener : listeners)
 				{

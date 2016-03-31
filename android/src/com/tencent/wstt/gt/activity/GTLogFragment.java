@@ -208,7 +208,7 @@ public class GTLogFragment extends Fragment implements LogListener, OnClickListe
 		 * 保存相关控件
 		 */
 		RelativeLayout rl_save = (RelativeLayout) LayoutInflater.from(getActivity())
-				.inflate(R.layout.gt_save_editor, null, false);
+				.inflate(R.layout.gt_dailog_save, null, false);
 		ImageButton btn_cleanSavePath = (ImageButton) rl_save
 				.findViewById(R.id.save_clean);
 		btn_cleanSavePath.setOnClickListener(this);
@@ -608,6 +608,7 @@ public class GTLogFragment extends Fragment implements LogListener, OnClickListe
 
 	@Override
 	public void onLogChanged() {
+		if (getActivity() == null) return;
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

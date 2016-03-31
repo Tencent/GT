@@ -35,9 +35,10 @@ public class OutParaManager {
 	 * 注册一个输出型参数。
 	 * @param ParaName	参数名称
 	 * @param alias     参数名称简写（不能超过4个字母，便于在悬浮窗中显示，超过4个字母会被截短）
+	 * @param extras 扩展参数，如果extras[0]是boolean型，则标明该参数是否是Global类型的
 	 */
-	public void register(String ParaName, String alias){
-		GTInternal.INSTANCE.getOutParaManager().register(ParaName, alias);
+	public void register(String ParaName, String alias, Object...extras){
+		GTInternal.INSTANCE.getOutParaManager().register(ParaName, alias, extras);
 	}
 	
 	/**

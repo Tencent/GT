@@ -267,7 +267,21 @@ public class GTLogo extends Service {
 		wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
 		wmParams.format = 1;
 
-		wm.addView(entrance_view, wmParams);
+		try
+		{
+			wm.addView(entrance_view, wmParams);
+		}
+		catch (Exception e)
+		{
+			/*
+			 * 有的Android6会报permission denied for this window type问题
+			 * https://github.com/intercom/intercom-android/issues/116
+			 * 在这种系统上直接屏蔽悬浮窗
+			 */
+			stopSelf();
+			return;
+		}
+		
 
 		entrance_img.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -458,7 +472,19 @@ public class GTLogo extends Service {
 	@Override
 	public void onDestroy() {
 		refresh_logo_flag = false;
-		wm.removeView(entrance_view);
+		try
+		{
+			/*
+			 * 有的Android6会报permission denied for this window type问题
+			 * https://github.com/intercom/intercom-android/issues/116
+			 * 在这种系统上直接屏蔽悬浮窗
+			 */
+			wm.removeView(entrance_view);
+		}
+		catch (Exception e)
+		{
+			
+		}
 		super.onDestroy();
 	}
 

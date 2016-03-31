@@ -72,7 +72,7 @@ import com.tencent.wstt.gt.utils.CommonString;
 import com.tencent.wstt.gt.utils.ToastUtil;
 
 public class GTAUTFragment extends Fragment {
-
+//TOOD
 	private static String pkn_old = null; // 保留上次选中的AUT的包名名称
 	private TextView tv_AppName = null;
 	private TextView tv_selectedApp = null;
@@ -88,7 +88,7 @@ public class GTAUTFragment extends Fragment {
 	private EditText et_savePath;
 
 	private CheckBox cb_cpu;
-	private CheckBox cb_jiffes;
+	private CheckBox cb_jiffies;
 	private CheckBox cb_net;
 	private CheckBox cb_pss;
 	private CheckBox cb_pd;
@@ -164,14 +164,14 @@ public class GTAUTFragment extends Fragment {
 
 		tv_refresh.setVisibility(View.GONE);
 		cb_cpu = (CheckBox) autLayout.findViewById(R.id.cb_cpu);
-		cb_jiffes = (CheckBox) autLayout.findViewById(R.id.cb_jiffes);
+		cb_jiffies = (CheckBox) autLayout.findViewById(R.id.cb_jiffies);
 		cb_net = (CheckBox) autLayout.findViewById(R.id.cb_net);
 		cb_pss = (CheckBox) autLayout.findViewById(R.id.cb_pss);
 		cb_pd = (CheckBox) autLayout.findViewById(R.id.cb_pd);
-		cb_boxs = new CheckBox[]{cb_cpu, cb_jiffes, cb_net, cb_pss, cb_pd};
+		cb_boxs = new CheckBox[]{cb_cpu, cb_jiffies, cb_net, cb_pss, cb_pd};
 
 		cb_cpu.setOnClickListener(cb_check);
-		cb_jiffes.setOnClickListener(cb_check);
+		cb_jiffies.setOnClickListener(cb_check);
 		cb_net.setOnClickListener(cb_check);
 		cb_pss.setOnClickListener(cb_check);
 		cb_pd.setOnClickListener(cb_check);
@@ -197,7 +197,7 @@ public class GTAUTFragment extends Fragment {
 		}
 		
 		RelativeLayout rl_save = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(
-				R.layout.gt_save_editor, null, false);
+				R.layout.gt_dailog_save, container, false);
 		et_savePath = (EditText) rl_save.findViewById(R.id.save_editor);
 		
 		dlg_save = new Builder(getActivity())
@@ -510,7 +510,9 @@ public class GTAUTFragment extends Fragment {
 				tv_refresh.setVisibility(View.VISIBLE);
 				tv_refresh.setEnabled(true);
 			} else {
-				AUTManager.appstatus = getString(R.string.AUT_app_lanuch);
+				// 如果直接调Activity的getString，有时会因Fragment GTAUTFragment{41afc180} not attached to Activity而crash
+				// http://bugly.qq.com/detail?app=900010910&pid=1&ii=116#stack
+				AUTManager.appstatus = GTApp.getContext().getString(R.string.AUT_app_lanuch);
 				tv_Appstatus
 						.setBackgroundResource(R.drawable.textview_bg_shape);
 				tv_Appstatus.setTextColor(this.getResources().getColor(
@@ -702,7 +704,7 @@ public class GTAUTFragment extends Fragment {
 					hashistory(AUTManager.SEQ_CPU);
 				}
 				break;
-			case R.id.cb_jiffes:
+			case R.id.cb_jiffies:
 				if (cb_status[AUTManager.SEQ_JIF] == false) {
 					registerOutpara(AUTManager.SEQ_JIF);
 				} else {

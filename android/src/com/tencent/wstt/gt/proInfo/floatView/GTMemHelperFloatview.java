@@ -158,8 +158,20 @@ public class GTMemHelperFloatview extends BaseService implements OnTouchListener
 		wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
 		wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
 		wmParams.format = 1;
-
-		wm.addView(net_switch_view, wmParams);
+		try
+		{
+			wm.addView(net_switch_view, wmParams);
+		}
+		catch (Exception e)
+		{
+			/*
+			 * 有的Android6会报permission denied for this window type问题
+			 * https://github.com/intercom/intercom-android/issues/116
+			 * 在这种系统上直接屏蔽悬浮窗
+			 */
+			stopSelf();
+			return;
+		}
 
 		net_switch_view.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -335,7 +347,13 @@ public class GTMemHelperFloatview extends BaseService implements OnTouchListener
 
 		floatview_flag = false;
 		net_state_flag = false;
-		wm.removeView(net_switch_view);
+
+		try{
+			wm.removeView(net_switch_view);
+		}
+		catch (Exception e)
+		{
+		}
 
 		INSTANCE = null;
 	}

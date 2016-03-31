@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Notwithstanding anything to the contrary herein, any previous version
      of Tencent GT shall not be subject to the license hereunder.
      All right, title, and interest, including all intellectual property rights,
@@ -59,15 +59,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#35353b" >
-
-        <!--
-             <TextView
-            android:id="@+id/tcpdump_bottom"
-            android:layout_width="fill_parent"
-        	android:layout_height="330dp"
-        	android:background="#35353b"
-        	/>
-        -->
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -185,16 +176,17 @@
         </LinearLayout>
     </FrameLayout>
 
-    <ListView
+    <TextView
+        android:id="@+id/tcpdump_curFile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
         android:id="@+id/tcpdump_progress"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:cacheColorHint="#E6000000"
-        android:divider="#E6000000"
-        android:dividerHeight="0dp"
-        android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="false"/>
+        android:textColor="@drawable/text_green" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -208,10 +200,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:text="@string/capture_desc"
         android:textColor="@drawable/text_title_gray"
         android:textSize="14sp" />

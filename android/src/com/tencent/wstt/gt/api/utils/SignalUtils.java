@@ -29,6 +29,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
+import android.util.Log;
 
 import com.tencent.wstt.gt.GTApp;
 
@@ -118,6 +119,8 @@ public class SignalUtils {
 		private int dbm = 0; // DBM值
 		private int wifi = 0; // WIFI信号强度
 		private String phoneType = ""; // 手机制式
+		
+		private boolean isWifiRssiAvailable = true; // wifi信号检查是否可用
 
 		public GTSignalListener(Context context) {
 			teleManager = (TelephonyManager) context
@@ -239,7 +242,21 @@ public class SignalUtils {
 			}
 
 			// 获取wifi信号强度
-			wifi = wifiManager.getConnectionInfo().getRssi();
+			if (isWifiRssiAvailable)
+			{
+				try
+				{
+					wifi = wifiManager.getConnectionInfo().getRssi();
+				}
+				catch (Exception e)
+				{
+					isWifiRssiAvailable = false;
+					Log.w(this.getClass().getSimpleName(), "get Wi-Fi rssi unavailable.");
+				}
+				
+			}
+			
+			
 		}
 
 		/**

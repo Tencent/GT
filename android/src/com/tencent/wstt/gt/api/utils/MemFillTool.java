@@ -33,6 +33,7 @@ public class MemFillTool {
 
 	public static MemFillTool getInstance() {
 		if (instance == null) {
+			System.loadLibrary("mem_fill_tool");
 			instance = new MemFillTool();
 		}
 		return instance;

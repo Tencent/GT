@@ -23,16 +23,15 @@
  */
 package com.tencent.wstt.gt.activity;
 
-import android.content.Context;
-import android.content.Intent;
-
 import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.api.utils.ProcessUtils;
 import com.tencent.wstt.gt.dao.GTPref;
 import com.tencent.wstt.gt.service.GTFloatView;
 import com.tencent.wstt.gt.service.GTLogo;
 import com.tencent.wstt.gt.service.GTService;
-import com.tencent.wstt.gt.utils.RootUtil;
+
+import android.content.Context;
+import android.content.Intent;
 /**
  * 开启关闭BH的入口
  */
@@ -71,7 +70,14 @@ public class GTEntrance {
 			Intent FVintent = new Intent(context, GTFloatView.class);
 			context.stopService(FVintent);
 		}
-		ProcessUtils.killprocess(context.getPackageName());
+		try
+		{
+			ProcessUtils.killprocess(context.getPackageName(), 9);
+		}
+		catch (Exception e)
+		{
+			
+		}
 		System.exit(0);
 	}
 }

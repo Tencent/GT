@@ -27,6 +27,7 @@ import java.io.File;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +66,7 @@ public class GTGPSActivity extends GTBaseActivity implements
 	private static int mMockGpsProviderIndex = 0;
 
 	public static final int RES_GPSREPALY_ACTIVITY = 200;
+	public Context myself = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -292,6 +295,8 @@ public class GTGPSActivity extends GTBaseActivity implements
 						GTGPSReplayEngine.getInstance().selectedItem);
 				intent.putExtra("gpspercent", GTGPSReplayEngine.getInstance()
 						.getPercentage());
+				intent.putExtra("relpayspeed", GTGPSReplayEngine.getInstance()
+						.getReplaySpeed());
 
 				intent.setClass(GTGPSActivity.this, GTGPSReplayActivity.class);
 				startActivityForResult(intent, RES_GPSREPALY_ACTIVITY);
@@ -318,22 +323,49 @@ public class GTGPSActivity extends GTBaseActivity implements
 		// 弹出对话框，询问是否删除
 		if (f.exists()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(getString(R.string.delete_tip));
-			builder.setItems(new String[] { getString(R.string.delete) },
+			builder.setTitle(getString(R.string.operate_tip));
+			builder.setItems(new String[] { getString(R.string.delete), getString(R.string.rename) },
 					new DialogInterface.OnClickListener() {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							f.delete();
-							if (position == GTGPSReplayEngine.getInstance().selectedItemPos) {
-								GTGPSReplayEngine.getInstance().selectedItemPos = -1;
-							} else if (position < GTGPSReplayEngine
-									.getInstance().selectedItemPos) {
-								// 上面的有删除，则记录的已选中Item顺延上移1位
-								GTGPSReplayEngine.getInstance().selectedItemPos = GTGPSReplayEngine
-										.getInstance().selectedItemPos - 1;
+							switch (which)
+							{
+							case 0:
+							{
+								f.delete();
+								if (position == GTGPSReplayEngine.getInstance().selectedItemPos) {
+									GTGPSReplayEngine.getInstance().selectedItemPos = -1;
+								} else if (position < GTGPSReplayEngine
+										.getInstance().selectedItemPos) {
+									// 上面的有删除，则记录的已选中Item顺延上移1位
+									GTGPSReplayEngine.getInstance().selectedItemPos = GTGPSReplayEngine
+											.getInstance().selectedItemPos - 1;
+								}
+								handler.sendEmptyMessage(0);
+							}break;
+							case 1:
+							{
+								final EditText rename = new EditText(getApplicationContext());
+								new AlertDialog.Builder(myself)
+							 	.setTitle(getString(R.string.please_enter))
+							 	.setIcon(android.R.drawable.ic_dialog_info)
+							 	.setView(rename)
+							 	.setPositiveButton( getString(R.string.ok) , 							 			
+							 			new DialogInterface.OnClickListener() {
+							 		@Override
+									public void onClick(DialogInterface dialog, int which) {
+							 		f.renameTo(new File(Env.ROOT_GPS_FOLDER, rename.getText().toString()+".gps"));
+							 		handler.sendEmptyMessage(0);
+							 	}
+							 	})							 
+							 	.show();
+							}break;
+
+							default:
+								break;
 							}
-							handler.sendEmptyMessage(0);
+							
 						}
 					});
 			builder.show();
@@ -353,6 +385,7 @@ public class GTGPSActivity extends GTBaseActivity implements
 			Intent intent = new Intent();
 			intent.putExtra("seq",	GTGPSReplayEngine.getInstance().selectedItemPos);
 			intent.putExtra("progress", data.getIntExtra("progress", 0));
+			intent.putExtra("replayspeed", data.getIntExtra("replayspeed", 0));
 			PluginManager.getInstance().getPluginControler().startService(GTGPSReplayEngine.getInstance(), intent);
 		
 			Toast.makeText(getApplicationContext(),	"has GPS replayed on： " + data.getIntExtra("progress", 0) + "%",Toast.LENGTH_SHORT).show();

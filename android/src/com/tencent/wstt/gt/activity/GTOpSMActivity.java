@@ -28,9 +28,11 @@ import java.util.LinkedList;
 
 import com.tencent.wstt.gt.OutPara;
 import com.tencent.wstt.gt.R;
+import com.tencent.wstt.gt.api.utils.Env;
 import com.tencent.wstt.gt.api.utils.NetUtils;
 import com.tencent.wstt.gt.api.utils.SMUtils;
 import com.tencent.wstt.gt.log.GTGWInternal;
+import com.tencent.wstt.gt.log.GWSaveEntry;
 import com.tencent.wstt.gt.log.LogUtils;
 import com.tencent.wstt.gt.manager.ClientManager;
 import com.tencent.wstt.gt.manager.OpPerfBridge;
@@ -68,17 +70,23 @@ public class GTOpSMActivity extends GTBaseActivity {
 	private OutPara op; // 如果未开启收集历史信息，就好保存对应的出参变量，以便刷值
 
 	private ImageButton btn_back;
-	private ImageButton btn_save;
+//	private ImageButton btn_save;
 	private ImageButton btn_delete;
-	private EditText et_savePath;
+	private EditText et_savePath1;
+	private EditText et_savePath2;
+	private EditText et_savePath3;
+	private EditText et_saveTestDesc;
 	private AlertDialog dlg_save;
 
 	private TextView tvTitle;
 	private TextView tvValue;
 	private TextView tvTimes;
 	private TextView tvMin;
-	private TextView tvMax;
+//	private TextView tvMax;
 	private TextView tvAve;
+	private TextView tvScore;
+	private TextView tvGood;
+	private TextView tvBad;
 	private TextView tvWarningCnt;
 	private TextView tvWaringArea;
 
@@ -102,7 +110,7 @@ public class GTOpSMActivity extends GTBaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.gt_perf_op_detail);
+		setContentView(R.layout.gt_perf_op_detail_sm);
 		
 		Intent intent = this.getIntent();
 		
@@ -151,20 +159,20 @@ public class GTOpSMActivity extends GTBaseActivity {
 			}
 		});
 		
-		btn_save = (ImageButton)findViewById(R.id.perf_detail_save);
-		btn_save.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				String lastSaveLog = GTGWInternal.getLastSaveFolder();
-				if (lastSaveLog != null && lastSaveLog.contains(".")
-						&& lastSaveLog.endsWith(LogUtils.TLOG_POSFIX))
-				{
-					lastSaveLog = lastSaveLog.substring(0, lastSaveLog.lastIndexOf("."));
-				}
-				et_savePath.setText(lastSaveLog.trim());
-				dlg_save.show();
-			}
-		});
+//		btn_save = (ImageButton)findViewById(R.id.perf_detail_save);
+//		btn_save.setOnClickListener(new OnClickListener() {
+//
+//			public void onClick(View v) {
+//				String lastSaveLog = GTGWInternal.getLastSaveFolder();
+//				if (lastSaveLog != null && lastSaveLog.contains(".")
+//						&& lastSaveLog.endsWith(LogUtils.TLOG_POSFIX))
+//				{
+//					lastSaveLog = lastSaveLog.substring(0, lastSaveLog.lastIndexOf("."));
+//				}
+//				et_savePath3.setText(lastSaveLog.trim());
+//				dlg_save.show();
+//			}
+//		});
 		
 		btn_delete = (ImageButton)findViewById(R.id.perf_detail_delete);
 		btn_delete.setOnClickListener(showDeleteDlg);
@@ -254,27 +262,33 @@ public class GTOpSMActivity extends GTBaseActivity {
 		}
 
 		RelativeLayout rl_save = (RelativeLayout) LayoutInflater.from(this).inflate(
-				R.layout.gt_save_editor, null, false);
+				R.layout.gt_dailog_save_gw, null, false);
 		ImageButton btn_cleanSavePath = (ImageButton) rl_save.findViewById(R.id.save_clean);
 		btn_cleanSavePath.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				et_savePath.setText("");
+				et_savePath3.setText("");
 			}
 		});
 		
-		et_savePath = (EditText) rl_save.findViewById(R.id.save_editor);
+		et_savePath1 = (EditText) rl_save.findViewById(R.id.save_editor_folder_parent1);
+		et_savePath2 = (EditText) rl_save.findViewById(R.id.save_editor_folder_parent2);
+		et_savePath3 = (EditText) rl_save.findViewById(R.id.save_editor);
+		et_saveTestDesc = (EditText) rl_save.findViewById(R.id.save_editor_desc);
+
 		String lastSaveLog = GTGWInternal.getLastSaveFolder();
 		if (lastSaveLog != null && lastSaveLog.contains(".")
 				&& lastSaveLog.endsWith(LogUtils.TLOG_POSFIX))
 		{
 			lastSaveLog = lastSaveLog.substring(0, lastSaveLog.lastIndexOf("."));
 		}
-		et_savePath.setText(lastSaveLog);
+		et_savePath3.setText(lastSaveLog);
+		et_savePath1.setText(Env.CUR_APP_NAME);
+		et_savePath2.setText(Env.CUR_APP_VER);
 
 		dlg_save = new Builder(this)
-		.setTitle(getString(R.string.save_folder))
+		.setTitle(getString(R.string.save))
 		.setView(rl_save)
 		.setPositiveButton(getString(R.string.cancel),
 				new DialogInterface.OnClickListener() {
@@ -289,15 +303,34 @@ public class GTOpSMActivity extends GTBaseActivity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				String path = et_savePath.getText().toString().trim();
-				if (!StringUtil.isLetter(path))
+				String path1 = et_savePath1.getText().toString().trim();
+				if (!StringUtil.isLetter(path1))
 				{
 					ToastUtil.ShowShortToast(
 							GTOpSMActivity.this, getString(R.string.save_folder_valid));
 					return;
 				}
-				
-				GTGWInternal.saveGWDataForSM(path, dataSet);
+
+				String path2 = et_savePath2.getText().toString().trim();
+				if (!StringUtil.isLetter(path2))
+				{
+					ToastUtil.ShowShortToast(
+							GTOpSMActivity.this, getString(R.string.save_folder_valid));
+					return;
+				}
+
+				String path3 = et_savePath3.getText().toString().trim();
+				if (!StringUtil.isLetter(path3))
+				{
+					ToastUtil.ShowShortToast(
+							GTOpSMActivity.this, getString(R.string.save_folder_valid));
+					return;
+				}
+
+				String testDesc = et_saveTestDesc.getText().toString().trim();
+
+				GWSaveEntry saveEntry = new GWSaveEntry(path1, path2, path3, testDesc);
+				GTGWInternal.saveGWDataForSM(saveEntry, dataSet);
 				dialog.dismiss();
 			}
 		}).create();
@@ -305,16 +338,13 @@ public class GTOpSMActivity extends GTBaseActivity {
 		tvValue = (TextView) findViewById(R.id.op_perf_detail_value);
 		tvTimes = (TextView) findViewById(R.id.bh_perf_detail_times);
 		tvMin = (TextView) findViewById(R.id.bh_perf_detail_min);
-		tvMax = (TextView) findViewById(R.id.bh_perf_detail_max);
+//		tvMax = (TextView) findViewById(R.id.bh_perf_detail_max);
 		tvAve = (TextView) findViewById(R.id.bh_perf_detail_ave);
+		tvScore = (TextView) findViewById(R.id.bh_perf_detail_score);
+		tvGood = (TextView) findViewById(R.id.bh_perf_detail_good);
+		tvBad = (TextView) findViewById(R.id.bh_perf_detail_bad);
 		tvWarningCnt = (TextView) findViewById(R.id.bh_perf_detail_warning_cnt);
 
-		((TextView)findViewById(R.id.bh_perf_detail_ave_toast)).setText("整体分:");
-		((TextView)findViewById(R.id.bh_perf_detail_min_toast)).setText("卡顿:");
-		((TextView)findViewById(R.id.bh_perf_detail_max_toast)).setText("流畅:");
-
-
-		
 		if (op == null)
 		{
 			tvValue.setText(dataSet.getLastValue());
@@ -345,14 +375,13 @@ public class GTOpSMActivity extends GTBaseActivity {
 		
 		tvTimes.setText(anchorEntry.getRecordSizeText());
 
-//		tvMin.setText(anchorEntry.getMin());
-		tvMin.setText(smrs.get(1).toString());
-
+		tvMin.setText(anchorEntry.getMin());
 //		tvMax.setText(anchorEntry.getMax());
-		tvMax.setText(smrs.get(3).toString());
+		tvAve.setText(anchorEntry.getAve());
 
-//		tvAve.setText(anchorEntry.getAve());
-		tvAve.setText(smrs.get(5).toString());
+		tvScore.setText(smrs.get(5).toString());
+		tvGood.setText(smrs.get(3).toString());
+		tvBad.setText(smrs.get(1).toString());
 		
 		tvWarningCnt.setText(Integer.toString(
 				anchorEntry.getThresholdEntry().getUpperWariningCount()
@@ -426,10 +455,13 @@ public class GTOpSMActivity extends GTBaseActivity {
 //			dataSet.exInt_1 = smrs.get(1);
 //			dataSet.exInt_2 = smrs.get(3);
 //			dataSet.exInt_3 = smrs.get(5);
-//			
-//			tvMin.setText(smrs.get(1).toString());
-//			tvMax.setText(smrs.get(3).toString());
-//			tvAve.setText(smrs.get(5).toString());
+			
+//			tvScore.setText(smrs.get(5).toString());
+//			tvGood.setText(smrs.get(3).toString());
+//			tvBad.setText(smrs.get(1).toString());
+
+			tvAve.setText(anchorEntry.getAve());
+			tvMin.setText(anchorEntry.getMin());
 
 			tvWarningCnt.setText(Integer.toString(
 					anchorEntry.getThresholdEntry().getUpperWariningCount()
@@ -487,8 +519,11 @@ public class GTOpSMActivity extends GTBaseActivity {
 							dataSet.clear();
 							tvTimes.setText("");
 							tvMin.setText("");
-							tvMax.setText("");
+//							tvMax.setText("");
 							tvAve.setText("");
+							tvScore.setText("");
+							tvGood.setText("");
+							tvBad.setText("");
 							tvWarningCnt.setText("");
 							tvValue.setText("");
 

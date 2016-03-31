@@ -48,8 +48,10 @@ import android.widget.TextView;
 
 import com.tencent.wstt.gt.OutPara;
 import com.tencent.wstt.gt.R;
+import com.tencent.wstt.gt.api.utils.Env;
 import com.tencent.wstt.gt.api.utils.NetUtils;
 import com.tencent.wstt.gt.log.GTGWInternal;
+import com.tencent.wstt.gt.log.GWSaveEntry;
 import com.tencent.wstt.gt.log.LogUtils;
 import com.tencent.wstt.gt.manager.ClientManager;
 import com.tencent.wstt.gt.manager.OpPerfBridge;
@@ -69,9 +71,12 @@ public class GTOpSinglePerfActivity extends GTBaseActivity {
 	private OutPara op; // 如果未开启收集历史信息，就好保存对应的出参变量，以便刷值
 
 	private ImageButton btn_back;
-	private ImageButton btn_save;
+//	private ImageButton btn_save;
 	private ImageButton btn_delete;
-	private EditText et_savePath;
+	private EditText et_savePath1;
+	private EditText et_savePath2;
+	private EditText et_savePath3;
+	private EditText et_saveTestDesc;
 	private AlertDialog dlg_save;
 
 	private TextView tvTitle;
@@ -153,20 +158,20 @@ public class GTOpSinglePerfActivity extends GTBaseActivity {
 			}
 		});
 		
-		btn_save = (ImageButton)findViewById(R.id.perf_detail_save);
-		btn_save.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				String lastSaveLog = GTGWInternal.getLastSaveFolder();
-				if (lastSaveLog != null && lastSaveLog.contains(".")
-						&& lastSaveLog.endsWith(LogUtils.TLOG_POSFIX))
-				{
-					lastSaveLog = lastSaveLog.substring(0, lastSaveLog.lastIndexOf("."));
-				}
-				et_savePath.setText(lastSaveLog.trim());
-				dlg_save.show();
-			}
-		});
+//		btn_save = (ImageButton)findViewById(R.id.perf_detail_save);
+//		btn_save.setOnClickListener(new OnClickListener() {
+//
+//			public void onClick(View v) {
+//				String lastSaveLog = GTGWInternal.getLastSaveFolder();
+//				if (lastSaveLog != null && lastSaveLog.contains(".")
+//						&& lastSaveLog.endsWith(LogUtils.TLOG_POSFIX))
+//				{
+//					lastSaveLog = lastSaveLog.substring(0, lastSaveLog.lastIndexOf("."));
+//				}
+//				et_savePath3.setText(lastSaveLog.trim());
+//				dlg_save.show();
+//			}
+//		});
 		
 		btn_delete = (ImageButton)findViewById(R.id.perf_detail_delete);
 		btn_delete.setOnClickListener(showDeleteDlg);
@@ -256,27 +261,34 @@ public class GTOpSinglePerfActivity extends GTBaseActivity {
 		}
 
 		RelativeLayout rl_save = (RelativeLayout) LayoutInflater.from(this).inflate(
-				R.layout.gt_save_editor, null, false);
+				R.layout.gt_dailog_save_gw, null, false);
 		ImageButton btn_cleanSavePath = (ImageButton) rl_save.findViewById(R.id.save_clean);
 		btn_cleanSavePath.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				et_savePath.setText("");
+				et_savePath3.setText("");
 			}
 		});
 		
-		et_savePath = (EditText) rl_save.findViewById(R.id.save_editor);
+		et_savePath3 = (EditText) rl_save.findViewById(R.id.save_editor);
 		String lastSaveLog = GTGWInternal.getLastSaveFolder();
 		if (lastSaveLog != null && lastSaveLog.contains(".")
 				&& lastSaveLog.endsWith(LogUtils.TLOG_POSFIX))
 		{
 			lastSaveLog = lastSaveLog.substring(0, lastSaveLog.lastIndexOf("."));
 		}
-		et_savePath.setText(lastSaveLog);
+		et_savePath3.setText(lastSaveLog);
 
+		et_savePath1 = (EditText) rl_save.findViewById(R.id.save_editor_folder_parent1);
+		et_savePath1.setText(Env.CUR_APP_NAME);
+		et_savePath2 = (EditText) rl_save.findViewById(R.id.save_editor_folder_parent2);
+		et_savePath2.setText(Env.CUR_APP_VER);
+
+		et_saveTestDesc = (EditText) rl_save.findViewById(R.id.save_editor_desc);
+		
 		dlg_save = new Builder(this)
-		.setTitle(getString(R.string.save_folder))
+		.setTitle(getString(R.string.save))
 		.setView(rl_save)
 		.setPositiveButton(getString(R.string.cancel),
 				new DialogInterface.OnClickListener() {
@@ -291,15 +303,34 @@ public class GTOpSinglePerfActivity extends GTBaseActivity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				String path = et_savePath.getText().toString().trim();
-				if (!StringUtil.isLetter(path))
+				String path1 = et_savePath1.getText().toString().trim();
+				if (!StringUtil.isLetter(path1))
 				{
 					ToastUtil.ShowShortToast(
 							GTOpSinglePerfActivity.this, getString(R.string.save_folder_valid));
 					return;
 				}
-				
-				GTGWInternal.saveGWData(path, dataSet);
+
+				String path2 = et_savePath2.getText().toString().trim();
+				if (!StringUtil.isLetter(path1))
+				{
+					ToastUtil.ShowShortToast(
+							GTOpSinglePerfActivity.this, getString(R.string.save_folder_valid));
+					return;
+				}
+
+				String path3 = et_savePath3.getText().toString().trim();
+				if (!StringUtil.isLetter(path3))
+				{
+					ToastUtil.ShowShortToast(
+							GTOpSinglePerfActivity.this, getString(R.string.save_folder_valid));
+					return;
+				}
+
+				String testDesc = et_saveTestDesc.getText().toString().trim();
+
+				GWSaveEntry saveEntry = new GWSaveEntry(path1, path2, path3, testDesc);
+				GTGWInternal.saveGWData(saveEntry, dataSet);
 				dialog.dismiss();
 			}
 		}).create();

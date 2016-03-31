@@ -60,8 +60,14 @@ public class GTMemFillActivity extends GTBaseActivity implements GTMemFillListen
 				if(GTMemFillEngine.getInstance().isFilled()){
 					GTMemFillEngine.getInstance().free();
 				}else{
-					fillNum  = Integer.parseInt(et_Num.getText().toString());
-					GTMemFillEngine.getInstance().fill(fillNum);
+					try {
+						fillNum  = Integer.parseInt(et_Num.getText().toString());
+						GTMemFillEngine.getInstance().fill(fillNum);
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 		});

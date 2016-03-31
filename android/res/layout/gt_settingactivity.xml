@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Notwithstanding anything to the contrary herein, any previous version
      of Tencent GT shall not be subject to the license hereunder.
      All right, title, and interest, including all intellectual property rights,
@@ -19,11 +19,10 @@
      specific language governing permissions and limitations under the License.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/android"
     android:id="@+id/setting_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -49,22 +48,26 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_below="@+id/tested_app_desc" >
+                
+                <RelativeLayout                    
+                	android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="25dp">
 
                 <TextView
                     android:id="@+id/selected_app_bg"
                     android:layout_width="fill_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_height="fill_parent"
                     android:background="@drawable/seekbar_border" />
 
                 <TextView
                     android:id="@+id/app_pic"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="8dp"
                     android:background="@drawable/pi_procinfo"
+                    android:layout_centerVertical="true"
                     android:gravity="left" />
 
                 <TextView
@@ -72,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="5dp"
                     android:layout_toRightOf="@+id/app_pic"
                     android:gravity="center"
                     android:singleLine="true"
@@ -84,6 +87,7 @@
                     android:id="@+id/select_tested_pkn"
                     android:layout_width="wrap_content"
                     android:layout_height="15dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_alignBottom="@+id/app_pic"
                     android:layout_alignLeft="@+id/selected_apn"
                     android:gravity="top"
@@ -105,11 +109,12 @@
                     android:id="@+id/select_app_icon"
                     android:layout_width="20dip"
                     android:layout_height="20dip"
-                    android:layout_above="@+id/select_tested_pkn"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/a_expand_r"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/a_expand_r_big"
+                    android:layout_centerInParent="true"
                     android:gravity="right" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <TextView
@@ -235,12 +240,12 @@
                 android:textSize="13sp" />
 
             <CheckBox
-                android:id="@+id/cb_jiffes"
+                android:id="@+id/cb_jiffies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="75dp"
                 android:checked="false"
-                android:text="@string/Jiffes"
+                android:text="@string/jiffies"
                 android:textSize="13sp" />
         </LinearLayout>
 

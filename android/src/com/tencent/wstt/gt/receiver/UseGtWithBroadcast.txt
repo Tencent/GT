@@ -2,7 +2,7 @@
 命令样例：
 先启动GT:adb shell am start -W -n com.tencent.wstt.gt/com.tencent.wstt.gt.activity.GTMainActivity
 
-adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.startTest --es pkgName "com.tencent.map"        使gt可以接收该应用的性能信息 ；pkgName注意是包名
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.startTest --es pkgName "com.tencent.map"  --es verName "6.0.1"       使gt可以采集该应用的性能信息；pkgName是包名；verName是版本号（可选参数）
 如果只测FPS和SM，可以这样空参数：
 adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.startTest
 
@@ -43,13 +43,12 @@ adb shell am broadcast -a com.tencent.wstt.gt.plugin.sm.startTest --es procName 
 adb shell am broadcast -a com.tencent.wstt.gt.plugin.sm.endTest        对应UI上的“停止测试”
 
 结束采集并保存，同时删除数据记录：
-adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.endTest --es saveFolderName "%s_%s"       "%s_%s" 为保存目录的名称，此目录会保存在/sdcard/GT/GW/default/下，如果目录名不做为参数传入，默认的目录名是上一次保存的目录，如果没有上一次，则默认的目录名是GW_DATA。每次保存后，GT会把缓存的本次测试数据清空。
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.endTest --es saveFolderName "普通导航测试"  --es desc "腾讯地图_6.0.1_普通导航_1"       saveFolderName为保存目录的名称，最长可以自定义三级目录，以"/"分割，此三级目录会保存在/sdcard/GT/GW/下，每次保存后，GT会把缓存的本次测试数据清空。
 
 关闭GT：
 adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.exitGT
 
-注意1：FPS第一次会申请Root权限，默认情况需要手动点一下，所以建议用TowerRoot或CM自带的可以取消弹框的Root工具取消弹框
-注意2：流畅度第一次开始测试需要Root权限，默认情况需要手动点一下。
+注意：FPS和流畅度采集第一次会申请Root权限，可能需要手动点一下。
 
 ====广播驱动耗电测试（对应耗电测试插件）====
 adb shell am broadcast -a com.tencent.wstt.gt.plugin.battery.startTest --ei refreshRate 250 --ei brightness 100 --ez I true --ez U true --ez T true --ez P true
@@ -66,6 +65,8 @@ adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.startReplay --es filena
 
 或者还可以直接回放单点坐标：
 adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.startReplay --es lng 116.15353149 --es lat 39.72413462
+完整参数(经度lng,维度lat,精度acc,方位bear,速度spd,海拔alt)：
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.startReplay --es lng 116.15353149 --es lat 39.72413462 --es acc 150.0 --es bear 77.3 --es spd 13.5 --es alt 60.70
 
 adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.endReplay        停止模拟位置的回放
 

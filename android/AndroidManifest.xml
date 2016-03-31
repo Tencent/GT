@@ -4,21 +4,19 @@
     coreApp="true"
     package="com.tencent.wstt.gt"
     android:installLocation="auto"
-    android:versionCode="22041"
-    android:versionName="2.2.4.1" >
+    android:versionCode="22062"
+    android:versionName="2.2.6.3" >
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="22" />
+        android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,34 +30,20 @@
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="com.google.android.googleapps.permission.GOOGLE_AUTH" />
-    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIMAX_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIMAX_STATE" />
     <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
     <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.SET_KEYBOARD_LAYOUT" />
     <uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
     <uses-permission android:name="android.permission.READ_OWNER_DATA" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission
         android:name="android.permission.ACCESS_CHECKIN_PROPERTIES"
         tools:ignore="ProtectedPermissions" />
@@ -69,8 +53,6 @@
     <uses-permission
         android:name="android.permission.ACCESS_SURFACE_FLINGER"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <supports-screens
         android:anyDensity="true"
@@ -140,17 +122,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/translucent" />
         <activity
-            android:name="com.tencent.wstt.gt.activity.GTSuggestActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent" />
-        <activity
             android:name="com.tencent.wstt.gt.activity.GTLogSwitchActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent" />
-        <activity
-            android:name="com.tencent.wstt.gt.activity.GTUploadMsgSwitchActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/translucent" />
@@ -185,22 +157,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/translucent" />
         <activity
-            android:name="com.tencent.wstt.gt.plugin.netswitch.GTNetSwitchActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent" />
-        <activity
             android:name="com.tencent.wstt.gt.plugin.memfill.GTMemFillActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent" />
-        <activity
-            android:name="com.tencent.wstt.gt.plugin.catlog.SettingsActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent" />
-        <activity
-            android:name="com.tencent.wstt.gt.plugin.cpufreq.GTCpuFreqManagerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/translucent" />
@@ -221,6 +178,11 @@
             android:theme="@style/translucent" />
         <activity
             android:name="com.tencent.wstt.gt.plugin.smtools.SMActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name="com.tencent.wstt.gt.plugin.octopus.GTOctopusActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/translucent" />

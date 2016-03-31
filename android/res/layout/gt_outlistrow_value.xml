@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Notwithstanding anything to the contrary herein, any previous version
      of Tencent GT shall not be subject to the license hereunder.
      All right, title, and interest, including all intellectual property rights,
@@ -62,13 +62,13 @@
         <TextView
             android:id="@+id/data_flag"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/cb_tick"
             android:layout_marginRight="4dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/textview_his_shape"
-            android:gravity="left"
+            android:gravity="center"
             android:layout_gravity="center_vertical"
             android:text="@string/sss1"
             android:paddingLeft="2dp"

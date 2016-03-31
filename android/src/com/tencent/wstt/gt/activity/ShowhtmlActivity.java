@@ -1,4 +1,3 @@
-
 /*
  * Tencent is pleased to support the open source community by making
  * Tencent GT (Version 2.4 and subsequent versions) available.
@@ -31,10 +30,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.R;
 import com.tencent.wstt.gt.api.utils.Env;
+import com.tencent.wstt.gt.plugin.octopus.GTOctopusActivity;
+import com.tencent.wstt.gt.utils.ToastUtil;
 
 public class ShowhtmlActivity extends GTBaseActivity
 {
@@ -51,6 +56,8 @@ public class ShowhtmlActivity extends GTBaseActivity
 		{
 			uri = action;
 		}
+
+		String cookies = intent.getStringExtra("cookies");
 
 		webview = (WebView) findViewById(R.id.showhtml);
 		if (Build.VERSION.SDK_INT >= 11)
@@ -72,13 +79,40 @@ public class ShowhtmlActivity extends GTBaseActivity
 			}
 		}
 
+		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+		webview.getSettings().setSupportZoom(true);
+		webview.getSettings().setBuiltInZoomControls(true);
+		webview.getSettings().setAllowFileAccess(true);
+		webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+		webview.getSettings().setAppCacheEnabled(true);
+		webview.getSettings().setDomStorageEnabled(true);
+		webview.getSettings().setDatabaseEnabled(true);
+
+		if (cookies != null)
+		{
+			CookieSyncManager.createInstance(this);
+			CookieManager cookieManager = CookieManager.getInstance();
+//			String oldCookie = cookieManager.getCookie(uri);
+//			ToastUtil.ShowLongToast(this, oldCookie);
+			cookieManager.setAcceptCookie(true);
+			cookieManager.removeSessionCookie();// 移除
+			
+			String[] cookieArray = cookies.split(";");
+			for (String cookie : cookieArray)
+			{
+				if (!cookie.trim().isEmpty())
+				{
+					cookieManager.setCookie(uri, cookie);//cookies是在HttpClient中获得的cookie
+				}
+			}
+			CookieSyncManager.getInstance().sync();
+		}
+
 		try {
 			webview.loadUrl(uri);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-		webview.getSettings().setSupportZoom(true);
-		webview.getSettings().setBuiltInZoomControls(true);
+
 	}
 }

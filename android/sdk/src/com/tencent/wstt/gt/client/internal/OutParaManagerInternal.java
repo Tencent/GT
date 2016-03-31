@@ -44,7 +44,7 @@ public class OutParaManagerInternal {
 		return userInterface;
 	}
 	
-	public void register(String ParaName, String alias){
+	public void register(String ParaName, String alias, Object...extras){
 		if(null == ParaName || null == alias){
 			return;
 		}
@@ -57,6 +57,15 @@ public class OutParaManagerInternal {
 		Para.setAlias(alias);
 		Para.setRegistering(true);
 		Para.setDisplayProperty(OutPara.DISPLAY_NORMAL);
+		if (null != extras && extras.length > 0)
+		{
+			if (extras[0] instanceof Boolean)
+			{
+				boolean isGlobal = Boolean.TRUE.equals(extras[0]);
+				Para.setGlobal(isGlobal);
+			}
+		}
+
 		temp.add(Para);
 	}
 	

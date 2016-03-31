@@ -64,7 +64,7 @@ public class SplashHandler extends Handler {
 		}
 
 		switch (msg.what) {
-		case MSG_START_CONNECT_GT: {			
+		case MSG_START_CONNECT_GT: {
 			// 连接GT Service,拉起GT
 			Intent bhIntent = (Intent) msg.obj;
 			context.bindService(bhIntent, GTInternal.INSTANCE.gtServiceConnection,

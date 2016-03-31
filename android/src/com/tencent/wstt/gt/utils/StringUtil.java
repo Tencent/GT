@@ -102,7 +102,7 @@ public class StringUtil {
 		
 		for (int i = s.length(); --i >= numStartPos;) {
 			int chr = s.charAt(i);
-			if (chr < 48 || chr > 57)
+			if ((chr < 48 || chr > 57) && chr != '.')
 				return false;
 		}
 		return true;

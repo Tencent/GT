@@ -29,54 +29,62 @@ import com.tencent.wstt.gt.ui.model.TagTimeEntry;
 import com.tencent.wstt.gt.utils.GTUtils;
 
 public class GTGWInternal {
-	private static String lastSaveFolder = "GW_DATA";
+	private static String lastSaveFolder = "";
 
-	public static void saveGWDataForSM(String logFolderName,
+	public static void saveGWDataForSM(GWSaveEntry saveEntry,
 			TagTimeEntry tagTimeEntry) {
-		setLastSaveFolder(logFolderName);
+		setLastSaveFolder(saveEntry.path3);
 		String now = GTUtils.getSaveDate();
-		LogUtils.writeGWDataForSM(tagTimeEntry, logFolderName, now);
+		saveEntry.setNow(now);
+		LogUtils.writeGWDataForSM(saveEntry, tagTimeEntry);
+		LogUtils.writeGWDesc(saveEntry, tagTimeEntry);
 	}
 
-	public static void saveGWData(String logFolderName,
+	public static void saveGWData(GWSaveEntry saveEntry,
 			TagTimeEntry tagTimeEntry) {
-		setLastSaveFolder(logFolderName);
+		setLastSaveFolder(saveEntry.path3);
 		String now = GTUtils.getSaveDate();
-		LogUtils.writeGWData(tagTimeEntry, logFolderName, now);
+		saveEntry.setNow(now);
+		LogUtils.writeGWData(saveEntry, tagTimeEntry);
+		LogUtils.writeGWDesc(saveEntry, tagTimeEntry);
 	}
 	
-	public static void saveAllGWData(String logFolderName) {
-		setLastSaveFolder(logFolderName);
+	public static void saveAllGWData(GWSaveEntry saveEntry) {
+		setLastSaveFolder(saveEntry.path3);
 		String now = GTUtils.getSaveDate();
+		saveEntry.setNow(now);
 		TagTimeEntry[] ttes = OpPerfBridge.getAllProfilerData();
 		for (TagTimeEntry tte : ttes)
 		{
 			if (null != tte && tte.getAlias().equals("SM"))
 			{
-				LogUtils.writeGWDataForSM(tte, logFolderName, now);
+				LogUtils.writeGWDataForSM(saveEntry, tte);
 			}
 			else
 			{
-				LogUtils.writeGWData(tte, logFolderName, now);
+				LogUtils.writeGWData(saveEntry, tte);
 			}
 		}
+		LogUtils.writeGWDesc(saveEntry, ttes);
 	}
 
-	public static void saveAllEnableGWData(String logFolderName) {
-		setLastSaveFolder(logFolderName);
+	public static void saveAllEnableGWData(GWSaveEntry saveEntry) {
+		setLastSaveFolder(saveEntry.path3);
 		String now = GTUtils.getSaveDate();
+		saveEntry.setNow(now);
 		TagTimeEntry[] ttes = OpPerfBridge.getAllEnableProfilerData();
 		for (TagTimeEntry tte : ttes)
 		{
 			if (null != tte && tte.getAlias().equals("SM"))
 			{
-				LogUtils.writeGWDataForSM(tte, logFolderName, now);
+				LogUtils.writeGWDataForSM(saveEntry, tte);
 			}
 			else
 			{
-				LogUtils.writeGWData(tte, logFolderName, now);
+				LogUtils.writeGWData(saveEntry, tte);
 			}
 		}
+		LogUtils.writeGWDesc(saveEntry, ttes);
 	}
 	
 	public static void clearAllGWData()

@@ -120,13 +120,13 @@ public class GTParamTopFragment extends Fragment implements OnClickListener {
 			if (isEdit)
 			{
 				btnEdit.setBackgroundResource(R.drawable.edit_selected);
-				btnEdit.setTextColor(getResources().getColor(R.drawable.swbtn_select_textcolor));
+				btnEdit.setTextColor(getResources().getColor(R.color.swbtn_select_textcolor));
 				btnEdit.setText(getString(R.string.para_done));
 			}
 			else
 			{
 				btnEdit.setBackgroundResource(R.drawable.swbtn_default);
-				btnEdit.setTextColor(getResources().getColor(R.drawable.swbtn_default_textcolor));
+				btnEdit.setTextColor(getResources().getColor(R.color.swbtn_default_textcolor));
 				btnEdit.setText(getString(R.string.para_edit));
 			}
 			break;
@@ -237,9 +237,9 @@ public class GTParamTopFragment extends Fragment implements OnClickListener {
 	 */
 	private void clearSelection() {
 		btnIn.setBackgroundResource(R.drawable.swbtn_default);
-		btnIn.setTextColor(getResources().getColor(R.drawable.tab_default_textcolor));
+		btnIn.setTextColor(getResources().getColor(R.color.tab_default_textcolor));
 		btnOut.setBackgroundResource(R.drawable.swbtn_default);
-		btnOut.setTextColor(getResources().getColor(R.drawable.tab_default_textcolor));
+		btnOut.setTextColor(getResources().getColor(R.color.tab_default_textcolor));
 	}
 
 	/**

@@ -1940,7 +1940,20 @@ public class GTFloatView extends Service {
 		wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
 		wmParams.format = 1;
 
-		wm.addView(view_floatview, wmParams);
+		try
+		{
+			wm.addView(view_floatview, wmParams);
+		}
+		catch (Exception e)
+		{
+			/*
+			 * 有的Android6会报permission denied for this window type问题
+			 * https://github.com/intercom/intercom-android/issues/116
+			 * 在这种系统上直接屏蔽悬浮窗
+			 */
+			stopSelf();
+			return;
+		}
 
 		final int sbar_height = DeviceUtils
 				.getStatusBarHeight(getApplicationContext());

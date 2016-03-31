@@ -27,13 +27,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.tencent.wstt.gt.GTApp;
+import com.tencent.wstt.gt.plugin.BaseService;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-
-import com.tencent.wstt.gt.GTApp;
-import com.tencent.wstt.gt.plugin.BaseService;
 
 public class PluginService extends Service {
 

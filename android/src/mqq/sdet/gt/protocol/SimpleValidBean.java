@@ -21,8 +21,22 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-/**
- * <b>本包的职责：</b><br>
- * 1、网络类型切换小插件
- */
-package com.tencent.wstt.gt.plugin.netswitch;
+package mqq.sdet.gt.protocol;
+
+public class SimpleValidBean {
+	private int retCode;
+	private String errorMsg;
+
+	public int getRetCode() {
+		return retCode;
+	}
+	public void setRetCode(int retCode) {
+		this.retCode = retCode;
+	}
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+}

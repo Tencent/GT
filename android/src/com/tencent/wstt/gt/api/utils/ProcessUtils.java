@@ -62,9 +62,13 @@ public class ProcessUtils {
 		{
 			processUtil = new Process4x();
 		}
-		else // 5.x+
+		else if (Env.API < 23) // 5.x+
 		{
 			processUtil = new Process5x();
+		}
+		else // 6.x+
+		{
+			processUtil = new Process6x();
 		}
 	}
 
@@ -133,8 +137,49 @@ public class ProcessUtils {
 		return processUtil.getAllRunningAppProcessInfo();
 	}
 
-	public static void killprocess(String proc) {
-		processUtil.killprocess(proc);
+	public static void killprocess(String proc, int cmd) {
+		processUtil.killprocess(proc, cmd);
+	}
+
+	private static void killprocessNormal(String proc, int killMethod) {
+		try {
+			ArrayList<String> pid_list = new ArrayList<String>();
+
+			ProcessBuilder execBuilder = null;
+
+			execBuilder = new ProcessBuilder("sh", "-c", "ps |grep " + proc);
+
+			execBuilder.redirectErrorStream(true);
+
+			Process exec = null;
+			exec = execBuilder.start();
+			InputStream is = exec.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+			String line = "";
+			while ((line = reader.readLine()) != null) {
+				String regEx = "\\s[0-9][0-9]*\\s";
+				Pattern pat = Pattern.compile(regEx);
+				Matcher mat = pat.matcher(line);
+				if (mat.find()) {
+					String temp = mat.group();
+					temp = temp.replaceAll("\\s", "");
+					pid_list.add(temp);
+				}
+			}
+
+			for (int i = 0; i < pid_list.size(); i++) {
+				execBuilder = new ProcessBuilder("su", "-c", "kill", "-" + killMethod, pid_list.get(i));
+				exec = null;
+				exec = execBuilder.start();
+
+				execBuilder = new ProcessBuilder("su", "-c", "kill" + " -" + killMethod + " " + pid_list.get(i));
+				exec = null;
+				exec = execBuilder.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static class ProcessInfo
@@ -194,7 +239,7 @@ public class ProcessUtils {
 		int getProcessUID(String pName);
 		boolean hasProcessRunPkg(String pkgName);
 		boolean isProcessAlive(String sPid);
-		void killprocess(String proc);
+		void killprocess(String proc, int cmd);
 		boolean initUidPkgCache();
 	}
 	
@@ -431,46 +476,8 @@ public class ProcessUtils {
 		}
 
 		@Override
-		public void killprocess(String proc) {
-			try {
-				ArrayList<String> pid_list = new ArrayList<String>();
-
-				ProcessBuilder execBuilder = null;
-
-				execBuilder = new ProcessBuilder("sh", "-c", "ps |grep " + proc);
-
-				execBuilder.redirectErrorStream(true);
-
-				Process exec = null;
-				exec = execBuilder.start();
-				InputStream is = exec.getInputStream();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is));
-
-				String line = "";
-				while ((line = reader.readLine()) != null) {
-					String regEx = "\\s[0-9][0-9]*\\s";
-					Pattern pat = Pattern.compile(regEx);
-					Matcher mat = pat.matcher(line);
-					if (mat.find()) {
-						String temp = mat.group();
-						temp = temp.replaceAll("\\s", "");
-						pid_list.add(temp);
-					}
-				}
-
-				for (int i = 0; i < pid_list.size(); i++) {
-					execBuilder = new ProcessBuilder("su", "-c", "kill","-9",pid_list.get(i));
-					exec = null;
-					exec = execBuilder.start();
-					
-					execBuilder = new ProcessBuilder("su", "-c", "kill"+" -9 "+pid_list.get(i));
-					exec = null;
-					exec = execBuilder.start();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		public void killprocess(String proc, int cmd) {
+			killprocessNormal(proc, cmd);
 		}
 
 		@Override
@@ -642,47 +649,8 @@ public class ProcessUtils {
 		}
 
 		@Override
-		public void killprocess(String proc) {
-			// 和Android5.x实现相同
-			try {
-				ArrayList<String> pid_list = new ArrayList<String>();
-
-				ProcessBuilder execBuilder = null;
-
-				execBuilder = new ProcessBuilder("sh", "-c", "ps |grep " + proc);
-
-				execBuilder.redirectErrorStream(true);
-
-				Process exec = null;
-				exec = execBuilder.start();
-				InputStream is = exec.getInputStream();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is));
-
-				String line = "";
-				while ((line = reader.readLine()) != null) {
-					String regEx = "\\s[0-9][0-9]*\\s";
-					Pattern pat = Pattern.compile(regEx);
-					Matcher mat = pat.matcher(line);
-					if (mat.find()) {
-						String temp = mat.group();
-						temp = temp.replaceAll("\\s", "");
-						pid_list.add(temp);
-					}
-				}
-
-				for (int i = 0; i < pid_list.size(); i++) {
-					execBuilder = new ProcessBuilder("su", "-c", "kill","-9",pid_list.get(i));
-					exec = null;
-					exec = execBuilder.start();
-					
-					execBuilder = new ProcessBuilder("su", "-c", "kill"+" -9 "+pid_list.get(i));
-					exec = null;
-					exec = execBuilder.start();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		public void killprocess(String proc, int cmd) {
+			killprocessNormal(proc, cmd);
 		}
 
 		@Override
@@ -701,6 +669,77 @@ public class ProcessUtils {
 				}
 			}
 			return true;
+		}
+	}
+
+	/**
+	 * 6.x系统中直接用ps命令取的即是可操作的进程
+	 */
+	static class Process6x extends Process5x
+	{
+		// 有的6.x系统，在ps命令的策略上和5.x还是一样的，此时应该用5x的策略
+		static boolean isLike5x = false;
+
+		@Override
+		public List<ProcessInfo> getAllRunningAppProcessInfo() {
+			if (isLike5x)
+			{
+				return super.getAllRunningAppProcessInfo();
+			}
+			List<ProcessInfo> appProcessList = new ArrayList<ProcessInfo>();
+
+			// 正式取可用的Android进程
+			BufferedReader reader = null;
+			try {
+				ProcessBuilder execBuilder = null;
+				execBuilder = new ProcessBuilder("sh", "-c", "ps");
+				execBuilder.redirectErrorStream(true);
+				Process exec = null;
+				exec = execBuilder.start();
+				InputStream is = exec.getInputStream();
+				reader = new BufferedReader(
+						new InputStreamReader(is));
+
+				String line = "";
+				while ((line = reader.readLine()) != null) {
+					String[] array = line.trim().split("\\s+");
+					if (array.length >= 9) {
+						// 先屏蔽常用的shell命令进程
+						if (array[8].equals("su") || array[8].equals("sh")
+								|| array[8].equals("sush") || array[8].equals("ps"))
+						{
+							continue;
+						}
+						int uid = -1;
+						try
+						{
+							uid = Integer.parseInt(array[0].substring(4)) + 10000;
+						}
+						catch (Exception e)
+						{
+							// 如果异常了，说明取到了系统进程信息，则判定为该6.x系统的策略和5.x一致，应尝试5.x的策略
+							isLike5x = true;
+							FileUtil.closeReader(reader); // 提前关闭流
+							return super.getAllRunningAppProcessInfo();
+						}
+
+						int pid = Integer.parseInt(array[1]);
+						int ppid = Integer.parseInt(array[2]);
+
+						ProcessInfo pi = new ProcessInfo(pid, array[8], ppid, uid);
+						appProcessList.add(pi);
+						super.procInfoCache.put(array[8], pi);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally
+			{
+				FileUtil.closeReader(reader);
+			}
+
+			return appProcessList;
 		}
 	}
 }

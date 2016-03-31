@@ -103,9 +103,22 @@ public class GTUtils {
 		Date date = new Date();
 		return saveFormatter.format(date);
 	}
-	
+
 	public static String getSaveTime(long data) {
 		return saveFormatter.format(new Date(data));
+	}
+	
+	// 日期，到ms
+	private static SimpleDateFormat saveDateMsFormatter =
+			new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.US);
+	
+	public static String getSaveDateMs() {
+		Date date = new Date();
+		return saveDateMsFormatter.format(date);
+	}
+
+	public static String getSaveDateMs(long data) {
+		return saveDateMsFormatter.format(new Date(data));
 	}
 	
 	// 日期，到s
@@ -237,19 +250,19 @@ public class GTUtils {
 	public static void copySoToDest(Context context)
 	{	
 		// 内置应用需要自己管理so文件，在第一次启动时，将so拷贝到内置管理路径
-		String insideSoPath = Env.INSIDE_SO_FOLDER;
-		File insideSoFolder = new File(insideSoPath);
-		if (!insideSoFolder.exists())
-		{
-			// 第一次要创建路径
-			insideSoFolder.mkdirs();
-		}
+//		String insideSoPath = Env.INSIDE_SO_FOLDER;
+//		File insideSoFolder = new File(insideSoPath);
+//		if (!insideSoFolder.exists())
+//		{
+//			// 第一次要创建路径
+//			insideSoFolder.mkdirs();
+//		}
 
-		LibManager.getInstance(context).loadLibrary("mem_fill_tool", true);
+//		LibManager.getInstance(context).loadLibrary("mem_fill_tool", true);
 	}
 
 	public static void copyTcpdump(Context context){
-		String filePath = context.getFilesDir().getPath() + "/";
+		String filePath = context.getFilesDir().getPath() + FileUtil.separator;
 		String fileName = "tcpdump";
 		String TCPDUMPFN = filePath + fileName;
 		
@@ -260,8 +273,10 @@ public class GTUtils {
 			}else{
 				dir.mkdir();
 			}
-			if(!(new File (TCPDUMPFN).exists())){
-				InputStream is = context.getResources().openRawResource(R.raw.tcpdump);
+			// 因为之前的版本出错过需要覆盖，所以的文件检测屏蔽掉
+//			if(!(new File (TCPDUMPFN).exists())){
+				int resId = Env.API > 22 ? R.raw.tcpdump6 : R.raw.tcpdump;
+				InputStream is = context.getResources().openRawResource(resId);
 				FileOutputStream fos;
 				fos = new FileOutputStream(TCPDUMPFN);
 				
@@ -272,7 +287,7 @@ public class GTUtils {
 				}
 				fos.close();
 				is.close();
-			}
+//			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -287,7 +302,7 @@ public class GTUtils {
 	}
 
 	public static void copyalarm(Context context){
-		String filePath = context.getFilesDir().getPath() + "/";
+		String filePath = context.getFilesDir().getPath() + FileUtil.separator;
 		String fileName = "greattit.mp3";
 		String BUSYBOXFN = filePath + fileName;
 		

@@ -39,7 +39,10 @@ public class MFBroadcast extends BroadcastReceiver {
 			if (action != null && action.equals(MEM_FILL_ACTION)) {
 				if (intent != null) {
 					int size = intent.getIntExtra("size", 200);
-					GTMemFillEngine.getInstance().fill(size);
+					if (size > 0)
+					{
+						GTMemFillEngine.getInstance().fill(size);
+					}
 				}
 			} else if (action != null && action.equals(MEM_FREE_ACTION)) {
 				GTMemFillEngine.getInstance().free();

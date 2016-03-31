@@ -23,14 +23,16 @@
  */
 package com.tencent.wstt.gt.api.utils;
 
-import java.io.DataOutputStream;
 import java.io.File;
-
-import android.os.Environment;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.utils.FileUtil;
 import com.tencent.wstt.gt.utils.ToastUtil;
+
+import android.os.Environment;
+import android.text.TextUtils;
 
 /**
  * 环境参数及方法工具类。
@@ -56,12 +58,13 @@ public class Env {
 	public static final int API = android.os.Build.VERSION.SDK_INT;
 	
 	public static String S_ROOT_GT_FOLDER =
-			Environment.getExternalStorageDirectory().getAbsolutePath() + "/GT/";
+			SDCardPathHelper.getAbsoluteSdcardPath() + "/GT/";
 //	static
 //	{
 //		if (API > 18)
 //		{
-//			// Android4.4开始，/storage/emulated/0/GT需要转成/storage/sdcard0/
+//			// Android4.x开始的个别版本系统，/storage/emulated/0/GT需要转成/storage/sdcard0/
+			// 否则出现抓包无法写入等问题，故引入SDCardPathHelper类适配此问题
 //			S_ROOT_GT_FOLDER = "/storage/sdcard0/GT/";
 //		}
 //	};
@@ -77,7 +80,30 @@ public class Env {
 	public static final String S_ROOT_TCPDUMP_FOLDER = S_ROOT_GT_FOLDER + "Tcpdump/";
 	public static final String S_ROOT_CONFIG_FOLDER = S_ROOT_GT_FOLDER + "Config/";
 	public static final String S_ROOT_BATTERY_FOLDER = S_ROOT_GT_FOLDER + "Battery/";
-	static
+
+	public static File ROOT_GT_FOLDER;
+	public static File ROOT_LOG_FOLDER;
+	public static File ROOT_GPS_FOLDER;
+	public static File CRASH_LOG_FOLDER;
+	public static File ROOT_TIME_FOLDER;
+	public static File ROOT_GW_FOLDER;
+	public static File ROOT_GW_MAN_FOLDER;
+	public static File ROOT_TIME_AUTO_FOLDER;
+	public static File ROOT_TCPDUMP_FOLDER;
+	public static File ROOT_CONFIG_FOLDER;
+	public static File ROOT_BATTERY_FOLDER;
+	
+	public static final File GT_CRASH_LOG = new File(CRASH_LOG_FOLDER, "gt_crashlog.log");
+	public static final String GT_APP_NAME = "default";
+	public static String CUR_APP_NAME = GT_APP_NAME;
+	public static String CUR_APP_VER = "";
+
+	// 网站的url
+	public static final String GT_HOMEPAGE = "http://gt.qq.com/";
+	public static final String GT_POLICY = "http://gt.qq.com/wp-content/EULA_EN.html";
+	public static final String BUGLY_APPPAGE = "http://bugly.qq.com/apps";
+
+	public static void init()
 	{
 		FileUtil.createDir(S_ROOT_GT_FOLDER);
 		FileUtil.createDir(S_ROOT_LOG_FOLDER);
@@ -90,28 +116,21 @@ public class Env {
 		FileUtil.createDir(S_ROOT_TCPDUMP_FOLDER);
 		FileUtil.createDir(S_ROOT_CONFIG_FOLDER);
 		FileUtil.createDir(S_ROOT_BATTERY_FOLDER);
+
+		ROOT_GT_FOLDER = new File(S_ROOT_GT_FOLDER);
+		ROOT_GT_FOLDER = new File(S_ROOT_GT_FOLDER);
+		ROOT_LOG_FOLDER = new File(S_ROOT_LOG_FOLDER);
+		ROOT_GPS_FOLDER = new File(S_ROOT_GPS_FOLDER);
+		CRASH_LOG_FOLDER = new File(S_CRASH_LOG_FOLDER);
+		ROOT_TIME_FOLDER = new File(S_ROOT_TIME_FOLDER);
+		ROOT_GW_FOLDER = new File(S_ROOT_GW_FOLDER);
+		ROOT_GW_MAN_FOLDER = new File(S_ROOT_GW_MAN_FOLDER);
+		ROOT_TIME_AUTO_FOLDER = new File(S_ROOT_TIME_AUTO_FOLDER);
+		ROOT_TCPDUMP_FOLDER = new File(S_ROOT_TCPDUMP_FOLDER);
+		ROOT_CONFIG_FOLDER = new File(S_ROOT_CONFIG_FOLDER);
+		ROOT_BATTERY_FOLDER = new File(S_ROOT_BATTERY_FOLDER);
 	}
 
-	public static final File ROOT_GT_FOLDER = new File(S_ROOT_GT_FOLDER);
-	public static final File ROOT_LOG_FOLDER = new File(S_ROOT_LOG_FOLDER);
-	public static final File ROOT_GPS_FOLDER = new File(S_ROOT_GPS_FOLDER);
-	public static final File CRASH_LOG_FOLDER = new File(S_CRASH_LOG_FOLDER);
-	public static final File ROOT_TIME_FOLDER = new File(S_ROOT_TIME_FOLDER);
-	public static final File ROOT_GW_FOLDER = new File(S_ROOT_GW_FOLDER);
-	public static final File ROOT_GW_MAN_FOLDER = new File(S_ROOT_GW_MAN_FOLDER);
-	public static final File ROOT_TIME_AUTO_FOLDER = new File(S_ROOT_TIME_AUTO_FOLDER);
-	public static final File ROOT_TCPDUMP_FOLDER = new File(S_ROOT_TCPDUMP_FOLDER);
-	public static final File ROOT_CONFIG_FOLDER = new File(S_ROOT_CONFIG_FOLDER);
-	public static final File ROOT_BATTERY_FOLDER = new File(S_ROOT_BATTERY_FOLDER);
-	
-	public static final File GT_CRASH_LOG = new File(CRASH_LOG_FOLDER, "gt_crashlog.log");
-	public static final String GT_APP_NAME = "default";
-	public static String CUR_APP_NAME = GT_APP_NAME;
-
-	// 网站的url
-	public static final String GT_HOMEPAGE = "http://gt.qq.com/";
-	public static final String GT_POLICY = "http://gt.qq.com/wp-content/EULA_EN.html";
-	
 	/**
 	 * 是否存在SD卡
 	 */
@@ -129,29 +148,59 @@ public class Env {
 		return true;
 	}
 	private static boolean hasSDCardNotExistWarned = false;
+	
+	public static class SDCardPathHelper {
 
-	public static boolean upgradeRootPermission(String pkgCodePath) {
-		Process process = null;
-		DataOutputStream os = null;
-		try {
-			String cmd = "chmod 777 " + pkgCodePath;
-			process = Runtime.getRuntime().exec("su"); // 切换到root帐号
-			os = new DataOutputStream(process.getOutputStream());
-			os.writeBytes(cmd + "\n");
-			os.writeBytes("exit\n");
-			os.flush();
-			process.waitFor();
-		} catch (Exception e) {
-			return false;
-		} finally {
-			try {
-				if (os != null) {
-					os.close();
-				}
-				process.destroy();
-			} catch (Exception e) {
-			}
+		public static final String CT_S_Sdcard_Sign_Storage_emulated = "storage/emulated/";
+		public static final String CT_S_Sdcard_Sign_Storage_sdcard = "storage/sdcard";
+		// 根据Nexus5 Android6.01适配
+		public static final String CT_S_Sdcard_Sign_Storage_emulated_0 = "storage/emulated/0";
+		public static final String CT_S_Sdcard_Sign_sdcard = "sdcard";
+
+		private static String CD_S_SdcardPath = "";
+		private static String CD_S_SdcardPathAbsolute = "";
+
+		public static String getSdcardPath() {
+			if (TextUtils.isEmpty(CD_S_SdcardPath))
+				CD_S_SdcardPath = Environment.getExternalStorageDirectory().getPath();
+
+			CD_S_SdcardPath = checkAndReplaceEmulatedPath(CD_S_SdcardPath);
+
+			return CD_S_SdcardPath;
 		}
-		return true;
+
+		public static String getAbsoluteSdcardPath() {
+			if (TextUtils.isEmpty(CD_S_SdcardPathAbsolute))
+				CD_S_SdcardPathAbsolute = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+			CD_S_SdcardPathAbsolute = checkAndReplaceEmulatedPath(CD_S_SdcardPathAbsolute);
+
+			return CD_S_SdcardPathAbsolute;
+		}
+
+		public static File getSdcardPathFile() {
+			return new File(getSdcardPath());
+		}
+
+		public static String checkAndReplaceEmulatedPath(String strSrc) {
+			String result = strSrc;
+			Pattern p = Pattern.compile("/?storage/emulated/\\d{1,2}");
+			Matcher m = p.matcher(strSrc);
+			if (m.find()) {
+				result= strSrc.replace(CT_S_Sdcard_Sign_Storage_emulated, CT_S_Sdcard_Sign_Storage_sdcard);
+				// 如果目录建立失败，最后尝试Nexus5 Android6.01适配
+				File gTFile = new File(result);
+				if (! gTFile.mkdirs())
+				{
+					result = strSrc.replace(CT_S_Sdcard_Sign_Storage_emulated_0, CT_S_Sdcard_Sign_sdcard);
+					
+					// test
+					File testF = new File(result + "/GT/");
+					testF.mkdir();
+				}
+			}
+
+			return result;
+		}
 	}
 }

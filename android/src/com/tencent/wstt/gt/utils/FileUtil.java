@@ -27,6 +27,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,17 +37,52 @@ import java.io.Writer;
 import java.net.Socket;
 import java.nio.channels.FileChannel;
 
+import com.tencent.wstt.gt.GTApp;
+import com.tencent.wstt.gt.api.utils.Env;
+import com.tencent.wstt.gt.log.LogUtils;
+
 import android.net.LocalSocket;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.tencent.wstt.gt.GTApp;
-import com.tencent.wstt.gt.api.utils.Env;
-
 public class FileUtil {
 	private static final String TAG = "--FileUtil--";
+	public static final String separator = "/";
 
+	public static FilenameFilter CSV_FILTER = new FilenameFilter(){
+
+		@Override
+		public boolean accept(File dir, String filename) {
+			if (filename != null && filename.endsWith(LogUtils.GW_POSFIX))
+			{
+				return true;
+			}
+			return false;
+		}};
+
+	public static FilenameFilter DESC_FILTER = new FilenameFilter(){
+
+		@Override
+		public boolean accept(File dir, String filename) {
+			if (filename != null && filename.startsWith(LogUtils.GW_DESC_PREFIX) && filename.endsWith(LogUtils.GW_DESC_POSFIX))
+			{
+				return true;
+			}
+			return false;
+		}};
+
+	public static FilenameFilter CSV_AND_DESC_FILTER = new FilenameFilter(){
+
+		@Override
+		public boolean accept(File dir, String filename) {
+			if (filename != null && filename.endsWith(LogUtils.GW_POSFIX)
+					|| filename != null && filename.startsWith(LogUtils.GW_DESC_PREFIX) && filename.endsWith(LogUtils.GW_DESC_POSFIX))
+			{
+				return true;
+			}
+			return false;
+		}};
 	// ==================================================关于文件处理====================================================
 	public static boolean isPathStringValid(String path) {
 		if (null == path || path.length() == 0) {
@@ -65,14 +101,14 @@ public class FileUtil {
 	}
 
 	public static boolean isPath(String path) {
-		if (path.contains("/") || path.contains("\\")) {
+		if (path.contains(separator) || path.contains("\\")) {
 			return true;
 		}
 		return false;
 	}
 
 	public static String getPath(String path) {
-		int la = path.lastIndexOf("/");
+		int la = path.lastIndexOf(separator);
 		String subPath = path.substring(0, la);
 		return subPath;
 	}
@@ -89,13 +125,13 @@ public class FileUtil {
 	 */
 	public static String convertValidFilePath(String path, String defPosfix) {
 		String filePath = path;
-		if (path.contains("/") || path.contains("\\")) {
+		if (path.contains(separator) || path.contains("\\")) {
 			int la = filePath.lastIndexOf(".");
 			if (la < 0) {
 				filePath = path + defPosfix;
 			} else {
 				String temp = filePath.substring(la);
-				if (temp.contains("/") || temp.contains("\\")) {
+				if (temp.contains(separator) || temp.contains("\\")) {
 					// "."是目录名的一部分而不是后缀名的情况
 					filePath = path + defPosfix;
 				}

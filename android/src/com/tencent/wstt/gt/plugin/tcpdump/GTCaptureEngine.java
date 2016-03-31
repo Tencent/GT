@@ -23,17 +23,15 @@
  */
 package com.tencent.wstt.gt.plugin.tcpdump;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.tencent.wstt.gt.GTApp;
+import com.tencent.wstt.gt.api.utils.CMDExecute;
 import com.tencent.wstt.gt.api.utils.Env;
-import com.tencent.wstt.gt.api.utils.ProcessUtils;
 import com.tencent.wstt.gt.plugin.PluginTaskExecutor;
+import com.tencent.wstt.gt.utils.FileUtil;
 import com.tencent.wstt.gt.utils.RootUtil;
 
 import android.content.Context;
@@ -50,15 +48,21 @@ public class GTCaptureEngine implements PluginTaskExecutor {
 
 	private static final String DEFAULT_PARAM = "-p -s 0 -vv -w";
 
-	private String line = "";
-	private List<String> list_temp = new ArrayList<String>();
 	private boolean captureState = false;
+
+	/*
+	 * 为了兼容Android6.x，需要持有抓包进程对象才能将其停止。
+	 * 因为在APP中没有权限得到su守护进程下的tcpdump进程(因其UID是root)
+	 */
+	private Process curTcpdumpProcess;
+	private long curFileSize = -1; //KB
+	private String curFilePath;
 	
 	public boolean getCaptureState(){
 		return captureState;
 	}
-	
-	public void setCaptureState(boolean captureState){
+
+	private void setCaptureState(boolean captureState){
 		this.captureState = captureState;
 	}
 
@@ -100,14 +104,21 @@ public class GTCaptureEngine implements PluginTaskExecutor {
 	
 	public void doCapture(final String filePath, final String param)
 	{
+		// 对于UI来说，此时应该转菊花
 		for (GTCaptureListener listener : listeners)
 		{
-			listener.onStartCaptureBegin();
+			listener.preStartCapture();
 		}
-		
+		boolean checkResult = checkTcpDump(filePath, param);
+
 		// 先check抓包环境
-		if (checkTcpDump(filePath, param))
+		if (checkResult)
 		{
+			for (GTCaptureListener listener : listeners)
+			{
+				listener.onStartCaptureBegin();
+			}
+
 			new Thread(new Runnable(){
 
 				@Override
@@ -128,11 +139,6 @@ public class GTCaptureEngine implements PluginTaskExecutor {
 					}
 				}}, "GTCaptureThread").start();
 		}
-
-		for (GTCaptureListener listener : listeners)
-		{
-			listener.onStartCaptureEnd();
-		}
 	}
 	
 	public void doStopCapture()
@@ -149,45 +155,46 @@ public class GTCaptureEngine implements PluginTaskExecutor {
 		String errorstr = "";
 		if (!RootUtil.isRooted()) {
 			errorstr = "root needed!";
-			for (GTCaptureListener listener : listeners) {
-				listener.onCaptureFail(errorstr);
-			}
+			notifyError(errorstr);
 			return false;
 		}
 		// 判断是否有手机存储
 		if (!Env.isSDCardExist()) {
 			errorstr = "phone storage needed!";
-			for (GTCaptureListener listener : listeners) {
-				listener.onCaptureFail(errorstr);
-			}
+			notifyError(errorstr);
 			return false;
 		}
-		// 校验filePath
-		if (filePath == null || filePath.trim().equals("")) {
-			errorstr = "filePath cannot be null!";
-			for (GTCaptureListener listener : listeners) {
-				listener.onCaptureFail(errorstr);
-			}
-			return false;
-		}
+
+		File file = new File(filePath);
+
 		if (filePath.contains("\\") // 路径可以有'/'
 				|| filePath.contains(":") || filePath.contains("*") || filePath.contains("?") || filePath.contains("\"")
 				|| filePath.contains("<") || filePath.contains(">") || filePath.contains("|")) {
 			errorstr = "filePath can't contain::*?\"<>|";
-			for (GTCaptureListener listener : listeners) {
-				listener.onCaptureFail(errorstr);
-			}
+			notifyError(errorstr);
 			return false;
 		}
 		if (param != null && (param.contains("|") || param.contains(">") || param.contains(">>"))) {
 			errorstr = "param can't contain: | > >>";
-			for (GTCaptureListener listener : listeners) {
-				listener.onCaptureFail(errorstr);
-			}
+			notifyError(errorstr);
+			return false;
+		}
+		// 尝试创建目录
+		if (!FileUtil.createDir(file.getParent()))
+		{
+			errorstr = "folder create failed!";
+			notifyError(errorstr);
 			return false;
 		}
 
 		return true;
+	}
+
+	private void notifyError(String errorstr)
+	{
+		for (GTCaptureListener listener : listeners) {
+			listener.onCaptureFail(errorstr);
+		}
 	}
 
 	/**
@@ -207,50 +214,71 @@ public class GTCaptureEngine implements PluginTaskExecutor {
 			// 已启动抓包，直接退出
 			return;
 		}
-		
-		setCaptureState(true);
-		try {
-			ProcessUtils.killprocess("tcpdump");
-			String cmd = context.getFilesDir().getPath() + "/" + "tcpdump " + command + " " + path;
-			ProcessBuilder execBuilder = new ProcessBuilder("su", "-c", cmd);
-			execBuilder.redirectErrorStream(true);
-			Process exec = null;
-			exec = execBuilder.start();
-			if(needInputStream){
-				InputStream is = exec.getInputStream();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-				while((line = reader.readLine()) != null){
-					synchronized (list_temp) {
-						if (list_temp.size() > 1000)
+		setCaptureState(true);
+
+		if (null != curTcpdumpProcess)
+		{
+			try {
+				curTcpdumpProcess.destroy();
+				curTcpdumpProcess = null;
+			}
+			catch (Exception e)
+			{
+				
+			}
+		}
+
+		try {
+			String cmd = context.getFilesDir().getPath() + "/" + "tcpdump " + command + " " + path;
+			curTcpdumpProcess = CMDExecute.startSuCmdInteractive();
+			CMDExecute.continueSuCmdInteractive(curTcpdumpProcess, cmd);
+
+			if(needInputStream){
+				File outFile = new File(path); 
+				curFilePath = path;
+				int count = 0;
+				boolean hasNotifyStartEnd = false;
+				while(true)
+				{
+					if (outFile.exists())
+					{
+						if (!hasNotifyStartEnd)
 						{
-							list_temp.clear();
+							hasNotifyStartEnd = true;
+							// 对于UI来说，此时也应该停止转菊花
+							for (GTCaptureListener listener : listeners) {
+								listener.onStartCaptureEnd(curFilePath);
+							}
 						}
-						list_temp.add(line);
+						
+						long preSize = curFileSize;
+						curFileSize = outFile.length() >> 10;
+						if (preSize != curFileSize)
+						{
+							for (GTCaptureListener listener : listeners) {
+								listener.onDataChange(curFileSize);
+							}
+						}
 					}
+					else if (count >= 5) // 5s后文件仍未生成，判定为启动抓包失败
+					{
+						for (GTCaptureListener listener : listeners) {
+							listener.onCaptureFail("create file failed!");
+						}
+						endTcpDump();
+						break;
+					}
+					// 抓包结束要退出循环
+					if (!getCaptureState())
+					{
+						break;
+					}
+					Thread.sleep(1000);
+					count++;
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 强制启动抓包且将输出重定向到context.getFilesDir().getPath() + "/Capture.txt"
-	 * @param context
-	 */
-	public void startTcpDump(Context context) {
-		setCaptureState(true);
-		try {
-			ProcessUtils.killprocess("tcpdump");
-			String cmd = context.getFilesDir().getPath() + "/" + "tcpdump "
-					+ "> " + context.getFilesDir().getPath() + "/Capture.txt";
-
-			ProcessBuilder execBuilder = new ProcessBuilder("su", "-c", cmd);
-			execBuilder.redirectErrorStream(true);
-			execBuilder.start();
-
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -259,13 +287,16 @@ public class GTCaptureEngine implements PluginTaskExecutor {
 	 * 获取抓包命令执行后返回的输入流
 	 * @return 抓包命令执行后返回的输入流
 	 */
-	public List<String> getTcpDumpInputStream(){
-		List<String> lst = new ArrayList<String>();
-		synchronized (list_temp) {
-			lst.addAll(list_temp);
-			list_temp.clear();
-		}
-		return lst;
+	public long getCurFileSize(){
+		return curFileSize;
+	}
+
+	/**
+	 * 获取抓包命令执行后返回的输入流
+	 * @return 抓包命令执行后返回的输入流
+	 */
+	public String getCurFilePath(){
+		return curFilePath;
 	}
 
 	/**
@@ -275,6 +306,19 @@ public class GTCaptureEngine implements PluginTaskExecutor {
 	 */
 	public void endTcpDump(){
 		setCaptureState(false);
-		ProcessUtils.killprocess("tcpdump");
+		try {
+			curTcpdumpProcess.destroy();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		curTcpdumpProcess = null;
+		curFileSize = -1;
+		curFilePath = null;
+		
+		for (GTCaptureListener listener : listeners) {
+			listener.onStopCaptureEnd();
+		}
 	}
 }

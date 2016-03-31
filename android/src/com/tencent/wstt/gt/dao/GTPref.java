@@ -51,6 +51,9 @@ public class GTPref {
 	public static final String AC_SWITCH = "ac_switch_type";
 	public static final String AC_SWITCH_FLAG = "ac_switch_type_flag"; // 是否启用悬浮图标的开关
 
+	// 是否已授权弹出悬浮框标志，在API23以上起作用
+	public static final String FLOAT_ALLOWED = "ac_float_allowed_flag";
+	
 	// 法律条款接受与否
 	public static final String PREFERENCE_EULA_ACCEPTED = "eula.accepted";
 	

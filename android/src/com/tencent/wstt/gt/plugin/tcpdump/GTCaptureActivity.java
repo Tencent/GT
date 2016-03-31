@@ -25,30 +25,6 @@ package com.tencent.wstt.gt.plugin.tcpdump;
 
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo.State;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import com.tencent.wstt.gt.R;
 import com.tencent.wstt.gt.activity.GTBaseActivity;
@@ -57,10 +33,23 @@ import com.tencent.wstt.gt.api.utils.NetUtils;
 import com.tencent.wstt.gt.api.utils.WidgetUtils;
 import com.tencent.wstt.gt.utils.FileUtil;
 import com.tencent.wstt.gt.utils.GTUtils;
-import com.tencent.wstt.gt.utils.RootUtil;
 import com.tencent.wstt.gt.views.GTCheckBox;
 
-public class GTCaptureActivity extends GTBaseActivity {
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+
+public class GTCaptureActivity extends GTBaseActivity implements GTCaptureListener {
 
 	private EditText et_filename;
 	private TextView tv_param_title;
@@ -72,27 +61,29 @@ public class GTCaptureActivity extends GTBaseActivity {
 	private EditText et_param;
 	private TextView tv_switch;
 
-	private ListView lv_tcpdump_progress;
-	private static ArrayAdapter<String> adapter;
-	private static List<String> list_input_stream = new ArrayList<String>();
-	private List<String> list_temp = new ArrayList<String>();
+	private TextView tv_tcpdump_curFile;
+	private TextView tv_tcpdump_progress;
 	private Handler tcpdumpSwitchHandler;
 	private ProgressDialog proDialog;
 
-	public static String network_status = "";
-	public static int count = 1;
-	public static String filename_path;
+	private static int count = 1;
 	private static String foldername;
 	private static String filename = "Capture";
+	private static String curFilePath;
+	private static String curFileSize;
 	private static final String default_param = "-p -s 0 -vv -w";
 	private static String param = default_param;
 
 	private static boolean initOnCreate = true;
-	private static boolean flag_listRefresh = true;
 	private static boolean switch_param = true;
 	public static boolean switch_tcpdump = false;
-	private static boolean tcpdumpRunning = false;
 	private static boolean cur_param_switch_status = false;
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		GTCaptureEngine.getInstance().removeListener(this);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +99,12 @@ public class GTCaptureActivity extends GTBaseActivity {
 				finish();
 			}
 		});
-		checkNetworkInfo();
+
+		tv_tcpdump_curFile.setText(
+				curFilePath == null ? "" : curFilePath);
+		tv_tcpdump_progress.setText(
+				curFileSize == null ? "" : curFileSize + "KB");
+
 		tv_param_switch = (TextView) findViewById(R.id.tcpdump_param_switch);
 		tv_param_switch.setOnClickListener(new OnClickListener() {
 			@Override
@@ -150,8 +146,6 @@ public class GTCaptureActivity extends GTBaseActivity {
 			@Override
 			public void onClick(View v) {
 				// 获取权限过程比较耗时，交给菊花去处理
-				proDialog = ProgressDialog.show(GTCaptureActivity.this,
-						"get root..", "geting root..wait...", true, true);
 				Thread t = new Thread(new ProgressRunnable());
 				t.start();
 			}
@@ -185,7 +179,7 @@ public class GTCaptureActivity extends GTBaseActivity {
 		tcpdumpSwitchHandler = new Handler() {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
-				case 0: // 抓包开始，控件状态置为红色，显示stop
+				case 0: // 启动抓包开始，控件状态置为红色，显示stop
 					switch_tcpdump = true;
 					tv_switch.setBackgroundResource(R.drawable.switch_off_border);
 					tv_switch.setText(getString(R.string.stop));
@@ -195,19 +189,31 @@ public class GTCaptureActivity extends GTBaseActivity {
 					tv_switch.setBackgroundResource(R.drawable.switch_on_border);
 					tv_switch.setText(getString(R.string.start));
 					break;
-				case 2:// 吐槽提示 TODO
+				case 2:// 吐槽提示
 					String message = msg.obj == null ? "" : msg.obj.toString();
 					WidgetUtils.openToast(message);
+					// 有菊花则停止菊花
+					dismissProDialog();
 					break;
-				case 3:
-					
+				case 3: // 抓包文件发生大小变化时
+					curFileSize = msg.obj == null ? "" : msg.obj.toString();
+					tv_tcpdump_progress.setText(curFileSize + "KB");
 					break;
-				case 4:
-	
+				case 4:// 启动抓包完成，显示当前保存的抓包文件  TODO
+					curFilePath = msg.obj == null ? "" : msg.obj.toString();
+					tv_tcpdump_curFile.setText(
+							curFilePath == null ? "" : curFilePath);
+					// 停止菊花
+					dismissProDialog();
+					break;
+				case 5:// 抓包之前的校验，转菊花
+					showProDialog();
 					break;
 				}
 			}
 		};
+		
+		GTCaptureEngine.getInstance().addListener(this);
 	}
 
 	private void initLayout() {
@@ -218,44 +224,15 @@ public class GTCaptureActivity extends GTBaseActivity {
 
 		if (initOnCreate) {
 			initOnCreate = false;
-			adapter = new ArrayAdapter<String>(this,
-					R.layout.gt_tcpdump_listrow, list_input_stream);
 		}
-		lv_tcpdump_progress = (ListView) findViewById(R.id.tcpdump_progress);
-		lv_tcpdump_progress.setAdapter(adapter);
-		lv_tcpdump_progress.setOnScrollListener(new OnScrollListener() {
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-			}
-
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				if (visibleItemCount + firstVisibleItem == totalItemCount) {
-					flag_listRefresh = true;
-				} else {
-					flag_listRefresh = false;
-				}
-			}
-		});
+		tv_tcpdump_curFile = (TextView) findViewById(R.id.tcpdump_curFile);
+		tv_tcpdump_progress = (TextView) findViewById(R.id.tcpdump_progress);
 	}
 
 	private boolean checkTcpDump() {
 		Message message = tcpdumpSwitchHandler.obtainMessage();
 		message.what = 2;
-		
-		// 判断手机是否root
-		if (! RootUtil.isRooted()) {
-			message.obj = "root needed!";
-			tcpdumpSwitchHandler.sendMessage(message);
-			return false;
-		}
-		// 先判断是不是有sdcard,没sdcard就弹toast什么都不做
-		if (!Env.isSDCardExist()) {
-			message.obj = "sdcard needed!";
-			tcpdumpSwitchHandler.sendMessage(message);
-			return false;
-		}
+
 		// 获取filename,filename为空弹toast什么都不做
 		foldername = et_filename.getText().toString();
 		if (foldername.equals("") || foldername.trim().equals("")) {
@@ -280,26 +257,11 @@ public class GTCaptureActivity extends GTBaseActivity {
 			tcpdumpSwitchHandler.sendMessage(message);
 			return false;
 		}
-		if (param.equals("") || param.trim().equals("")) {
+		if (param.trim().equals("")) {
 			param = default_param;
-			et_param.setText(default_param);
 		}
 		// 先把存储抓包文件的文件夹创建出来
-		String dir = Env.S_ROOT_GT_FOLDER;
-		if (!FileUtil.createDir(dir)) {
-			message.obj = "folder creates failed!";
-			tcpdumpSwitchHandler.sendMessage(message);
-			return false;
-		}
-		dir = dir + "tcpdump/";
-
-		if (!FileUtil.createDir(dir)) {
-			message.obj = "file creates failed!";
-			tcpdumpSwitchHandler.sendMessage(message);
-			return false;
-		}
-
-		dir = dir + foldername + "/";
+		String dir = Env.S_ROOT_TCPDUMP_FOLDER + foldername + "/";
 		if (GTCaptureEngine.getInstance().getCaptureState()) {
 			message.obj = "capture has start!";
 			tcpdumpSwitchHandler.sendMessage(message);
@@ -307,84 +269,42 @@ public class GTCaptureActivity extends GTBaseActivity {
 		} else {
 			// 检查文件夹是否存在
 			if (!FileUtil.createDir(dir)) {
-				message.obj = "file creates failed!";
+				message.obj = "folder create failed!";
 				tcpdumpSwitchHandler.sendMessage(message);
 				return false;
 			}
 
 			// modify on 20150108
 			filename = "Capture" + GTUtils.getSaveDate();
-			filename_path = dir + filename;
-			startTcpDump();
+			startTcpDump(dir + filename);
 
 			return true;
 		}
-
 	}
 
-	private void startTcpDump() {
-		tcpdumpRunning = true;
-		handler.postDelayed(task, 1000);
-		Thread thread_tcpdump = new Thread(new TcpDumpRunnable());
-		thread_tcpdump.start();
+	// 最后调整实际的文件名和参数
+	private void startTcpDump(String filePath) {
+		String realParam = param;
+		// 如果是wifi，则适配为wlan0，对应小米等手机，其实大部分机型可用网卡名都是wlan0
+		if (NetUtils.isWifiActive())
+		{
+			try {
+				NetworkInterface network = NetworkInterface.getByName("wlan0");
+				if (network != null && !param.contains("wlan0")) {
+					realParam = "-i wlan0 " + param;
+				}
+			} catch (SocketException e) {
+				// nothing should do
+			}
+		}
+
+		GTCaptureEngine.getInstance().doCapture(
+				filePath + "_" + String.valueOf(count) + ".pcap", realParam);
 	}
 
 	private void endTcpDump() {
 		GTCaptureEngine.getInstance().endTcpDump();
-		tcpdumpRunning = false;
 		count = 1;
-	}
-
-	private Handler handler = new Handler();
-	private Runnable task = new Runnable() {
-		public void run() {
-
-			handler.postDelayed(this, 1000);
-
-			if (flag_listRefresh) {
-				// 获取命令行输出内容
-				list_temp = GTCaptureEngine.getInstance().getTcpDumpInputStream();
-				list_input_stream.addAll(list_temp);
-
-				if (list_temp.contains("tcpdump: syntax error")
-						|| list_temp.contains("tcpdump: illegal token:")) {
-					endTcpDump();
-					tcpdumpSwitchHandler.sendEmptyMessage(1);
-				}
-				adapter.notifyDataSetChanged();
-
-				if (!tcpdumpRunning) {
-					handler.removeCallbacks(task);
-				}
-				list_temp.clear();
-				list_temp = null;
-			}
-
-		}
-	};
-
-	public class TcpDumpRunnable implements Runnable {
-
-		@Override
-		public void run() {
-			String realParam = param;
-			// 如果是wifi，则适配为wlan0，对应小米等手机，其实大部分机型可用网卡名都是wlan0
-			if (NetUtils.isWifiActive())
-			{
-				try {
-					NetworkInterface network = NetworkInterface.getByName("wlan0");
-					if (network != null && !param.contains("wlan0")) {
-						realParam = "-i wlan0 " + param;
-					}
-				} catch (SocketException e) {
-					// nothing should do
-				}
-			}
-
-			GTCaptureEngine.getInstance().startTcpDump(
-					filename_path + "_" + String.valueOf(count) + ".pcap", realParam,
-					getApplicationContext(), true);
-		}
 	}
 
 	@Override
@@ -426,38 +346,6 @@ public class GTCaptureActivity extends GTBaseActivity {
 			tv_switch.setBackgroundResource(R.drawable.switch_on_border);
 			tv_switch.setText(getString(R.string.start));
 		}
-
-		adapter.notifyDataSetChanged();
-	}
-
-	private void checkNetworkInfo() {
-		ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		// mobile 3G Data Network
-		State mobileState = conMan.getNetworkInfo(
-				ConnectivityManager.TYPE_MOBILE).getState();
-
-		// wifi
-		State wifiState = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-				.getState();
-
-		if (wifiState != null && mobileState != null
-				&& State.CONNECTED != wifiState
-				&& State.CONNECTED == mobileState) {
-
-			// Networkstatus.network_status = "mobile";
-		}
-		// 手机网络连接成功
-		else if (wifiState != null && mobileState != null
-				&& State.CONNECTED != wifiState
-				&& State.CONNECTED != mobileState) {
-			network_status = "no_network";
-			// 手机没有任何的网络
-		} else if (wifiState != null && State.CONNECTED == wifiState) {
-			network_status = "wifi";
-		}
-		// 无线网络连接成功
-		Log.d("network", network_status);
 	}
 
 	final class ProgressRunnable implements Runnable {
@@ -478,7 +366,68 @@ public class GTCaptureActivity extends GTBaseActivity {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			proDialog.dismiss();
 		}
+	}
+
+	private void dismissProDialog()
+	{
+		if (proDialog != null)
+		{
+			proDialog.dismiss();
+			proDialog = null;
+		}
+	}
+
+	private void showProDialog()
+	{
+		if (proDialog == null)
+		{
+			proDialog = ProgressDialog.show(GTCaptureActivity.this,
+					"get root..", "geting root..wait...", true, true);
+		}
+	}
+
+	@Override
+	public void preStartCapture() {
+		tcpdumpSwitchHandler.sendEmptyMessage(5);
+	}
+
+	@Override
+	public void onStartCaptureBegin() {
+		tcpdumpSwitchHandler.sendEmptyMessage(0);
+	}
+
+	@Override
+	public void onStartCaptureEnd(String curFile) {
+		Message msg = tcpdumpSwitchHandler.obtainMessage();
+		msg.what = 4;
+		msg.obj = curFile;
+		tcpdumpSwitchHandler.sendMessage(msg);
+	}
+
+	@Override
+	public void onStopCaptureBegin() {
+		
+	}
+
+	@Override
+	public void onStopCaptureEnd() {
+		tcpdumpSwitchHandler.sendEmptyMessage(1);
+	}
+
+	@Override
+	public void onCaptureFail(String errorstr) {
+		Message msg = tcpdumpSwitchHandler.obtainMessage();
+		msg.what = 2;
+		msg.obj = errorstr;
+		tcpdumpSwitchHandler.sendMessage(msg);
+	}
+
+	@Override
+	public void onDataChange(long data) {
+		Message msg = tcpdumpSwitchHandler.obtainMessage();
+		msg.what = 3;
+		msg.obj = data;
+		tcpdumpSwitchHandler.sendMessage(msg);
 	}
 }

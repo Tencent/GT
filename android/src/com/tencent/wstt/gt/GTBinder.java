@@ -34,6 +34,7 @@ import com.tencent.wstt.gt.log.GTTimeInternal;
 import com.tencent.wstt.gt.manager.Client;
 import com.tencent.wstt.gt.manager.ClientManager;
 import com.tencent.wstt.gt.manager.OpPerfBridge;
+import com.tencent.wstt.gt.receiver.BaseCommandReceiver;
 import com.tencent.wstt.gt.service.GTServiceController;
 
 public class GTBinder extends IService.Stub {
@@ -304,8 +305,10 @@ public class GTBinder extends IService.Stub {
 		{
 			int iCmd = bundle.getInt(Functions.GT_COMMAND_KEY);
 			String pkgName = bundle.getString("pkgName");
+			String verName = bundle.getString("verName");
 			int pid = bundle.getInt("pid");
-			String saveFolderName = bundle.getString("saveFolderName");
+			String saveFolderName = bundle.getString(BaseCommandReceiver.INTENT_KEY_SAVE_FOLDER);
+			String desc = bundle.getString(BaseCommandReceiver.INTENT_KEY_SAVE_DESC);
 
 			switch(iCmd)
 			{
@@ -315,19 +318,19 @@ public class GTBinder extends IService.Stub {
 			case Functions.GT_CMD_START_PROCTEST:
 				if (pkgName != null)
 				{
-					GTAutoTestInternal.startProcTest(pkgName, pid);
+					GTAutoTestInternal.startProcTest(pkgName, verName, pid);
 				}
 				break;
 			case Functions.GT_CMD_END_PROCTEST:
 				if (saveFolderName != null)
 				{
-					GTAutoTestInternal.endProcTest(pkgName, pid, saveFolderName, false);
+					GTAutoTestInternal.endProcTest(pkgName, pid, saveFolderName, desc, false);
 				}
 				break;
 			case Functions.GT_CMD_END_TEST_AND_CLEAR:
 				if (saveFolderName != null)
 				{
-					GTAutoTestInternal.endProcTest(pkgName, pid, saveFolderName, true);
+					GTAutoTestInternal.endProcTest(pkgName, pid, saveFolderName, desc, true);
 				}
 				break;
 			case Functions.GT_CMD_TEST_DATA_CLEAR:

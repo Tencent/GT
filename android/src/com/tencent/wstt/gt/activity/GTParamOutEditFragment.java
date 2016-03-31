@@ -48,7 +48,7 @@ public class GTParamOutEditFragment
 	// 用于外部变化需要通知AUT页刷新的Handler
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			// 清理累积的回调，保留一次即可
+			// 清理累积的消息，保留一次即可
 			removeCallbacksAndMessages(null);
 			doResume();
 		}

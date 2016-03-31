@@ -49,7 +49,7 @@ public class DaemonHandler extends Handler {
 					"GT:Memory Waring",
 					"More than " + GTMemoryDaemonThread.topLevelLimit + " GW and Prof records.",
 					GTMainActivity.class,
-					NotificationHelper.FLAG_AUTO_CANCEL,
+					false, true,
 					NotificationHelper.DEFAULT_VB);
 	
 			NotificationHelper.notify(GTApp.getContext(), 31,
@@ -63,7 +63,7 @@ public class DaemonHandler extends Handler {
 					"GT:Memory Waring",
 					"More than " + GTMemoryDaemonThread.secondLevelLimit + " GW and Prof records.",
 					GTMainActivity.class,
-					NotificationHelper.FLAG_AUTO_CANCEL,
+					false, true,
 					NotificationHelper.DEFAULT_VB);
 	
 			NotificationHelper.notify(GTApp.getContext(), 32,
@@ -77,7 +77,7 @@ public class DaemonHandler extends Handler {
 					"GT:Memory Waring",
 					"More than " + GTMemoryDaemonThread.thirdLevelLimit + " GW and Prof records.",
 					GTMainActivity.class,
-					NotificationHelper.FLAG_AUTO_CANCEL,
+					false, true,
 					NotificationHelper.DEFAULT_VB);
 	
 			NotificationHelper.notify(GTApp.getContext(), 32,
@@ -91,7 +91,7 @@ public class DaemonHandler extends Handler {
 							"GT:Memory Waring",
 							"OutPara " + op.getAlias() +" has more than " + GTMemoryDaemonThread.singleLimit + " records." ,
 							GTMainActivity.class,
-							NotificationHelper.FLAG_AUTO_CANCEL,
+							false, true,
 							NotificationHelper.DEFAULT_VB);
 			
 			NotificationHelper.notify(GTApp.getContext(), 33,

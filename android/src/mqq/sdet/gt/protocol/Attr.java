@@ -21,20 +21,9 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package com.tencent.wstt.gt.plugin.netswitch;
+package mqq.sdet.gt.protocol;
 
-import com.tencent.wstt.gt.GTApp;
-import com.tencent.wstt.gt.R;
-import com.tencent.wstt.gt.plugin.PluginItem;
-
-public class NetSwitchPluginItem extends PluginItem{
-	
-	public NetSwitchPluginItem()
-	{
-		super("netSwitch",
-				GTApp.getContext().getString(R.string.pi_netswitch_title),
-				GTApp.getContext().getString(R.string.pi_netswitch_item),
-			R.drawable.pi_netswitch,
-			GTNetSwitchActivity.class);
-	}
+public class Attr {
+	public static final String CODE = "code";
+	public static final String MSG = "errorMsg";
 }

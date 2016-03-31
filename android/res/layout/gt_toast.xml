@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-     Notwithstanding anything to the contrary herein, any previous version
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
      of Tencent GT shall not be subject to the license hereunder.
      All right, title, and interest, including all intellectual property rights,
      in and to the previous version of Tencent GT (including any and all copies thereof)
@@ -19,16 +18,16 @@
      CONDITIONS OF ANY KIND, either express or implied. See the License for the
      specific language governing permissions and limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toast_layout"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/toast_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:id="@+id/toast_layout" 
+    android:orientation="vertical" 
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    >    
+    <TextView 
+        android:id="@+id/toast_text" 
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+		android:gravity="center"
+        />
 </LinearLayout>

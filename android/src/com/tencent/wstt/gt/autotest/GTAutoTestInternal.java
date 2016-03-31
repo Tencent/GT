@@ -41,6 +41,7 @@ import com.tencent.wstt.gt.api.utils.Env;
 import com.tencent.wstt.gt.api.utils.ProcessUtils;
 import com.tencent.wstt.gt.engine.ProcPerfParaRunEngine;
 import com.tencent.wstt.gt.log.GTGWInternal;
+import com.tencent.wstt.gt.log.GWSaveEntry;
 import com.tencent.wstt.gt.manager.AUTManager;
 import com.tencent.wstt.gt.manager.Client;
 import com.tencent.wstt.gt.manager.ClientFactory;
@@ -49,6 +50,7 @@ import com.tencent.wstt.gt.manager.OpPerfBridge;
 import com.tencent.wstt.gt.manager.OpUIManager;
 import com.tencent.wstt.gt.manager.SingleInstanceClientFactory;
 import com.tencent.wstt.gt.utils.CommonString;
+import com.tencent.wstt.gt.utils.FileUtil;
 
 public class GTAutoTestInternal {
 	
@@ -81,7 +83,7 @@ public class GTAutoTestInternal {
 	 * @param pkgName 指定的被测应用
 	 * @param pid 被测应用指定的被测进程，目前不使用，会同时采集应用的所有进程，请置-1
 	 */
-	public static void startProcTest(String pkgName, int pid)
+	public static void startProcTest(String pkgName, String verName, int pid)
 	{
 		ProcessUtils.initUidPkgCache();
 
@@ -113,6 +115,7 @@ public class GTAutoTestInternal {
 
 		AUTManager.appstatus = "running";
 
+		Env.CUR_APP_VER = verName == null ? "unknow" : verName;
 		// 同之后的操作点击应用列表的操作
 		if (pkgName != null)
 		{
@@ -147,9 +150,9 @@ public class GTAutoTestInternal {
 	 * 停止所有数据采集
 	 * @param saveFolderName 采集的被测数据保存目录名 sdcard/GT/GW/default/{saveFolderName}
 	 */
-	public static void endGlobalTest(String saveFolderName, boolean clear)
+	public static void endGlobalTest(String path, String desc, boolean clear)
 	{
-		endProcTest(null, -1, saveFolderName, clear);
+		endProcTest(null, -1, path, desc, clear);
 	}
 
 	/**
@@ -159,7 +162,7 @@ public class GTAutoTestInternal {
 	 * @param saveFolderName 采集的被测数据保存目录名 sdcard/GT/GW/default/{saveFolderName}
 	 * @param clear 是否清理历史记录
 	 */
-	public static void endProcTest(String pkgName, int pid, String saveFolderName, boolean clear)
+	public static void endProcTest(String pkgName, int pid, String path, String desc, boolean clear)
 	{
 		// 结束统计，避免保存时候有风险
 		OpUIManager.gw_running = false;
@@ -175,16 +178,48 @@ public class GTAutoTestInternal {
 				}
 			}
 		}
-		
+
 		// 保存
-		if (null != saveFolderName && ! saveFolderName.equals(""))
+		String path1 = null;
+		String path2 = null;
+		String path3 = null;
+
+		if (path != null && ! path.isEmpty())
 		{
-			GTGWInternal.saveAllEnableGWData(saveFolderName);
+			String[] paths = path.split(FileUtil.separator);
+			if (paths.length > 2)
+			{
+				path1 = paths[paths.length - 3]; // 倒数第三级目录
+				path2 = paths[paths.length - 2]; // 倒数第二级目录
+				path3 = paths[paths.length - 1]; // 最后一级目录
+			}
+			else if (paths.length == 2)
+			{
+				path2 = paths[paths.length - 2]; // 倒数第二级目录
+				path3 = paths[paths.length - 1]; // 最后一级目录
+			}
+			else
+			{
+				path3 = paths[0];
+			}
 		}
-		else
+
+		if (null == path1 || path1.equals(""))
 		{
-			GTGWInternal.saveAllEnableGWData(GTGWInternal.getLastSaveFolder());
+			path1 = Env.CUR_APP_NAME;
 		}
+		if (null == path2 || path2.equals(""))
+		{
+			path2 = Env.CUR_APP_VER;
+		}
+		if (null == path3 || path3.equals(""))
+		{
+			path3 = GTGWInternal.getLastSaveFolder();
+		}
+
+		GWSaveEntry saveEntry = new GWSaveEntry(path1, path2, path3, desc);
+		
+		GTGWInternal.saveAllEnableGWData(saveEntry);
 
 		if (clear)
 		{
@@ -293,6 +328,9 @@ public class GTAutoTestInternal {
 		}
 		
 		tempMap.put(new ProOutParaQueryEntry(pkgName, pid, target), opList);
+		// 主动刷新出参页面的列表
+		GTApp.getOpHandler().sendEmptyMessage(5);
+		GTApp.getOpEditHandler().sendEmptyMessage(0);
 	}
 
 	/**

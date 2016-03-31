@@ -24,19 +24,24 @@
 package com.tencent.wstt.gt.plugin.gps;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.R;
 import com.tencent.wstt.gt.api.utils.Env;
 import com.tencent.wstt.gt.plugin.BaseService;
 import com.tencent.wstt.gt.utils.FileUtil;
+import com.tencent.wstt.gt.utils.GTUtils;
 import com.tencent.wstt.gt.utils.ToastUtil;
 
 import android.content.Context;
@@ -65,6 +70,8 @@ public class GTGPSReplayEngine extends BaseService {
 	public int mGPSFileLength = 0;
 	/*回放gps文件的当前进度*/
 	public int index = 0;
+	/*回放速率*/
+	public int mreplayspeed;
 
 	private static final String GPS_MOCK_ACTION = "com.tencent.wstt.gt.ACTION_GPS_MOCK";
 
@@ -109,9 +116,10 @@ public class GTGPSReplayEngine extends BaseService {
 		{
 			return;
 		}
-		
+				
 		selectedItemPos = intent.getIntExtra("seq", -1);
 		int progess = Math.min(100, intent.getIntExtra("progress", 0));
+		mreplayspeed = intent.getIntExtra("replayspeed", 1);
 		index = getGPSFileLength() * progess / 100;
 		if (-1 == selectedItemPos)
 		{
@@ -231,7 +239,8 @@ public class GTGPSReplayEngine extends BaseService {
 				String[] coordinates = new String[]{sb.toString()};
 
 				if (mMockGpsProviderTask == null) {
-					mMockGpsProviderTask = new MockGpsProvider();
+					String replayRecordFileName = GTUtils.getSaveDate() + "_.gps";
+					mMockGpsProviderTask = new MockGpsProvider(replayRecordFileName);
 				}
 				isReplay = true;
 				mMockGpsProviderTask.execute(coordinates);
@@ -281,7 +290,7 @@ public class GTGPSReplayEngine extends BaseService {
 				data.toArray(coordinates);
 
 				if (mMockGpsProviderTask == null) {
-					mMockGpsProviderTask = new MockGpsProvider();
+					mMockGpsProviderTask = new MockGpsProvider(selectedItem);
 				}
 				isReplay = true;
 				mMockGpsProviderTask.execute(coordinates);
@@ -345,6 +354,13 @@ public class GTGPSReplayEngine extends BaseService {
 		}
 		return 0.0;
 	}
+	
+	/**
+	 * 得带当前GPS回放速率
+	 */
+	public int getReplaySpeed() {		
+		return mreplayspeed;
+	}
 
 	/**
 	 * 得带当前GPS回放文件的总数
@@ -356,12 +372,20 @@ public class GTGPSReplayEngine extends BaseService {
 	private class MockGpsProvider extends AsyncTask<String, Integer, Void> {
 		public static final String LOG_TAG = "GpsMockProvider";
 		public static final String GPS_MOCK_PROVIDER = LocationManager.GPS_PROVIDER;
+		public String orgiFileName;
+
+//		public Integer index = 0;
+
+		public MockGpsProvider(String fileName)
+		{
+			this.orgiFileName = fileName;
+		}
 
 		@Override
 		protected Void doInBackground(String... data) {
 
 			boolean hasMockEnd = false;
-			
+
 			double nowtimeStamp;
 			List<Long> timezones = new ArrayList<Long>();
 			
@@ -371,6 +395,7 @@ public class GTGPSReplayEngine extends BaseService {
 			{
 				listener.onReplayStart();
 			}
+
 
 			/*
 			 * 修改为保持最后1点的位置
@@ -385,7 +410,12 @@ public class GTGPSReplayEngine extends BaseService {
 				{
 					// add on 20141216 赶在index++前把本点回放的时间记录了
 					timezones.add(System.currentTimeMillis());
-					index++;
+					if (index + mreplayspeed > data.length - 1) {
+						index++;
+					} else {
+						index += mreplayspeed;
+					}
+					
 				}
 				// add on 20150108 到最后一点立即发出广播通知测试程序回放逻辑已结束
 				else if (!hasMockEnd) {
@@ -471,10 +501,10 @@ public class GTGPSReplayEngine extends BaseService {
 				}
 				else
 				{
-					// 下次定位前停2s
+					// 如果是最后一点，间隔默认按2s算
 					int interval = 2000;
 					try {
-						if (index < data.length) { // 如果是最后一点，间隔默认按2s算
+						if (index < data.length) {
 							String next = data[index];
 							String[] parts = next.split(",");
 							interval = (int) ((Double.valueOf(parts[6]) - nowtimeStamp) * 1000);
@@ -485,7 +515,14 @@ public class GTGPSReplayEngine extends BaseService {
 							}
 						}
 						Log.i("interval", String.valueOf(interval));
-						Thread.sleep(interval);
+						if (mreplayspeed == 1)
+						{
+							Thread.sleep(interval);
+						}
+						else
+						{
+							Thread.sleep(1000);
+						}
 						if (Thread.currentThread().isInterrupted())
 							throw new InterruptedException("");
 					} catch (InterruptedException e) {
@@ -498,6 +535,39 @@ public class GTGPSReplayEngine extends BaseService {
 			for (GPSReplayListener listener : listeners)
 			{
 				listener.onReplayStop();
+			}
+
+			/*
+			 * add on 20141226 将回放位置的时刻记录在文件中，以便使用模拟位置的应用核对事件发生时的位置
+			 * TODO 回放记录放在GT/Log/gpsreplay/<原回放文件名>_log.gps
+			 */
+			File folder = new File(Env.S_ROOT_LOG_FOLDER + "gpsreplay/");
+			folder.mkdirs();
+			// GT/Log/gpsreplay/xxxx_log.gps
+			String recordFileName = orgiFileName;
+			if (orgiFileName.toLowerCase(Locale.ENGLISH).endsWith(".gps"))
+			{
+				recordFileName = orgiFileName.substring(0, orgiFileName.length() - 4) + "_log.gps";
+			}
+			
+			File f = new File(folder, recordFileName);
+			
+			BufferedWriter bw = null;
+
+			try {
+				f.createNewFile();
+				bw = new BufferedWriter(new FileWriter(f));
+				for(int i = 0; i < timezones.size(); i++)
+				{
+					String relayLine = timezones.get(i) + "," + data[i].trim() + "\r\n";
+					bw.write(relayLine);
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			finally
+			{
+				FileUtil.closeWriter(bw);
 			}
 
 			return null;

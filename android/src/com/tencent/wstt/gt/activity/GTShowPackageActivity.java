@@ -1,4 +1,3 @@
-
 /*
  * Tencent is pleased to support the open source community by making
  * Tencent GT (Version 2.4 and subsequent versions) available.
@@ -192,6 +191,7 @@ public class GTShowPackageActivity extends GTBaseActivity {
 		AUTManager.apn = appSelected.appName;
 		AUTManager.appic = appSelected.appIcon;
 		Env.CUR_APP_NAME = appSelected.packageName;
+		Env.CUR_APP_VER = appSelected.versionName;
 
 		// 清除旧的AUT_CLIENT
 		ClientManager.getInstance().removeClient(ClientManager.AUT_CLIENT);

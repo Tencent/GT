@@ -26,6 +26,7 @@ package com.tencent.wstt.gt.plugin.smtools;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.tencent.wstt.gt.Functions;
+import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.manager.Client;
 import com.tencent.wstt.gt.manager.ClientManager;
 import com.tencent.wstt.gt.manager.OpPerfBridge;
@@ -63,6 +64,7 @@ public class SMDataService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		String pkgName = intent.getStringExtra("pkgName");
 		String key = "SM:" + pkgName;
+//		String SFKey = "SF:" + pkgName;
 
 		Client globalClient = ClientManager.getInstance().getGlobalClient();
 		globalClient.registerOutPara(key, "SM");
@@ -70,6 +72,15 @@ public class SMDataService extends IntentService {
 		OpPerfBridge.startProfier(globalClient.getOutPara(key),
 				Functions.PERF_DIGITAL_NORMAL, "", "");
 
+		// 主动刷新出参页面的列表
+		GTApp.getOpHandler().sendEmptyMessage(5);
+		GTApp.getOpEditHandler().sendEmptyMessage(0);
+
+//		globalClient.registerOutPara(SFKey, "SF");
+//		globalClient.setOutparaMonitor(SFKey, true);
+//		OpPerfBridge.startProfier(globalClient.getOutPara(SFKey),
+//				Functions.PERF_DIGITAL_NORMAL, "", "");
+//		
 		while (true) {
 			if (pause) {
 				break;
@@ -90,6 +101,7 @@ public class SMDataService extends IntentService {
 				if (n > len) 
 				{
 					globalClient.setOutPara(key, 60);
+//					globalClient.setOutPara(SFKey, 0);
 				}
 				else
 				{
@@ -98,10 +110,12 @@ public class SMDataService extends IntentService {
 						te.reduce = 0;
 					}
 					globalClient.setOutPara(key, v);
+//					globalClient.setOutPara(SFKey, 60 - v);
 				}
 			} else {
 				int sm = 60 - x;
 				globalClient.setOutPara(key, sm);
+//				globalClient.setOutPara(SFKey, x);
 			}
 
 			try {

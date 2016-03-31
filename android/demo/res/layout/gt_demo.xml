@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Notwithstanding anything to the contrary herein, any previous version
+<!-- Notwithstanding anything to the contrary herein, any previous version
      of Tencent GT shall not be subject to the license hereunder.
      All right, title, and interest, including all intellectual property rights,
      in and to the previous version of Tencent GT (including any and all copies thereof)
@@ -19,28 +18,29 @@
      CONDITIONS OF ANY KIND, either express or implied. See the License for the
      specific language governing permissions and limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
-    <Button
-        android:id="@+id/showimg"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/showimg" />
+        android:orientation="vertical" >
 
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:columnWidth="90dp"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="auto_fit"
-        android:scrollbars="vertical"
-        android:scrollingCache="true"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
-
-</LinearLayout>
+        <Button
+            android:id="@+id/showimg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/showimg" 
+            />
+        <GridView    
+			android:id="@+id/gridview"  
+			android:layout_width="fill_parent"   
+			android:layout_height="wrap_content"  
+			android:numColumns="auto_fit"  
+			android:verticalSpacing="10dp"  
+			android:horizontalSpacing="10dp"  
+			android:columnWidth="90dp"  
+			android:stretchMode="columnWidth"  
+			android:gravity="center"  
+			android:scrollingCache="true"
+			android:scrollbars="vertical"
+		/>
+	</LinearLayout>

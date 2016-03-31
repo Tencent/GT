@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Notwithstanding anything to the contrary herein, any previous version
      of Tencent GT shall not be subject to the license hereunder.
      All right, title, and interest, including all intellectual property rights,
@@ -33,7 +33,7 @@
     <string name="eula_accept_text">我已经阅读并同意以上条款</string>
     <string name="company_name">腾讯公司</string>
     <string name="privacy">Terms and Privacy</string>
-    <string name="copyright">Copyright© 1998#8211;2014 Tencent</string>
+    <string name="copyright">Copyright© 1998#8211;2015 Tencent</string>
     <string name="reserved">All Rights Reserved</string>
     <!-- 内存助手 -->
     <string name="Dump">Dump</string>
@@ -57,6 +57,7 @@
     <string name="Detail">Detail</string>
     <string name="左中括号">[</string>
     <string name="右中括号">]</string>
+    <string name="斜杠">/</string>
     <string name="减号">-</string>
     <string name="右括号">)</string>
     <string name="左括号">(</string>
@@ -65,13 +66,9 @@
     <string name="PSS">PSS</string>
     <string name="Private_Dirty">Private Dirty</string>
     <string name="CPU">CPU</string>
-    <string name="Jiffes">Jiffes</string>
+    <string name="jiffies">jiffies</string>
     <string name="Net">Net</string>
     <string name="Cancel">Cancel</string>
-    <string name="Feedback">Feedback</string>
-    <string name="Send">Send</string>
-    <string name="Score:">Score:</string>
-    <string name="User:">User:</string>
     <string name="Installed_Application_List">Installed Application List</string>
     <string name="appName">appName</string>
     <string name="tcpdump_params">-p -s 0 -vv -w</string>
@@ -103,6 +100,7 @@
     <!-- 配置 -->
     <string name="setting_about">关于GT</string>
     <string name="setting_about_tab">关于</string>
+    <string name="setting_account_tab">帐号</string>
     <string name="setting_log_tab">日志</string>
     <string name="setting_air_tab">悬浮窗</string>
     <string name="setting_msg_tab">消息</string>
@@ -128,11 +126,14 @@
     <string name="setting_intervals_gather_FPS">FPS采集间隔(重启GT生效):</string>
     <!-- 对话框&通用 -->
     <string name="save">保存</string>
-    <string name="save_folder">保存目录</string>
+    <string name="save_folder">将选中的数据保存在:</string>
+    <string name="must_fill_hint">[必填]</string>
+    <string name="not_must_fill_hint">[非必填]</string>
     <string name="save_file">保存文件</string>
     <string name="delete">删除</string>
     <string name="deleteall">删除所有</string>
     <string name="delete_tip">删除日志?</string>
+    <string name="operate_tip">操作:</string>
     <string name="clear">清理</string>
     <string name="clear_tip">清理数据?</string>
     <string name="clear_and_reset">清理并重置</string>
@@ -140,22 +141,28 @@
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="upload">上传</string>
+    <string name="rename">重命名</string>
+    <string name="please_enter">请输入</string>
     <string name="attention">attention</string>
     <string name="load">load</string>
-    <string name="save_folder_valid">目录名不能包含特殊字符</string>
+    <string name="save_folder_valid">输入的文字不能包含特殊字符</string>
     <string name="digit_valid">输入的必须是数字</string>
+    <string name="gw_root_folder">/sdcard/GT/GW/</string>
+    <string name="test_desc">备注:</string>
+    <string name="save2cloud_desc">同时保存到云端</string>
+    <string name="sel_proj2cloud">选择上传数据的归属项目</string>
     <!-- AUT页 -->
     <string name="AUT_page_title">AUT</string>
     <string name="AUT_tab_name">AUT</string>
     <string name="AUT_app_refresh">刷新</string>
     <string name="AUT_app_lanuch">启动</string>
-    <string name="AUT_under_test">被测应用:</string>
-    <string name="AUT_choose">请选择被测应用..</string>
+    <string name="AUT_under_test">被调试的应用:</string>
+    <string name="AUT_choose">请选择被调试的应用..</string>
     <string name="AUT_meminfo_title">内存指标</string>
     <string name="AUT_mem_assistant">内存助手:</string>
     <string name="AUT_ohterinfo_title">其他指标</string>
     <string name="AUT_page_tip_title">警告</string>
-    <string name="AUT_page_tip1">本操作将清理当前被测应用已记录的测试数据,是否继续?</string>
+    <string name="AUT_page_tip1">本操作将清理当前被调试的应用已记录的调试数据,是否继续?</string>
     <string name="AUT_page_tip2">请先停止数据采集</string>
     <string name="AUT_page_tip3">无法启动应用:</string>
     <!-- Para页 -->
@@ -173,11 +180,11 @@
     <string name="para_disable_title">已取消关注的参数</string>
     <string name="para_out_toast">请选中至少一个关注项!</string>
     <string name="para_out_toast_clearall">删除所有选中的历史数据</string>
-    <string name="para_out_toast_saveto">保存历史记录到SD的:</string>
+    <string name="para_out_toast_saveto">数据已保存到手机！</string>
     <!-- Profiler页 -->
     <string name="prof_title">耗时</string>
     <string name="prof_started">统计中..</string>
-    <string name="prof_notstart">尚未开始统计</string>
+    <string name="prof_notstart">该功能需配合GT的SDK使用</string>
     <string name="prof_counts">次数</string>
     <string name="prof_sum">合计</string>
     <string name="prof_max">最大值</string>
@@ -189,6 +196,10 @@
     <string name="prof_detail_ave">平均值:</string>
     <string name="prof_detail_max">最大值:</string>
     <string name="prof_detail_min">最小值:</string>
+    <string name="prof_detail_score">整体分:</string>
+    <string name="prof_detail_good">流畅:</string>
+    <string name="prof_detail_bad">卡顿:</string>
+    
     <string name="prof_detail_attent_hint">请选择关注的项</string>
     <!-- 告警 -->
     <string name="warning_title">告警区(可用)</string>
@@ -213,28 +224,26 @@
     <!-- 插件 -->
     <string name="plugin_tab_name">插件</string>
     <string name="battery_desc">本插件用于采集电流、电压、电量、温度值，已知Google Nexus4/Nexus5和中兴红牛V5能够准确的输出电流值。使用前先确定采样率，推荐100ms~1000ms，然后勾选被观测项（电流I/电压U/电量Power/温度Temp）,点Start确定后，会在出参界面显示选中的观测项。</string>
-    <string name="netswitch_desc">本插件提供一个便捷的网络切换入口，可以切换wifi/mobile网络，点击turn on一试便知。</string>
     <string name="capture_desc">这是一个抓包插件，直接点击Start即可抓包，点击Stop后保存已抓包的内容到文件。抓包文件可用PC上的Wireshark软件分析。</string>
     <string name="screenlock_desc">这是一个wakelock的控制插件，当点击Full wakelock时，手机不会主动灭屏，并且手动灭屏了也不会进入休眠状态。当点击Partial wakelock时，手机灭屏后也不会休眠。</string>
     <string name="memfill_desc">这是一个内存填充插件，当点击fill时，会为GT进程在Native层分配xxxMB的内存。GT所占用的内存数在PSS数据中可以体现出来。</string>
     <string name="gps_desc">GPS采集：点击record开始采集，再点击会停止采集。文件存放在gt日志目录下的gps目录里。\r\nGPS回放：选择gps目录里的文件，点击replay开始，再点击停止。回放需要系统设置如下：1、设置里的位置选项，只打开通过GPS定位，其他关闭。2、开发者选项里选择允许模仿位置。</string>
     <string name="gps_replay_desc">拖动进度条改变GPS回放的进度后，点击保存即可生效。</string>
-    <string name="othersm_desc">使用：检测（结果为OK）->选中被测应用->启动测试\n设置：检测（结果NOT OK）->点击更改->点击重启\n注意：无需检测时请点击停止测试，测试完毕时请点击恢复并重启系统还原设置</string>
-    <string name="pi_battery_title">耗电测试</string>
-    <string name="pi_battery_item">统计电流电量指标,支持Nexus4/5和红牛V5</string>
+    <string name="othersm_desc">使用：检测（结果为OK）->选中被调试的进程->启动调试\n设置：检测（结果NOT OK）->点击更改->点击重启\n注意：无需检测时请点击停止调试，调试完毕时请点击恢复并重启系统还原设置</string>
+    <string name="octopus_desc">本插件用于将采集的数据上传到web端进行展示。GT的web资源由Bugly平台提供，Bugly平台可以使用QQ帐号快速登录，使用前请确保:\r\n1.手机上安装了手机QQ\r\n2.在bugly.qq.com注册过产品\r\n</string>
+    <string name="pi_battery_title">耗电数据采集</string>
+    <string name="pi_battery_item">采集电流电量指标,支持Nexus4/5和红牛V5等</string>
     <string name="pi_battery_sample_rate">采样间隔(ms):</string>
     <string name="pi_battery_sample_hint">输入的数字必须大于100</string>
     <string name="pi_battery_sample_tip">您输入刷新率或亮度不是数字!</string>
     <string name="pi_battery_sample_tip2">输入的数字应大于100!</string>
-    <string name="pi_battery_sample_tip3">请先停止电量测试!</string>
+    <string name="pi_battery_sample_tip3">请先停止已进行的耗电数据采集!</string>
     <string name="pi_battery_select_items">选择关注的指标:</string>
     <string name="pi_battery_i">电流:</string>
     <string name="pi_battery_u">电压:</string>
     <string name="pi_battery_power">电量:</string>
     <string name="pi_battery_temp">温度:</string>
     <string name="pi_battery_setbrightness">固定屏幕亮度(0–255):</string>
-    <string name="pi_pt_title">应用耗电统计</string>
-    <string name="pi_pt_item">应用级的耗电测试方案,支持4.1–4.3</string>
     <string name="pi_pcap_title">抓包</string>
     <string name="pi_pcap_item">使用tcpdump抓包</string>
     <string name="pi_pcap_foldername">保存目录名</string>
@@ -243,11 +252,6 @@
     <string name="pi_sclock_item">可以设置手机不自动灭屏或休眠</string>
     <string name="pi_sclock_fwakelock">Full wakelock</string>
     <string name="pi_sclock_pwakelock">Partial wakelock</string>
-    <string name="pi_netswitch_title">网络切换</string>
-    <string name="pi_netswitch_item">网络切换小快手</string>
-    <string name="pi_netswitch_switch_title">网络快速切换开关:</string>
-    <string name="pi_netswitch_switch_on">开</string>
-    <string name="pi_netswitch_switch_off">关</string>
     <string name="pi_memfill_title">内存填充</string>
     <string name="pi_memfill_item">内存填充</string>
     <string name="pi_memfill_alloc">分配内存数(MB):</string>
@@ -255,14 +259,12 @@
     <string name="pi_memfill_on">填充</string>
     <string name="pi_memfill_off">释放</string>
     <string name="pi_memfill_hint">输入的数字请小于1100</string>
-    <string name="pi_othersm_item">流畅度测试</string>
-    <string name="pi_othersm_title">流畅度测试</string>
+    <string name="pi_othersm_item">流畅度调试</string>
+    <string name="pi_othersm_title">流畅度调试</string>
     <string name="pi_othersm_check_status_btn">检测</string>
     <string name="pi_othersm_write_property_btn">更改</string>
     <string name="pi_othersm_recover_property_btn">恢复</string>
     <string name="pi_othersm_restart_btn">重启</string>
-    <string name="pi_othersm_start_btn">启动测试</string>
-    <string name="pi_othersm_end_btn">停止测试</string>
     <string name="pi_gps_title">月光宝盒</string>
     <string name="pi_gps_item">录制GPS轨迹并模拟回放</string>
     <string name="pi_gps_record">录制</string>
@@ -274,18 +276,60 @@
     <string name="pi_gps_warn_tip">请在开发者选项里允许模拟位置</string>
     <string name="pi_gps_warn_tip2">选择的是空位置文件!</string>
     <string name="pi_gps_warn_tip3">请不要在回放的时候做文件操作</string>
-    <string name="pi_octopus_title">八爪鱼</string>
-    <string name="pi_octopus_item">八爪鱼数据展示平台，需先注册</string>
-    <string name="pi_octopus_username">用户名:</string>
-    <string name="pi_octopus_pwd">密码:</string>
-    <string name="pi_octopus_product_name">产品名:</string>
-    <string name="pi_octopus_product_version">产品版本:</string>
-    <string name="pi_octopus_working_dir">工作目录:</string>
-    <string name="pi_octopus_result_path">结果路径:</string>
-    <string name="sp_max_freq">选择CPU频率上限</string>
-    <string name="sp_min_freq">选择CPU频率下限</string>
-    <string name="sp_governor">选择CPU变频模式</string>
+    <string name="gps_replayspeed_normal">正常速回放</string>
+    <string name="gps_replayspeed_double">2倍速回放</string>
+    <string name="gps_replayspeed_treble">4倍速回放</string>
+    <string name="pi_octopus_title">云存储</string>
+    <string name="pi_octopus_item">上传调试数据到云平台，在web端查看数据</string>
+    <string name="pi_octopus_product_name">请指定上传数据归属的项目</string>
+    <string name="pi_octopus_product_hint">请先登录QQ,将会拉取产品列表</string>
+    <string name="pi_octopus_product_get_error">拉取产品列表失败!</string>
+    <string name="pi_octopus_product_network_error">网络错误!</string>
+    <string name="pi_octopus_product_zero_product">请在bugly.qq.om网站至少注册一个产品!</string>
+    <string name="pi_octopus_upload_title">请选择要上传的数据</string>
+    <string name="pi_octopus_upload_not_select">请选择上传的数据集!</string>
+    <string name="pi_octopus_upload_not_select_product">请选择上传的产品!</string>
+    <string name="pi_octopus_upload_sucess">上传成功!</string>
+    <string name="pi_octopus_upload_fail">上传云端失败，请稍后重试!</string>
+    <string name="pi_octopus_login_user_success">登录成功!</string>
+    <string name="pi_octopus_login_user_error">用户异常返回</string>
+    <string name="pi_octopus_login_user_quickerror">快速登录失败，请改用普通登录</string>
+    <string name="pi_octopus_upload_err_service_error">服务端错误!</string>
+    <string name="pi_octopus_upload_err_null_param">请求参数不全!</string>
+    <string name="pi_octopus_upload_file_num_over">上传的文件数最大不能超过12!</string>
+    <string name="pi_octopus_upload_file_size_over">单个上传文件数不能超过4M!</string>
+    <string name="pi_octopus_upload_product_max_size">该产品上传数据已超过200M!</string>
+    <string name="pi_octopus_upload_file_num_not_sameas_attr_num">文件解析错误!</string>
+    <string name="pi_octopus_upload_file_no_new_file">云端已存在所选的性能数据!</string>
+    <string name="pi_octopus_upload_not_valid_letter">存在非法字符!</string>
+    <string name="pi_octopus_upload_times_on_product_over">该项目的上传次数已达到上限!</string>
+    <string name="pi_octopus_upload_null_result">无查询结果!</string>
+    <string name="pi_octopus_upload_network_error">网络错误!</string>
+    <string name="pi_octopus_upload_sql_error">服务器数据库错误!</string>
+    <string name="pi_octopus_upload_unknow_error">未知错误!</string>
+    <string name="pi_octopus_upload_confirm_title">确认上传?</string>
+    <string name="pi_octopus_upload_confirm_content">本次上传的文件大小为:</string>
+    <string name="pi_octopus_upload_regist_product_title">请注册上传数据归属的项目</string>
+    <string name="pi_octopus_upload_regist_product_content">本插件用于将采集的数据上传到web端进行展示。GT的web资源由Bugly平台提供，Bugly平台可以使用QQ帐号快速登录，在使用之前您需要在bugly.qq.com注册一个项目作为数据的归属项目。详细指导说明请见:</string>
+    <string name="pi_octopus_upload_regist_product_linkfaq">http://gt.qq.com/docs/a/faq/upload2cloud.pdf</string>
+    <string name="pi_octopus_upload_regist_product_question">请填写要注册的项目名称：</string>
+    <string name="pi_octopus_upload_regist_product_OK">注册项目并上传</string>
     <string name="use_detail">使用详情</string>
     <string name="about">关于</string>
+    <string name="cannot_empty">*必填项不能为空!</string>
 
+    <string name="qq_need_install">需要安装4.6以上版本手Q才能使用QQ快速登录</string>
+    <string name="qq_quicklogin_error">快速登录失败，请在手机QQ上输入密码登录。</string>
+    <string name="qq_quicklogin_succ">QQ登录成功!</string>
+    <string name="qq_quicklogin_trying">更新归属项目信息..</string>
+    <string name="qq_quicklogin_trying_content">尝试更新归属项目信息..请稍后&#8230;</string>
+    <string name="qq_need_login">请先登录QQ帐号</string>
+    <string name="qq_need_login_guide">*保存到云端前，请从GT菜单栏的\"帐号\"入口使用手机QQ快速登录（需要已安装手机QQ）</string>
+    <string name="pi_octopus_calc_size">计算本次上传的内容大小..</string>
+    <string name="pi_octopus_calc_size_content">云端计算中..请稍后&#8230;</string>
+    <string name="pi_octopus_pull_products">获取项目列表..</string>
+    <string name="pi_octopus_pull_products_content">获取项目列表中..请稍后&#8230;</string>
+    <string name="pi_octopus_reg_bugly">注册Bugly项目中..</string>
+    <string name="pi_octopus_reg_bugly_content">注册Bugly项目中..请稍后&#8230;</string>
+    <string name="pi_octopus_reg_bugly_error">注册Bugly项目失败!</string>
 </resources>

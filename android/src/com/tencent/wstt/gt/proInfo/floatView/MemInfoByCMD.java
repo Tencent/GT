@@ -108,51 +108,57 @@ public class MemInfoByCMD {
 		boolean unknownIsFind = false;
 		
 		MemInfo mi = new MemInfo();
-		
-		rows = resultString.split("\r\n");
-		
-		for(int i = 7;i < rows.length;++i){
+		try
+		{
+			rows = resultString.split("\r\n");
 			
-			rows[i] = rows[i].trim();
-			
-			if (!nativeIsFind && rows[i].indexOf("Native") != -1) {
-				nativeIsFind = true;
-				mi.pss_Native = Long.parseLong(rows[i].split("\\s+")[1]);
-				mi.nativeHeapSize = Long.parseLong(rows[i].split("\\s+")[4]);
-				mi.nativeAllocated = Long.parseLong(rows[i].split("\\s+")[5]);
-				continue;
-			}
-			else if (!dalvikIsFind && rows[i].indexOf("Dalvik") != -1) {
-				dalvikIsFind = true;
-				mi.pss_Dalvik = Long.parseLong(rows[i].split("\\s+")[1]);
-				mi.dalvikHeapSize = Long.parseLong(rows[i].split("\\s+")[4]);
-				mi.dalvikAllocated = Long.parseLong(rows[i].split("\\s+")[5]);
-				continue;
-			}
-			else if (!ashemIsFind && rows[i].indexOf("Ashmem") != -1) {
-				ashemIsFind = true;
-				mi.pss_Ashmem = Long.parseLong(rows[i].split("\\s+")[1]);
-				continue;
+			for(int i = 7;i < rows.length;++i){
 				
-			}
-			else if (!ohterDevIsFind && rows[i].indexOf("Other dev") != -1) {
-				ohterDevIsFind = true;
-				mi.pss_OtherDev = Long.parseLong(rows[i].split("\\s+")[2]); // 注意这行从2开始，Other dev中间有个空格
-				i += 6; // to Unknow
-				continue;
-			}
-			else if (!unknownIsFind && rows[i].indexOf("Unknown") != -1) {
-				unknownIsFind = true;
-				mi.pss_UnKnown = Long.parseLong(rows[i].split("\\s+")[1]);
-				continue;
-			}
-			if (rows[i].indexOf("TOTAL") != -1) {
-				mi.pss_total = Long.parseLong(rows[i].split("\\s+")[1]);
-				mi.private_dirty = Long.parseLong(rows[i].split("\\s+")[3]);
-				break;
+				rows[i] = rows[i].trim();
+				
+				if (!nativeIsFind && rows[i].indexOf("Native") != -1) {
+					nativeIsFind = true;
+					mi.pss_Native = Long.parseLong(rows[i].split("\\s+")[1]);
+					mi.nativeHeapSize = Long.parseLong(rows[i].split("\\s+")[4]);
+					mi.nativeAllocated = Long.parseLong(rows[i].split("\\s+")[5]);
+					continue;
+				}
+				else if (!dalvikIsFind && rows[i].indexOf("Dalvik") != -1) {
+					dalvikIsFind = true;
+					mi.pss_Dalvik = Long.parseLong(rows[i].split("\\s+")[1]);
+					mi.dalvikHeapSize = Long.parseLong(rows[i].split("\\s+")[4]);
+					mi.dalvikAllocated = Long.parseLong(rows[i].split("\\s+")[5]);
+					continue;
+				}
+				else if (!ashemIsFind && rows[i].indexOf("Ashmem") != -1) {
+					ashemIsFind = true;
+					mi.pss_Ashmem = Long.parseLong(rows[i].split("\\s+")[1]);
+					continue;
+					
+				}
+				else if (!ohterDevIsFind && rows[i].indexOf("Other dev") != -1) {
+					ohterDevIsFind = true;
+					mi.pss_OtherDev = Long.parseLong(rows[i].split("\\s+")[2]); // 注意这行从2开始，Other dev中间有个空格
+					i += 6; // to Unknow
+					continue;
+				}
+				else if (!unknownIsFind && rows[i].indexOf("Unknown") != -1) {
+					unknownIsFind = true;
+					mi.pss_UnKnown = Long.parseLong(rows[i].split("\\s+")[1]);
+					continue;
+				}
+				if (rows[i].indexOf("TOTAL") != -1) {
+					mi.pss_total = Long.parseLong(rows[i].split("\\s+")[1]);
+					mi.private_dirty = Long.parseLong(rows[i].split("\\s+")[3]);
+					break;
+				}
 			}
 		}
-		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		return mi;
 	}
 
@@ -168,52 +174,59 @@ public class MemInfoByCMD {
 		
 		MemInfo mi = new MemInfo();
 		
-		rows = resultString.split("\r\n");
-		
-		for(int i = 7;i < rows.length;++i){
+		try
+		{
+			rows = resultString.split("\r\n");
 			
-			rows[i] = rows[i].trim();
-			
-			if (!nativeIsFind && rows[i].indexOf("Native") != -1) {
-				nativeIsFind = true;
-				mi.pss_Native = Long.parseLong(rows[i].split("\\s+")[2]);
-				mi.nativeHeapSize = Long.parseLong(rows[i].split("\\s+")[6]);
-				mi.nativeAllocated = Long.parseLong(rows[i].split("\\s+")[7]);
-				continue;
+			for(int i = 7;i < rows.length;++i){
+				
+				rows[i] = rows[i].trim();
+				
+				if (!nativeIsFind && rows[i].indexOf("Native") != -1) {
+					nativeIsFind = true;
+					mi.pss_Native = Long.parseLong(rows[i].split("\\s+")[2]);
+					mi.nativeHeapSize = Long.parseLong(rows[i].split("\\s+")[6]);
+					mi.nativeAllocated = Long.parseLong(rows[i].split("\\s+")[7]);
+					continue;
+				}
+				else if (!dalvikIsFind && rows[i].indexOf("Dalvik") != -1) {
+					dalvikIsFind = true;
+					mi.pss_Dalvik = Long.parseLong(rows[i].split("\\s+")[2]);
+					mi.dalvikHeapSize = Long.parseLong(rows[i].split("\\s+")[6]);
+					mi.dalvikAllocated = Long.parseLong(rows[i].split("\\s+")[7]);
+					continue;
+				}
+				else if (!ohterDevIsFind && rows[i].indexOf("Other dev") != -1) {
+					ohterDevIsFind = true;
+					mi.pss_OtherDev = Long.parseLong(rows[i].split("\\s+")[2]); // 注意这行从2开始，Other dev中间有个空格
+					i += 5; // to Graphics
+					continue;
+				}
+				else if (!graphicsIsFind && rows[i].indexOf("Graphics") != -1) {
+					graphicsIsFind = true;
+					mi.pss_graphics = Long.parseLong(rows[i].split("\\s+")[1]);
+					continue;
+				}
+				else if (!glIsFind && rows[i].indexOf("GL") != -1) {
+					glIsFind = true;
+					mi.pss_gl = Long.parseLong(rows[i].split("\\s+")[1]);
+					continue;
+				}
+				else if (!unknownIsFind && rows[i].indexOf("Unknown") != -1) {
+					unknownIsFind = true;
+					mi.pss_UnKnown = Long.parseLong(rows[i].split("\\s+")[1]);
+					continue;
+				}
+				if (rows[i].indexOf("TOTAL") != -1) {
+					mi.pss_total = Long.parseLong(rows[i].split("\\s+")[1]);
+					mi.private_dirty = Long.parseLong(rows[i].split("\\s+")[2]);
+					break;
+				}
 			}
-			else if (!dalvikIsFind && rows[i].indexOf("Dalvik") != -1) {
-				dalvikIsFind = true;
-				mi.pss_Dalvik = Long.parseLong(rows[i].split("\\s+")[2]);
-				mi.dalvikHeapSize = Long.parseLong(rows[i].split("\\s+")[6]);
-				mi.dalvikAllocated = Long.parseLong(rows[i].split("\\s+")[7]);
-				continue;
-			}
-			else if (!ohterDevIsFind && rows[i].indexOf("Other dev") != -1) {
-				ohterDevIsFind = true;
-				mi.pss_OtherDev = Long.parseLong(rows[i].split("\\s+")[2]); // 注意这行从2开始，Other dev中间有个空格
-				i += 5; // to Graphics
-				continue;
-			}
-			else if (!graphicsIsFind && rows[i].indexOf("Graphics") != -1) {
-				graphicsIsFind = true;
-				mi.pss_graphics = Long.parseLong(rows[i].split("\\s+")[1]);
-				continue;
-			}
-			else if (!glIsFind && rows[i].indexOf("GL") != -1) {
-				glIsFind = true;
-				mi.pss_gl = Long.parseLong(rows[i].split("\\s+")[1]);
-				continue;
-			}
-			else if (!unknownIsFind && rows[i].indexOf("Unknown") != -1) {
-				unknownIsFind = true;
-				mi.pss_UnKnown = Long.parseLong(rows[i].split("\\s+")[1]);
-				continue;
-			}
-			if (rows[i].indexOf("TOTAL") != -1) {
-				mi.pss_total = Long.parseLong(rows[i].split("\\s+")[1]);
-				mi.private_dirty = Long.parseLong(rows[i].split("\\s+")[2]);
-				break;
-			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 
 		return mi;

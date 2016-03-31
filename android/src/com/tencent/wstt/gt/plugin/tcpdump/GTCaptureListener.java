@@ -24,9 +24,11 @@
 package com.tencent.wstt.gt.plugin.tcpdump;
 
 public interface GTCaptureListener {
+	public void preStartCapture();
 	public void onStartCaptureBegin();
-	public void onStartCaptureEnd();
+	public void onStartCaptureEnd(String curFile);
 	public void onStopCaptureBegin();
 	public void onStopCaptureEnd();
 	public void onCaptureFail(String errorstr);
+	public void onDataChange(long data);
 }

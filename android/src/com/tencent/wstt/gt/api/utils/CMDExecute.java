@@ -1,4 +1,3 @@
-
 /*
  * Tencent is pleased to support the open source community by making
  * Tencent GT (Version 2.4 and subsequent versions) available.
@@ -84,7 +83,7 @@ public final class CMDExecute {
 		}
 		return sb.toString();
 	}
-	
+
 	public static void doCmd(String cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec("su");
 		DataOutputStream os = new DataOutputStream(process.getOutputStream());
@@ -111,5 +110,19 @@ public final class CMDExecute {
 		os.close();
 
 		process.waitFor();
+	}
+
+	// 有人机交互的shell命令
+	public static Process startSuCmdInteractive() throws Exception {
+		Process process = Runtime.getRuntime().exec("su");
+		return process;
+	}
+
+	// 人机交互的后续命令
+	public static Process continueSuCmdInteractive(Process process, String cmd) throws Exception {
+		DataOutputStream os = new DataOutputStream(process.getOutputStream());
+		os.writeBytes(cmd + "\n");
+		os.flush();
+		return process;
 	}
 }

@@ -23,15 +23,6 @@
  */
 package com.tencent.wstt.gt.client.internal;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.RemoteException;
-import android.util.Log;
-
 import com.tencent.wstt.gt.Functions;
 import com.tencent.wstt.gt.GTConfig;
 import com.tencent.wstt.gt.IService;
@@ -46,6 +37,14 @@ import com.tencent.wstt.gt.client.internal.connect.IConnState;
 import com.tencent.wstt.gt.client.internal.connect.NotConnectedState;
 import com.tencent.wstt.gt.client.internal.connect.NotInstalledState;
 import com.tencent.wstt.gt.data.control.DataCacheController;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+import android.os.Message;
+import android.os.RemoteException;
+import android.util.Log;
 
 /**
  * GT提供给宿主调用的总接口

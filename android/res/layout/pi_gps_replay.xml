@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Notwithstanding anything to the contrary herein, any previous version
      of Tencent GT shall not be subject to the license hereunder.
      All right, title, and interest, including all intellectual property rights,
@@ -23,7 +23,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-   <FrameLayout
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
@@ -46,49 +46,60 @@
             android:gravity="center"
             android:text="@string/back"
             android:textColor="#9398a6"
-            android:textSize="17sp" />         
-        
+            android:textSize="17sp" />
     </FrameLayout>
 
-     <TextView
+    <TextView
         android:id="@+id/gpsreplayname"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:paddingTop="15dp"
         android:textColor="#b7bdcf"
         android:textSize="18sp" />
-     
+
     <SeekBar
         android:id="@+id/seekBar_percent"
-        android:paddingTop="25dp"
-        android:paddingBottom="5dp"
-        android:max="100"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:paddingBottom="5dp"
+        android:paddingTop="25dp" />
+
     <TextView
         android:id="@+id/percent"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="-%"
         android:textColor="@drawable/text_title_gray"
         android:textSize="14sp" />
-     
-     <Button
-            android:id="@+id/frame_save_gt" 
-            android:layout_width="76dp"
-            android:layout_height="40dp" 
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="18dp"
-            android:gravity="center"
-            android:text="@string/save"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" >
-        </Button>
-    
+
+    <RadioGroup
+        android:id="@+id/radioGroup_replyspeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radio_replayspeed_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/gps_replayspeed_normal" />
+
+        <RadioButton
+            android:id="@+id/radio_replayspeed_double"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gps_replayspeed_double" />
+
+        <RadioButton
+            android:id="@+id/radio_replayspeed_treble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gps_replayspeed_treble" />
+    </RadioGroup>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -108,5 +119,18 @@
         android:text="@string/gps_replay_desc"
         android:textColor="@drawable/text_title_gray"
         android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/frame_save_gt"
+        android:layout_width="76dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="@string/save"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" >
+    </Button>
 
 </LinearLayout>

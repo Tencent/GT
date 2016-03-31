@@ -30,12 +30,12 @@
 
 JNIEXPORT jint JNICALL Java_com_tencent_wstt_gt_api_utils_MemFillTool_fillMem
 (JNIEnv * env, jobject obj, jint blockNum) {
-	fill((int)blockNum);
+	return fill((int)blockNum);
 }
 
 JNIEXPORT jint JNICALL Java_com_tencent_wstt_gt_api_utils_MemFillTool_freeMem
 (JNIEnv * env, jobject obj) {
-	freeMem();
+	return freeMem();
 }
 
 char *p;
