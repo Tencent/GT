@@ -4,7 +4,7 @@
     coreApp="true"
     package="com.tencent.wstt.gt"
     android:installLocation="auto"
-    android:versionCode="22062"
+    android:versionCode="22063"
     android:versionName="2.2.6.3" >
 
     <uses-sdk
