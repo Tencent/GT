@@ -25,6 +25,7 @@ package com.tencent.wstt.gt.ui.model;
 
 import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.activity.GTIntervalSettingActivity;
+import com.tencent.wstt.gt.api.base.GTLog;
 import com.tencent.wstt.gt.manager.OpPerfBridge;
 import com.tencent.wstt.gt.utils.ToastUtil;
 
@@ -58,6 +59,9 @@ public class ThresholdEntry {
 	private int lowerWariningCount; // 下限告警计数
 	
 	private boolean isToasted; // 对于下限大于上限的告警，只弹出一次提示
+	
+	private static int UPPER = 0;
+	private static int LOWER = 1;
 	
 	protected ThresholdEntry(TagTimeEntry src)
 	{
@@ -178,10 +182,19 @@ public class ThresholdEntry {
 	 * @param begin
 	 * @param end
 	 */
-	private void recordLastestWaring(int begin, int end)
+	private void recordLastestWaring(int begin, int end, int type, double value)
 	{
 		lastestWarning = new WarningEntry(src, begin, end);
 		OpPerfBridge.getOpWarningManager().add(lastestWarning);
+		String name = src.getParent() == null ? src.name : src.getParent().name + "_" + src.name;
+		if (type == UPPER)
+		{
+			GTLog.logW(name, "Exceeds threshold value:" + value + " upper than " + upperValue);
+		}
+		else if (type == LOWER)
+		{
+			GTLog.logW(name, "Exceeds threshold value:" + value + " lower than " + lowerValue);
+		}
 	}
 	
 	private void judgeToast()
@@ -230,7 +243,7 @@ public class ThresholdEntry {
 					// 新告警，如在性能页面，需要在页面刷新后重置告警为false
 					newWarning = true;
 					upperWariningCount++;
-					recordLastestWaring(-1, -1);
+					recordLastestWaring(-1, -1, UPPER , d);
 				}
 			}
 			else if (!isUpperRecordStarted && duration == 1) // 直接记录为一次告警
@@ -240,7 +253,7 @@ public class ThresholdEntry {
 				// 新告警，如在性能页面，需要在页面刷新后重置告警为false
 				newWarning = true;
 				upperWariningCount++;
-				recordLastestWaring(-1, -1);
+				recordLastestWaring(-1, -1, UPPER , d);
 			}
 			else // 第一次超上限，需要持续观察
 			{
@@ -258,7 +271,7 @@ public class ThresholdEntry {
 					// 新告警，如在性能页面，需要在页面刷新后重置告警为false
 					newWarning = true;
 					lowerWariningCount++;
-					recordLastestWaring(-1, -1);
+					recordLastestWaring(-1, -1, LOWER , d);
 				}
 			}
 			else if (!isLowerRecordStarted && duration == 1) // 直接记录为一次告警
@@ -268,7 +281,7 @@ public class ThresholdEntry {
 				// 新告警，如在性能页面，需要在页面刷新后重置告警为false
 				newWarning = true;
 				lowerWariningCount++;
-				recordLastestWaring(-1, -1);
+				recordLastestWaring(-1, -1, LOWER , d);
 			}
 			else // 第一次超下限，需要持续观察
 			{
@@ -320,7 +333,7 @@ public class ThresholdEntry {
 					// TODO 新告警，如在性能页面，需要在页面刷新后重置告警为false
 					newWarning = true;
 					upperWariningCount++;
-					recordLastestWaring(lastUpperBeginSeq, seq);
+					recordLastestWaring(lastUpperBeginSeq, seq, UPPER, d);
 				}
 			}
 			else if (!isUpperRecordStarted && duration == 1) // 直接记录为一次告警
@@ -331,7 +344,7 @@ public class ThresholdEntry {
 				// TODO 新告警，如在性能页面，需要在页面刷新后重置告警为false
 				newWarning = true;
 				upperWariningCount++;
-				recordLastestWaring(lastUpperBeginSeq, seq);
+				recordLastestWaring(lastUpperBeginSeq, seq, UPPER, d);
 			}	
 			else // 第一次超上限，需要持续观察
 			{
@@ -359,7 +372,7 @@ public class ThresholdEntry {
 					// TODO 新告警，如在性能页面，需要在页面刷新后重置告警为false
 					newWarning = true;
 					lowerWariningCount++;
-					recordLastestWaring(lastLowerBeginSeq, seq);
+					recordLastestWaring(lastLowerBeginSeq, seq, LOWER, d);
 				}
 			}
 			else if (!isLowerRecordStarted && duration == 1) // 直接记录为一次告警
@@ -370,7 +383,7 @@ public class ThresholdEntry {
 				// TODO 新告警，如在性能页面，需要在页面刷新后重置告警为false
 				newWarning = true;
 				lowerWariningCount++;
-				recordLastestWaring(lastLowerBeginSeq, seq);
+				recordLastestWaring(lastLowerBeginSeq, seq, LOWER, d);
 			}
 			else // 第一次超下限，需要持续观察
 			{

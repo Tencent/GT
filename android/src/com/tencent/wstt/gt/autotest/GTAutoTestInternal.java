@@ -29,9 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-
 import com.tencent.stat.StatService;
 import com.tencent.wstt.gt.AidlEntry;
 import com.tencent.wstt.gt.GTApp;
@@ -40,7 +37,9 @@ import com.tencent.wstt.gt.activity.GTAUTFragment;
 import com.tencent.wstt.gt.api.utils.Env;
 import com.tencent.wstt.gt.api.utils.ProcessUtils;
 import com.tencent.wstt.gt.engine.ProcPerfParaRunEngine;
+import com.tencent.wstt.gt.internal.GTMemoryDaemonHelper;
 import com.tencent.wstt.gt.log.GTGWInternal;
+import com.tencent.wstt.gt.log.GTTimeInternal;
 import com.tencent.wstt.gt.log.GWSaveEntry;
 import com.tencent.wstt.gt.manager.AUTManager;
 import com.tencent.wstt.gt.manager.Client;
@@ -51,6 +50,9 @@ import com.tencent.wstt.gt.manager.OpUIManager;
 import com.tencent.wstt.gt.manager.SingleInstanceClientFactory;
 import com.tencent.wstt.gt.utils.CommonString;
 import com.tencent.wstt.gt.utils.FileUtil;
+
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 public class GTAutoTestInternal {
 	
@@ -365,6 +367,49 @@ public class GTAutoTestInternal {
 	public static void sample(String pkgName, int pid, String target)
 	{
 		
+	}
+
+	/**
+	 * 开始耗时统计
+	 */
+	public static void startTimeStatistics()
+	{
+		// UI需要隐藏save、delete、start，显示end
+		if (!GTTimeInternal.isETStarted())
+		{
+			// 如果想开启，需要先校验
+			if (!GTMemoryDaemonHelper.startGWOrProfValid())
+			{
+				return;
+			}
+			
+			// TODO 页面UI最好进行同步
+
+			// 这个属性需要交给控制器去做业务逻辑相关处理
+			GTTimeInternal.setETStarted(true);
+		}
+	}
+
+	/**
+	 * 暂停耗时统计
+	 */
+	public static void stopTimeStatistics()
+	{
+		if (GTTimeInternal.isETStarted())
+		{
+			GTTimeInternal.setETStarted(false);
+		}
+	}
+
+	/**
+	 * 结束耗时统计并保存
+	 * @param filename 保存的文件名
+	 */
+	public static void endTimeStatistics(String filename)
+	{
+		stopTimeStatistics();
+		GTTimeInternal.saveTimeLog(filename);
+		GTTimeInternal.cleartimeInfo();
 	}
 
 	public static void exitGT()

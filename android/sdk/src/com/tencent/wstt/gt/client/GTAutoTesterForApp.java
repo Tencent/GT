@@ -136,4 +136,47 @@ public class GTAutoTesterForApp {
 
 		GTInternal.INSTANCE.sample(-1, target);
 	}
+
+	/**
+	 * 开始耗时统计
+	 * @since 2.2.6.3
+	 */
+	public static void startTimeStatistics()
+	{
+		if (!GT.isEnable())
+		{
+			return;
+		}
+
+		GTInternal.INSTANCE.startTimeStatistics();
+	}
+
+	/**
+	 * 暂停耗时统计
+	 * @since 2.2.6.3
+	 */
+	public static void stopTimeStatistics()
+	{
+		if (!GT.isEnable())
+		{
+			return;
+		}
+
+		GTInternal.INSTANCE.stopTimeStatistics();
+	}
+
+	/**
+	 * 结束耗时统计并保存
+	 * @param filename 保存的文件名
+	 * @since 2.2.6.3
+	 */
+	public static void endTimeStatistics(String filename)
+	{
+		if (!GT.isEnable())
+		{
+			return;
+		}
+
+		GTInternal.INSTANCE.endTimeStatistics(filename);
+	}
 }

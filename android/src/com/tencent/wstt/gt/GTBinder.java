@@ -256,7 +256,14 @@ public class GTBinder extends IService.Stub {
 	public void setBooleanEntry(BooleanEntry task) throws RemoteException {
 		switch (task.getFunctionId()) {
 		case Functions.SET_PROFILER_ENABLE:
-			GTTimeInternal.setETStarted(task.getData());
+			if (task.getData())
+			{
+				GTAutoTestInternal.startTimeStatistics();
+			}
+			else
+			{
+				GTAutoTestInternal.stopTimeStatistics();
+			}
 			break;
 		case Functions.SET_FLOATVIEW_FRONT:
 			GTServiceController.INSTANCE.setFloatViewFront(task.getData());
@@ -363,8 +370,12 @@ public class GTBinder extends IService.Stub {
 				sampleRate = sampleRate / 100 * 100;
 				GTIntervalSettingActivity.msecond = sampleRate >= 100 ? sampleRate : 100;
 				break;
+			// 结束并保存清理耗时统计
+			case Functions.GT_CMD_END_ET_AND_CLEAR:
+				String filename = bundle.getString("filename");
+				GTAutoTestInternal.endTimeStatistics(filename);
+				break;
 			}
-			
 		}
 		else
 		{

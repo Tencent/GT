@@ -50,7 +50,6 @@ import com.tencent.wstt.gt.plugin.gps.GTGPSPluginItem;
 import com.tencent.wstt.gt.plugin.gps.GTGPSReplayEngine;
 import com.tencent.wstt.gt.plugin.internal.PluginService;
 import com.tencent.wstt.gt.plugin.memfill.GTMemFillPluginItem;
-import com.tencent.wstt.gt.plugin.octopus.GTOctopusPluginItem;
 import com.tencent.wstt.gt.plugin.screenlock.ScreenlockPluginItem;
 import com.tencent.wstt.gt.plugin.smtools.SMToolsPluginItem;
 import com.tencent.wstt.gt.plugin.tcpdump.TcpdumpPluginItem;
@@ -154,7 +153,6 @@ public class GTApp extends Application {
 		pm.register(new GTMemFillPluginItem());
 		pm.register(new SMToolsPluginItem());
 		pm.register(new GTGPSPluginItem());
-		pm.register(new GTOctopusPluginItem());
 	}
 
 	public static Context getContext() {

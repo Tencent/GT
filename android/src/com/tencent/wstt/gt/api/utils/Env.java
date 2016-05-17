@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.utils.FileUtil;
+import com.tencent.wstt.gt.utils.GTUtils;
 import com.tencent.wstt.gt.utils.ToastUtil;
 
 import android.os.Environment;
@@ -171,8 +172,19 @@ public class Env {
 
 		public static String getAbsoluteSdcardPath() {
 			if (TextUtils.isEmpty(CD_S_SdcardPathAbsolute))
+			{
 				CD_S_SdcardPathAbsolute = Environment.getExternalStorageDirectory().getAbsolutePath();
+			}
+			// 先试试默认的目录，如果创建目录失败再试其他方案
+			String testFileName = GTUtils.getSaveDateMs();
+			File testF = new File(CD_S_SdcardPathAbsolute + "/GT/" + testFileName + "/");
+			if (testF.mkdirs())
+			{
+				FileUtil.deleteFile(testF);
+				return CD_S_SdcardPathAbsolute;
+			}
 
+			// 默认路径不可用，尝试其他方案
 			CD_S_SdcardPathAbsolute = checkAndReplaceEmulatedPath(CD_S_SdcardPathAbsolute);
 
 			return CD_S_SdcardPathAbsolute;
@@ -189,15 +201,24 @@ public class Env {
 			if (m.find()) {
 				result= strSrc.replace(CT_S_Sdcard_Sign_Storage_emulated, CT_S_Sdcard_Sign_Storage_sdcard);
 				// 如果目录建立失败，最后尝试Nexus5 Android6.01适配
-				File gTFile = new File(result);
-				if (! gTFile.mkdirs())
+				String testFileName = GTUtils.getSaveDateMs();
+				File testFile = new File(CD_S_SdcardPathAbsolute + "/GT/" + testFileName + "/");
+				if (testFile.mkdirs())
+				{
+					FileUtil.deleteFile(testFile);
+				}
+				else
 				{
 					result = strSrc.replace(CT_S_Sdcard_Sign_Storage_emulated_0, CT_S_Sdcard_Sign_sdcard);
 					
 					// test
-					File testF = new File(result + "/GT/");
-					testF.mkdir();
+					File testF = new File(result + "/GT/" + testFileName + "/");
+					if (testF.mkdirs())
+					{
+						FileUtil.deleteFile(testF);
+					}
 				}
+				
 			}
 
 			return result;

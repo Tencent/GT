@@ -26,20 +26,17 @@ package com.tencent.wstt.gt.activity;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.tencent.wstt.gt.R;
+import com.tencent.wstt.gt.api.utils.Env;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
-
-import com.tencent.wstt.gt.GTApp;
-import com.tencent.wstt.gt.R;
-import com.tencent.wstt.gt.api.utils.Env;
-import com.tencent.wstt.gt.plugin.octopus.GTOctopusActivity;
-import com.tencent.wstt.gt.utils.ToastUtil;
 
 public class ShowhtmlActivity extends GTBaseActivity
 {

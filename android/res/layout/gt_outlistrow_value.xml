@@ -75,7 +75,7 @@
             android:textColor="#FFFFFF"
             android:textSize="15sp" 
             />
-
+<!-- gravity="center"兼容乐视等系统checkbox在gravity="right"时无法显示的bug -->
         <CheckBox
             android:id="@+id/cb_tick"
             android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
             android:layout_alignParentRight="true"
             android:clickable="true"
             android:focusable="false"
-            android:gravity="right" 
+            android:gravity="center" 
            />
 
     </RelativeLayout>

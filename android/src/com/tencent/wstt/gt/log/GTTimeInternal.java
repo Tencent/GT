@@ -70,8 +70,11 @@ public class GTTimeInternal {
 	}
 
 	public static void saveTimeLog(String logFileName) {
-		setLastSaveTimeLog(logFileName);
-		timeLogController.saveAllCache(logFileName);
+		if (null != logFileName)
+		{
+			setLastSaveTimeLog(logFileName);
+			timeLogController.saveAllCache(logFileName);
+		}
 	}
 
 	public static void saveTimeLogDetail(String logFileName,

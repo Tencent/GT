@@ -142,4 +142,32 @@ public class GTAutoTesterForSelf {
 
 		GTInternal.INSTANCE.sample(Process.myPid(), target);
 	}
+
+	/**
+	 * 开始耗时统计
+	 * @since 2.2.6.3
+	 */
+	public static void startTimeStatistics()
+	{
+		GTAutoTesterForApp.startTimeStatistics();
+	}
+
+	/**
+	 * 暂停耗时统计
+	 * @since 2.2.6.3
+	 */
+	public static void stopTimeStatistics()
+	{
+		GTAutoTesterForApp.stopTimeStatistics();
+	}
+
+	/**
+	 * 结束耗时统计并保存
+	 * @param filename 保存的文件名
+	 * @since 2.2.6.3
+	 */
+	public static void endTimeStatistics(String filename)
+	{
+		GTAutoTesterForApp.endTimeStatistics(filename);
+	}
 }

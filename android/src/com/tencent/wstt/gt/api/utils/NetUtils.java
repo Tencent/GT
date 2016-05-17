@@ -131,14 +131,21 @@ public class NetUtils {
 			}
 			else
 			{
+				String ret = "0";
 				try {
-					String ret = "0";
 					FileReader fr = new FileReader(netPath);
 					BufferedReader localBufferedReader = new BufferedReader(fr, 8192);
 					ret = localBufferedReader.readLine();
 					FileUtil.closeReader(localBufferedReader);
 					return Long.parseLong(ret);
 				} catch (Exception e) {
+					netCase = TYPE_CASE2;
+				}
+
+				// 最后一个尝试
+				if ((ret == null || ret.equals("0"))
+						&& (TrafficStats.getUidTxBytes(uid) > 0 || TrafficStats.getUidRxBytes(uid) > 0))
+				{
 					netCase = TYPE_CASE2;
 				}
 			}
@@ -180,14 +187,21 @@ public class NetUtils {
 			}
 			else
 			{
+				String ret = "0";
 				try {
-					String ret = "0";
 					FileReader fr = new FileReader(netPath);
 					BufferedReader localBufferedReader = new BufferedReader(fr, 8192);
 					ret = localBufferedReader.readLine();
 					FileUtil.closeReader(localBufferedReader);
 					return Long.parseLong(ret);
 				} catch (Exception e) {
+					netCase = TYPE_CASE2;
+				}
+
+				// 最后一个尝试
+				if ((ret == null || ret.equals("0"))
+						&& (TrafficStats.getUidTxBytes(uid) > 0 || TrafficStats.getUidRxBytes(uid) > 0))
+				{
 					netCase = TYPE_CASE2;
 				}
 			}

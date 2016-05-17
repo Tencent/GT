@@ -27,6 +27,7 @@ import com.tencent.wstt.gt.Functions;
 import com.tencent.wstt.gt.GTConfig;
 import com.tencent.wstt.gt.IService;
 import com.tencent.wstt.gt.client.AbsGTParaLoader;
+import com.tencent.wstt.gt.client.GT;
 import com.tencent.wstt.gt.client.GTConnectListener;
 import com.tencent.wstt.gt.client.communicate.ComImpl;
 import com.tencent.wstt.gt.client.communicate.ICom;
@@ -725,5 +726,65 @@ public class GTInternal {
 		bundle.putInt("sampleRate", ms);
 		
 		curConnState.setCommand("", bundle);
+	}
+
+	/**
+	 * 直接采集某一指标
+	 * @param target 指标标识，要与控制台对应
+	 * @since 2.2.6.3
+	 */
+	public static void sample(String target)
+	{
+		if (!GT.isEnable())
+		{
+			return;
+		}
+
+		GTInternal.INSTANCE.sample(-1, target);
+	}
+
+	/**
+	 * 开始耗时统计
+	 * @since 2.2.6.3
+	 */
+	public void startTimeStatistics()
+	{
+		this.setProfilerEnable(true);
+	}
+
+	/**
+	 * 暂停耗时统计
+	 * @since 2.2.6.3
+	 */
+	public void stopTimeStatistics()
+	{
+		this.setProfilerEnable(false);
+	}
+
+	/**
+	 * 结束耗时统计并保存
+	 * @param filename 保存的文件名
+	 */
+	public void endTimeStatistics(String filename)
+	{
+		if (null == filename)
+		{
+			return;
+		}
+
+		// 不走状态，直接调同步命令的服务
+		if (null != gtService)
+		{
+			Bundle bundle = new Bundle();
+			bundle.putString(Functions.GT_COMMAND, "");
+			bundle.putInt(Functions.GT_COMMAND_KEY, Functions.GT_CMD_END_ET_AND_CLEAR);
+			bundle.putString("filename", filename);
+			
+			try {
+				gtService.setCommondSync(bundle);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -23,7 +23,6 @@
  */
 package com.tencent.wstt.gt.activity;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,18 +37,10 @@ import com.tencent.wstt.gt.log.GWSaveEntry;
 import com.tencent.wstt.gt.manager.OpPerfBridge;
 import com.tencent.wstt.gt.manager.OpUIManager;
 import com.tencent.wstt.gt.manager.ParamConst;
-import com.tencent.wstt.gt.plugin.PluginManager;
-import com.tencent.wstt.gt.plugin.octopus.GTOctopusActivity;
-import com.tencent.wstt.gt.plugin.octopus.GTOctopusEngine;
-import com.tencent.wstt.gt.plugin.octopus.HttpAssist;
-import com.tencent.wstt.gt.plugin.octopus.OctopusPluginListener;
-import com.tencent.wstt.gt.plugin.octopus.PreUploadEntry;
 import com.tencent.wstt.gt.proInfo.floatView.GTMemHelperFloatview;
 import com.tencent.wstt.gt.service.GTServiceController;
 import com.tencent.wstt.gt.ui.model.TagTimeEntry;
-import com.tencent.wstt.gt.utils.FileUtil;
 import com.tencent.wstt.gt.utils.ToastUtil;
-import com.tencent.wstt.gt.utils.WtloginUtil;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -60,7 +51,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -71,14 +61,12 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import mqq.sdet.gt.protocol.ErrorMsg;
 
-public class GTParamOutFragment extends ListFragment implements OnClickListener, OnTouchListener, OnScrollListener, OctopusPluginListener {
+public class GTParamOutFragment extends ListFragment implements OnClickListener, OnTouchListener, OnScrollListener {
 	private Button btn_gw_on;
 	private Button btn_gw_off;
 	private ImageButton save;
@@ -89,23 +77,14 @@ public class GTParamOutFragment extends ListFragment implements OnClickListener,
 	private EditText et_saveTestDesc;
 	private AlertDialog gwhis_save;
 	private ProgressDialog proDialog;
-	private CheckBox cb_saveEditor2Cloud;
 
 	private TextView invalid_alarm;
 
 	private GTParamOutListAdapter outparam_adapter;
 
 	private List<String> listProjectName = new ArrayList<String>();
-	private String strUin;
-	private String strLsKey;
-	private String strPsk;
-	private String strSKey;
 	private List<Pair<String, String>> listProjectPair = new ArrayList<Pair<String, String>>();
 	Pair<String, String> pairSelSave2Cloud = null;
-	private int intResHttpAss;
-	private String[] strListProjectName;
-	private int listProjectNameSize;
-	private String strSave2CloudFilePath;
 
 	public static boolean cb_all_status = false; // true为全选 false为全取消
 
@@ -212,7 +191,6 @@ public class GTParamOutFragment extends ListFragment implements OnClickListener,
 		et_savePath3 = (EditText) rl_save.findViewById(R.id.save_editor);
 		et_saveTestDesc = (EditText) rl_save.findViewById(R.id.save_editor_desc);
 		invalid_alarm = (TextView) rl_save.findViewById(R.id.invalid_alarm);
-		cb_saveEditor2Cloud = (CheckBox) rl_save.findViewById(R.id.cb_save_editor_2cloud);
 		gwhis_save = new Builder(getActivity()).setTitle(getString(R.string.save)).setView(rl_save)
 				.setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 
@@ -243,121 +221,8 @@ public class GTParamOutFragment extends ListFragment implements OnClickListener,
 							return;
 						}
 
-						if (cb_saveEditor2Cloud.isChecked()) {
-							strUin = WtloginUtil.getUin();
-							if (strUin != null) {
-								strLsKey = WtloginUtil.getLsKey(WtloginUtil.getUin());
-								strPsk = WtloginUtil.getPsKey(WtloginUtil.getUin());
-								strSKey = WtloginUtil.getSKey(WtloginUtil.getUin());
-
-								// TODO 持久化用户的输入
-
-								if (!strLsKey.isEmpty()) {
-									// 转菊花，等待产品列表获取结果
-									new Thread() {
-										public void run() {
-											intResHttpAss = HttpAssist.prepareProductPairs(strUin, strLsKey,
-													listProjectPair);
-											Log.i("NET", "HttpAssist result=" + Integer.toString(intResHttpAss) + ","
-													+ listProjectPair.size());
-
-											if (listProjectPair.size() == 0) {
-
-												strSave2CloudFilePath = Env.S_ROOT_GW_FOLDER
-														+ FileUtil.separator + path1
-														+ FileUtil.separator + path2
-														+ FileUtil.separator + path3
-														+ FileUtil.separator;
-												Intent intent=new Intent(getActivity(), GTOctopusActivity.class);  
-												Bundle bundle=new Bundle();  
-												bundle.putString("name", strSave2CloudFilePath);
-												bundle.putString("intent", "newproj");
-												// 把附加的数据放到意图当中
-												intent.putExtras(bundle);
-												intent.setAction("New_Proj");
-												// 执行意图
-												startActivity(intent); 
-											} else {
-												getActivity().runOnUiThread(new Runnable() {
-													@Override
-													public void run() {
-														proDialog = ProgressDialog.show(getActivity(), "Saving..", "saving..wait....", true, true);
-													}
-												});
-												saveDataHandler.run(); // 非主线程，直接在菊花框后面保存
-												getActivity().runOnUiThread(new Runnable() {
-													@Override
-													public void run() {
-														listProjectName.clear();
-														for (Pair<String, String> projectPair : listProjectPair) {
-															String projectSecond = projectPair.second;
-															listProjectName.add(projectSecond);
-														}
-														listProjectNameSize = listProjectName.size();
-														strListProjectName = (String[]) listProjectName
-																.toArray(new String[listProjectNameSize]);
-
-														// 默认的选中项
-														final int defaultSelected = 0;
-														pairSelSave2Cloud = listProjectPair.get(defaultSelected);
-
-														AlertDialog.Builder builder = new AlertDialog.Builder(
-																getActivity());
-														builder.setTitle(R.string.sel_proj2cloud);
-														builder.setSingleChoiceItems(strListProjectName, defaultSelected,
-																new DialogInterface.OnClickListener() {
-																	@Override
-																	public void onClick(DialogInterface dialog,
-																			int which) {
-																		// 通过项目找到上传项目的地址等信息
-																		// 保存处理选择的pair
-																		String strSelProj = strListProjectName[which];
-																		for (Pair<String, String> comPair : listProjectPair) {
-																			if (comPair.second.trim()
-																					.equals(strSelProj)) {
-																				pairSelSave2Cloud = comPair;
-																				break;
-																			}
-																		}
-																	}
-																});
-
-														builder.setPositiveButton(R.string.upload,
-																new DialogInterface.OnClickListener() {
-																	@Override
-																	public void onClick(DialogInterface dialog,
-																			int which) {
-
-																		strSave2CloudFilePath = Env.S_ROOT_GW_FOLDER
-																				+ FileUtil.separator + path1
-																				+ FileUtil.separator + path2
-																				+ FileUtil.separator + path3
-																				+ FileUtil.separator;
-																		File folder = new File(strSave2CloudFilePath);
-																		save2CloudOnDialog(folder, strSKey, strPsk, strLsKey,pairSelSave2Cloud);
-																	}
-																});
-														builder.setNegativeButton(R.string.cancel, null);
-														builder.show();
-													}
-												});
-											}
-										}
-									}.start();
-									dismissAlam();
-								}
-								canCloseDialog(dialog, true);
-							} else {
-								// 更新view给用户强提示
-								showAlam(R.string.qq_need_login_guide);
-								canCloseDialog(dialog, false);
-							}
-						}
-						else
-						{
-							save2Local();
-							canCloseDialog(dialog, true);
-						}
+						save2Local();
+						canCloseDialog(dialog, true);
 					}
 				}).create();
 
@@ -590,183 +455,6 @@ public class GTParamOutFragment extends ListFragment implements OnClickListener,
 		}
 	};
 
-	// 处理上传
-	private void save2CloudOnDialog(final File folder, final String skey, final String pskey, final String lskey,
-			final Pair<String, String> pairSelSave2Cloud) {
-		String[] paths = folder.getPath().split(FileUtil.separator);
-		if (paths == null || paths.length <= 3) {
-			// TODO 非预期目录有问题，无法处理的error
-			return;
-		}
-		final String path1 = paths[paths.length - 3];
-		final String path2 = paths[paths.length - 2];
-		final String path3 = paths[paths.length - 1];
-
-		if (pairSelSave2Cloud == null) {
-			ToastUtil.ShowLongToast(GTApp.getContext(), R.string.pi_octopus_upload_not_select);
-			return;
-		}
-		// final Pair<String, String> productPair = listProjectPair;
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				long size = 0;
-				File[] csvFiles = folder.listFiles(FileUtil.CSV_FILTER);
-				// 网络操作需要在独立线程完成
-				PreUploadEntry preUploadEntry = HttpAssist.preUpload(csvFiles, pairSelSave2Cloud.first, path1, path2,
-						path3, WtloginUtil.getUin(), skey, pskey, lskey);
-				if (preUploadEntry == null) {
-					ToastUtil.ShowLongToast(GTApp.getContext(), ErrorMsg.NET_ERROR);
-					return;
-				}
-
-				final List<String> chosedFilePathList = new ArrayList<String>();
-				for (File f : preUploadEntry.choicedCsvFileList) {
-					size += f.length();
-					chosedFilePathList.add(f.getPath());
-				}
-				final long sizeKB = size / 1024 + 1;
-				getActivity().runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						dismissProDialog();
-						AlertDialog.Builder builder = new Builder(getActivity());
-						builder.setMessage(getString(R.string.pi_octopus_upload_confirm_content) + sizeKB + "KB");
-						builder.setTitle(getString(R.string.pi_octopus_upload_confirm_title));
-						builder.setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss();
-							}
-						});
-						builder.setNegativeButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-								dialog.dismiss();
-								Pair<String, String> productPair = (Pair) pairSelSave2Cloud;
-
-								// 从folder解析出三级目录
-								String[] paths = folder.getPath().split(FileUtil.separator);
-								if (paths == null || paths.length <= 3) {
-									// TODO 报个error
-									return;
-								}
-								// 分析文件，准备上传，用Service处理
-								Intent intent = new Intent();
-								intent.putExtra(SRC, folder.getPath());
-								intent.putExtra(FILE_ARRAY, chosedFilePathList.toArray(new String[] {}));
-
-								intent.putExtra(PRODUCT_ID, productPair.first);
-								intent.putExtra(PRODUCT_NAME, productPair.second);
-								intent.putExtra(PATH1, paths[paths.length - 3]);
-								intent.putExtra(PATH2, paths[paths.length - 2]);
-								intent.putExtra(PATH3, paths[paths.length - 1]);
-								intent.putExtra(UIN, WtloginUtil.getUin());
-								intent.putExtra(S_KEY, skey);
-								intent.putExtra(P_S_KEY, pskey);
-								intent.putExtra(LS_KEY, lskey);
-
-								GTOctopusEngine.getInstance().addListener(GTParamOutFragment.this);
-								PluginManager.getInstance().getPluginControler()
-										.startService(GTOctopusEngine.getInstance(), intent);
-							}
-						});
-						builder.setCancelable(false);
-						builder.show();
-					}
-				});
-
-			}
-		}, "choicedCsvFilesThread").start();
-	}
-	
-	//Added by mikemyzhao2015-12-17 17:10:06
-	private void comfirmToProductRegistPage(final String lskey)
-	{
-		View rl_save = LayoutInflater.from(getActivity()).inflate(
-				R.layout.pi_octopus_dailog_regist_product, null, false);
-		final EditText et_project_editor = (EditText)rl_save.findViewById(R.id.project_editor);
-
-		AlertDialog.Builder builder = new Builder(getActivity());
-		builder.setTitle(getString(R.string.pi_octopus_upload_regist_product_title))
-			.setView(rl_save)
-			.setPositiveButton(getString(R.string.cancel),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						dialog.dismiss();
-						//GTOctopusActivity.this.finish();
-					}
-				})
-			.setNegativeButton(getString(R.string.pi_octopus_upload_regist_product_OK),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-
-						dialog.dismiss();
-						
-						// TODO 应对文本进行合法性校验
-						String appName = et_project_editor.getText().toString().trim();
-
-						// 弹菊花等待拉取appId的网络操作完成
-						showProDialog(getString(R.string.pi_octopus_reg_bugly),
-								getString(R.string.pi_octopus_reg_bugly_content));
-						// 申请appId后将appId到UI上，结束菊花
-						waitForApplyAppId(appName);
-					}
-				})
-			.setCancelable(false)
-			.show();
-	}
-
-	/*
-	 * 申请appId后将唯一更新appId到UI上，结束菊花
-	 * @param 要申请的app名字
-	 */
-	private void waitForApplyAppId(final String name)
-	{
-		new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				String appId = null;
-				try {
-					appId = HttpAssist.registProduct(
-							WtloginUtil.getUin(), WtloginUtil.getLsKey(WtloginUtil.getUin()), name);
-				} catch (Exception e) {
-					getActivity().runOnUiThread(new Runnable(){
-
-						@Override
-						public void run() {
-							ToastUtil.ShowLongToast(getActivity(), R.string.pi_octopus_reg_bugly_error);
-							// 取消菊花
-//							dismissProDialog();
-						}});
-					return;
-				}
-				final String appIdFinal = appId;
-				getActivity().runOnUiThread(new Runnable(){
-
-					@Override
-					public void run() {
-						if (appIdFinal == null)
-						{
-							//dismissProDialog();
-							ToastUtil.ShowLongToast(getActivity(), R.string.pi_octopus_reg_bugly_error);
-							return;
-						}
-					}});
-			}}, "ApplyAppIdThread").start();
-	}
-	
 	@Override
 	public boolean onTouch(View v, MotionEvent ev) {
 		int action = ev.getAction();
@@ -808,32 +496,4 @@ public class GTParamOutFragment extends ListFragment implements OnClickListener,
 			refreshHandler.removeCallbacksAndMessages(null);
 		}
 	}
-
-	@Override
-	public void onStartUpload(String folderName) {
-		
-	}
-
-	@Override
-	public void onUploadSucess() {
-		GTOctopusEngine.getInstance().removeListener(GTParamOutFragment.this);
-		getActivity().runOnUiThread(new Runnable(){
-
-			@Override
-			public void run() {
-				ToastUtil.ShowLongToast(getActivity(), R.string.pi_octopus_upload_sucess);
-			}});
-	}
-
-	@Override
-	public void onUploadFail(String errorstr) {
-		GTOctopusEngine.getInstance().removeListener(GTParamOutFragment.this);
-		getActivity().runOnUiThread(new Runnable(){
-
-			@Override
-			public void run() {
-				ToastUtil.ShowLongToast(getActivity(), R.string.pi_octopus_upload_fail);
-			}});
-	}
-
 }

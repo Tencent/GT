@@ -72,6 +72,13 @@ public class SMDataService extends IntentService {
 		OpPerfBridge.startProfier(globalClient.getOutPara(key),
 				Functions.PERF_DIGITAL_NORMAL, "", "");
 
+		/*
+		 * SM设置默认的告警阈值为40，
+		 * TODO 这里设置是简单支持SM的告警需求，SDK命令支持比较麻烦，就先加在这里了
+		 */
+		OpPerfBridge.getProfilerData(key).getThresholdEntry(
+				).setThreshold(1, Integer.MAX_VALUE, 40);
+
 		// 主动刷新出参页面的列表
 		GTApp.getOpHandler().sendEmptyMessage(5);
 		GTApp.getOpEditHandler().sendEmptyMessage(0);
@@ -109,8 +116,8 @@ public class SMDataService extends IntentService {
 						TimeEntry te = tte.getRecord(len - 1 - i);
 						te.reduce = 0;
 					}
-					globalClient.setOutPara(key, v);
-//					globalClient.setOutPara(SFKey, 60 - v);
+					globalClient.setOutPara(key, 60 - v);
+//					globalClient.setOutPara(SFKey, v);
 				}
 			} else {
 				int sm = 60 - x;

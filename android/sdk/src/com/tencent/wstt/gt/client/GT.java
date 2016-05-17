@@ -140,9 +140,9 @@ public class GT {
 	}
 
 	/**
-	 * 设置性能开关状态，主要用于性能开关随GT启动开启的设置
-	 * 该方法在connect方法之后调用，即可保证GT控制台启动时即开启性能统计开关
-	 * @param flag 性能开关是否开启
+	 * 设置耗时统计开关状态，主要用于耗时统计开关随GT启动开启的设置
+	 * 该方法在connect方法之后调用，即可保证GT控制台启动时即开启耗时统计开关
+	 * @param flag 耗时统计开关是否开启
 	 * @since 1.1
 	 */
 	public static void setProfilerEnable(boolean flag)

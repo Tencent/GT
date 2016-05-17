@@ -78,7 +78,8 @@ public interface Functions {
 	// GT通用控制命令
 	public static final String GT_COMMAND = "&gt_cmd_";
 	public static final String GT_COMMAND_KEY = "&gt_cmd_k";
-	
+	public static final String GT_CMD_KEY_VERSION = "&gt_cmd_k_v";
+
 	// 获取服务端内部版本号
 	public static final int GT_CMD_GET_VERSION = 0;
 	public static final int GT_CMD_START_PROCTEST = 1;
@@ -92,5 +93,6 @@ public interface Functions {
 	public static final int GT_CMD_END_TEST_AND_CLEAR = 7;
 	public static final int GT_CMD_TEST_DATA_CLEAR = 8;
 
-	public static final String GT_CMD_KEY_VERSION = "&gt_cmd_k_v";
+	// 结束并保存清理耗时统计
+	public static final int GT_CMD_END_ET_AND_CLEAR = 9;
 }

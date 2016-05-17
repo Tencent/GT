@@ -30,11 +30,9 @@ import com.tencent.wstt.gt.dao.GTPref;
 import com.tencent.wstt.gt.service.GTFloatView;
 import com.tencent.wstt.gt.service.GTLogo;
 import com.tencent.wstt.gt.utils.ToastUtil;
-import com.tencent.wstt.gt.utils.WtloginUtil;
 
 import android.Manifest;
 import android.app.Notification;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -54,32 +52,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import oicq.wlogin_sdk.request.WUserSigInfo;
-import oicq.wlogin_sdk.request.WtloginListener;
-import oicq.wlogin_sdk.tools.ErrMsg;
-import oicq.wlogin_sdk.tools.util;
 
 public class GTMainActivity extends GTBaseFragmentActivity implements OnClickListener {
-	/*
-	 * 转菊花Dialog
-	 */
-	private ProgressDialog proDialog;
-
-	// 显示菊花
-	private void showProDialog(String title, String message)
-	{
-		proDialog = ProgressDialog.show(this, title, message, true, true);
-	}
-
-	// 取消菊花
-	private void dismissProDialog()
-	{
-		if (null != proDialog)
-		{
-			proDialog.dismiss();
-			proDialog = null;
-		}
-	}
 
 	// Android6.x之后，需要由用户明确授权的权限，放在MainActivity里提前做申请交互
 	private static final int REQUEST_NEED_PERMISSION = 101;
@@ -480,19 +454,6 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
-		case R.id.account:
-			intent = WtloginUtil.getIntent();
-			boolean canQlogin = (intent!=null);
-			if (!canQlogin) {
-				ToastUtil.ShowLongToast(this, R.string.qq_need_install);
-				break;
-			}
-			try {
-				startActivityForResult(intent, WtloginUtil.REQ_QLOGIN);
-			} catch (Exception e) {
-				ToastUtil.ShowLongToast(this, R.string.qq_quicklogin_error);
-			}
-			break;
 		case R.id.about:
 			intent = new Intent(this, GTAboutActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -507,31 +468,6 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-		case WtloginUtil.REQ_QLOGIN: // 快速登录返回
-			try {
-				if (data == null) { // 这种情况下用户多半是直接按了返回按钮，没有进行快速登录；快速登录失败可提醒用户输入密码登录
-					break;
-				}
-				WtloginUtil.getHelper().SetListener(wtloginListener);
-
-				WUserSigInfo sigInfo = WtloginUtil.getSigInfo(data);
-				if (sigInfo == null) {
-					ToastUtil.ShowLongToast(GTApp.getContext(), R.string.pi_octopus_login_user_quickerror);
-					break;
-				}
-
-				// getStWithPasswd之前要先setUin，因为用到这个参数
-				WtloginUtil.setUin(sigInfo.uin);
-
-				// 快速登录只是从手Q换取了A1票据，A1则相当于用户密码，在此仍需要再发起一次A1换票的流程，才能拿到目标票据
-				WtloginUtil.getStWithPasswd(sigInfo);
-
-				showProDialog(getString(R.string.qq_quicklogin_trying)
-						, getString(R.string.qq_quicklogin_trying_content));
-			} catch (Exception e) {
-				util.printException(e);
-			}
-			break;
 		case REQUEST_FLOAT_VIEW:
 			// 得到权限，置标志位，相应的提示用户重启GT等
 			isFloatViewAllowed = true;
@@ -554,34 +490,4 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 			break;
 		}
 	}
-
-	/*
-	 * 各种请求的回调在这里实现，安全起见，GT不独立完成登录事务，只实现快速登录成功的回调
-	 */
-	WtloginListener wtloginListener = new WtloginListener() {
-		@Override
-		public void OnGetStWithPasswd(String userAccount, long dwSrcAppid,
-				int dwMainSigMap, long dwSubDstAppid, String userPasswd,
-				WUserSigInfo userSigInfo, int ret, ErrMsg errMsg) {
-			switch (ret) {
-			case util.S_GET_IMAGE:
-			case util.S_GET_SMS:
-				break;
-			case util.S_SUCCESS:
-				// 取消菊花
-				dismissProDialog();
-				ToastUtil.ShowLongToast(GTApp.getContext(), R.string.qq_quicklogin_succ);
-				break;
-			case util.S_BABYLH_EXPIRED:
-			case util.S_LH_EXPIRED:
-				break;
-			default:
-				WtloginUtil.setUin(null);
-				// 取消菊花
-				dismissProDialog();
-				ToastUtil.ShowLongToast(GTApp.getContext(), errMsg.getTitle() + "，" + errMsg.getMessage());
-				break;
-			}
-		}
-	};
 }
