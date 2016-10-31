@@ -78,7 +78,8 @@ public class Env {
 	public static final String S_ROOT_GW_MAN_FOLDER = S_ROOT_GT_FOLDER + "Man/"; // 手动点击记录的内存值跟目录
 	public static final String S_ROOT_TIME_AUTO_FOLDER = S_ROOT_TIME_FOLDER + "Auto/";
 	public static final String S_ROOT_DUMP_FOLDER = S_ROOT_GT_FOLDER + "Dump/";
-	public static final String S_ROOT_TCPDUMP_FOLDER = S_ROOT_GT_FOLDER + "Tcpdump/";
+	// @Fixme 抓包直接使用 S_ROOT_GT_FOLDER 在4.4.4手机上无效，所以先写死用sdcard
+	public static final String S_ROOT_TCPDUMP_FOLDER = SDCardPathHelper.CT_S_Sdcard_Sign_sdcard + "/GT/" + "Tcpdump/";
 	public static final String S_ROOT_CONFIG_FOLDER = S_ROOT_GT_FOLDER + "Config/";
 	public static final String S_ROOT_BATTERY_FOLDER = S_ROOT_GT_FOLDER + "Battery/";
 
