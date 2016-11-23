@@ -1,0 +1,86 @@
+﻿====广播方式使用GT，主要用于支持自动化中使用GT做性能数据采集====
+命令样例：
+先启动GT:adb shell am start -W -n com.tencent.wstt.gt/com.tencent.wstt.gt.activity.GTMainActivity
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.startTest --es pkgName "com.tencent.map"  --es verName "6.0.1"       使gt可以采集该应用的性能信息；pkgName是包名；verName是版本号（可选参数）
+如果只测FPS和SM，可以这样空参数：
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.startTest
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei cpu 1        开启CPU采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei cpu 0        停止CPU采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei jif 1        开启CPU时间片采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei jif 0        停止CPU时间片采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei pss 1        开启PSS采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei pss 0        停止PSS采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei pri 1        开启PrivateDirty采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei pri 0        停止PrivateDirty采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei net 1        开启NET采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei net 0        停止NET采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei fps 1        开启FPS采集
+
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.sampleData --ei fps 0        停止FPS采集
+
+流畅度（SM）的获取自成体系，注意以下步骤，其中前4步骤建议测试前人工处理好:
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.sm.modify        对应UI上的“更改”，一次执行除非执行逆操作“恢复”,会一直有效
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.sm.resume        对应UI上的“恢复”，测试完毕时执行一次，如手机长期用于流畅度测试可以一直不用恢复
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.sm.restart        对应UI上的“重启”，重启手机使“更改”或“恢复”生效
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.sm.startTest --es procName "com.tencent.wstt.gt"        对应UI上的“开始测试”，procName是指定被测进程的进程名，执行后在出参列表应可以看到SM参数，注意第一次执行需要给GT授权
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.sm.endTest        对应UI上的“停止测试”
+
+结束采集并保存，同时删除数据记录：
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.endTest --es saveFolderName "普通导航测试"  --es desc "腾讯地图_6.0.1_普通导航_1"       saveFolderName为保存目录的名称，最长可以自定义三级目录，以"/"分割，此三级目录会保存在/sdcard/GT/GW/下，每次保存后，GT会把缓存的本次测试数据清空。
+
+关闭GT：
+adb shell am broadcast -a com.tencent.wstt.gt.baseCommand.exitGT
+
+注意1：FPS第一次会申请Root权限，默认情况需要手动点一下，所以建议用TowerRoot或CM自带的可以取消弹框的Root工具取消弹框
+注意2：流畅度第一次开始测试需要Root权限，默认情况需要手动点一下。
+
+====广播驱动耗电测试（对应耗电测试插件）====
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.battery.startTest --ei refreshRate 250 --ei brightness 100 --ez I true --ez U true --ez T true --ez P true
+这条广播也可以不带参数，将以默认的250ms刷新率，100的屏幕亮度，只关注电流值启动测试：
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.battery.startTest
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.battery.endTest        停止耗电指标的采集
+
+====广播驱动GT模拟GPS（对应月光宝盒插件）====
+注意：启动回放GPS轨迹之前要先在开发者选项里选择允许模拟位置；并在位置设置里打开只通过硬件设备定位。
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.startReplay --ei seq 0 --ei progress 0        启动回放指定序号的GPS路径文件，progress是可选参数，指定从某个进度开始回放，取值[0-100]
+或者：
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.startReplay --es filename xxxx.gps --ei progress 0         启动回放指定名称的GPS路径文件，命令行对中文支持不好，所以路径文件尽量用英文命名，progress是可选参数，指定从某个进度开始回放，取值[0-100]。
+
+或者还可以直接回放单点坐标：
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.startReplay --es lng 116.15353149 --es lat 39.72413462
+完整参数(经度lng,维度lat,精度acc,方位bear,速度spd,海拔alt)：
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.startReplay --es lng 116.15353149 --es lat 39.72413462 --es acc 150.0 --es bear 77.3 --es spd 13.5 --es alt 60.70
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.endReplay        停止模拟位置的回放
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.startRecord --es filename xxxx.gps        开始采集位置信息,filename参数可不填，但文件名需要以.gps作为后缀
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.gps.endRecord        停止采集位置信息
+
+====广播驱动内存填充（对应内存填充插件）====
+adb shell am broadcast -a  com.tencent.wstt.gt.plugin.memfill.fill --ei size 200        内存填充
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.memfill.free        内存释放
+
+====广播驱动抓包（对应抓包插件）====
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.tcpdump.startTest --es filepath "/sdcard/GT/Tcpdump/Capture/aaa.pcap" --es param "-p -s 0 -vv -w"        抓包到指定路径的文件，参数param可以缺省
+
+adb shell am broadcast -a com.tencent.wstt.gt.plugin.tcpdump.endTest        结束抓包
