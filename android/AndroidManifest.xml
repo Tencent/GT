@@ -4,8 +4,8 @@
     coreApp="true"
     package="com.tencent.wstt.gt"
     android:installLocation="auto"
-    android:versionCode="22064"
-    android:versionName="2.2.6.4" >
+    android:versionCode="22065"
+    android:versionName="2.2.6.5" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -312,6 +312,11 @@
         <meta-data
             android:name="InstallChannel"
             android:value="play" />
+		<provider
+            android:name="com.tencent.mid.api.MidProvider"
+            android:authorities="com.tencent.wstt.gt.TENCENT.MID.V3"
+            android:exported="true" >
+        </provider>
     </application>
 
 </manifest>

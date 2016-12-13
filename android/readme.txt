@@ -3,13 +3,11 @@
 
 2.This project relies on 4 jars:
 (1)android-support-v13.jar
-(2)mid-sdk-2.xx.jar, download: mta.qq.com
-(3)mta-sdk-2.x.x.jar, download: mta.qq.com
-(4)bugly_1.x.x_release.jar, download: bugly.qq.com
+(2)mid-sdk-x.xx.jar, from: mta.qq.com
+(3)mta-sdk-x.x.x.jar, from: mta.qq.com
+(4)bugly_x.x.x_release.jar, from: bugly.qq.com
 
 Before building the project, please make sure those jars are in the libs folder under the root directory.
-
-To use GT for network traffic capture, please download tcpdump(download: http://www.androidtcpdump.com/android-tcpdump/downloads) to the /res/raw/ folder under the root directory. 
 
 3.The detailed description of each module can be found in the package-info.java, which is located in every package under the src directory.
 
@@ -23,12 +21,11 @@ To use GT for network traffic capture, please download tcpdump(download: http://
 
 2.本工程依赖于4个jar:
     (1)android-support-v13.jar
-    (2)mid-sdk-2.xx.jar，请到mta.qq.com网站下载
-    (3)mta-sdk-2.x.x.jar，请到mta.qq.com网站下载
-    (4)bugly_1.x.x_release.jar，请到bugly.qq.com网站下载
+    (2)mid-sdk-x.xx.jar，可以到mta.qq.com网站更新
+    (3)mta-sdk-x.x.x.jar，可以到mta.qq.com网站更新
+    (4)bugly_x.x.x_release.jar，可以到bugly.qq.com网站更新
 请编译前将上述jar包放到工程根路径下的libs目录中。
 
-如使用抓包功能，需将tcpdump下载至工程根目录下的/res/raw/目录中。对应各Android系统版本的tcpdump可以通过自行编译Android系统的获取，在工具集中找到二进制可执行文件。
 
 3.具体模块描述请参考src目录中各package中的package-info.java文件。
 
