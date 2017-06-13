@@ -32,6 +32,7 @@ import com.tencent.wstt.gt.service.GTLogo;
 import com.tencent.wstt.gt.utils.ToastUtil;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -61,6 +62,10 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 	private static final int REQUEST_FLOAT_VIEW = 102;
 	private static boolean isFloatViewAllowed = GTPref.getGTPref().getBoolean(GTPref.FLOAT_ALLOWED, false);
 
+	// 电量测试需要的WRITE_SETTINGS的权限是特殊权限，需要单独处理
+	private static final int REQUEST_WRITE_SETTINGS = 103;
+	private static boolean isWriteSettingAllowed = GTPref.getGTPref().getBoolean(GTPref.WRITE_SETTINGS, false);
+	
 	// 页面碎片对象
 	private GTAUTFragment autFragment;
 	private GTParamTopFragment paramFragment;
@@ -133,6 +138,9 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 
 		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
 				Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
+		
+		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED);
 
 		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
 				Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED);
@@ -155,7 +163,7 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				// 授权了就可以保存了，do nothing即可
 				// 接收了危险权限后，再弹出悬浮窗处理特殊权限，这样还可以避过ACTION_MANAGE_OVERLAY_PERMISSION不支持API23之前的问题
-				if (! isFloatViewAllowed)
+				if (!isFloatViewAllowed)
 				{
 					requestAlertWindowPermission();
 				}
@@ -169,11 +177,26 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 		}
 	}
 
+	@TargetApi(23)
 	private void requestAlertWindowPermission() {
 		Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
 		intent.setData(Uri.parse("package:" + getPackageName()));
 		try{
 			startActivityForResult(intent, REQUEST_FLOAT_VIEW);
+		}
+		catch(Exception e)
+		{
+			// 有的定制系统会抛异常，这样的系统也不需要额外的悬浮窗授权
+		}
+		
+	}
+
+	@TargetApi(23)
+	private void requestWriteSettingPermission() {
+		Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+		intent.setData(Uri.parse("package:" + getPackageName()));
+		try{
+			startActivityForResult(intent, REQUEST_WRITE_SETTINGS);
 		}
 		catch(Exception e)
 		{
@@ -484,7 +507,15 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 				mintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startService(mintent);
 			}
-
+			// 继续进行WriteSetting权限的申请
+			if (!isWriteSettingAllowed)
+			{
+				requestWriteSettingPermission();
+			}
+			break;
+		case REQUEST_WRITE_SETTINGS:
+			isWriteSettingAllowed = true;
+			GTPref.getGTPref().edit().putBoolean(GTPref.WRITE_SETTINGS, true).commit();
 			break;
 		default:
 			break;

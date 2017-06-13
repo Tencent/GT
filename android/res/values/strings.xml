@@ -236,6 +236,7 @@
     <string name="pi_battery_sample_tip">您输入刷新率或亮度不是数字!</string>
     <string name="pi_battery_sample_tip2">输入的数字应大于100!</string>
     <string name="pi_battery_sample_tip3">请先停止已进行的耗电数据采集!</string>
+    <string name="pi_battery_sample_tip4">该机型或系统尚未适配</string>
     <string name="pi_battery_select_items">选择关注的指标:</string>
     <string name="pi_battery_i">电流:</string>
     <string name="pi_battery_u">电压:</string>

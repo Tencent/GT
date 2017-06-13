@@ -231,6 +231,7 @@
     <string name="pi_battery_sample_tip">the sample rate or brightness you typed is not a number!</string>
     <string name="pi_battery_sample_tip2">The Input parameter should be greater than 100!</string>
     <string name="pi_battery_sample_tip3">must stop current debug first!</string>
+    <string name="pi_battery_sample_tip4">this phone or system not adapted</string>
     <string name="pi_battery_select_items">Select observed items:</string>
     <string name="pi_battery_i">I:</string>
     <string name="pi_battery_u">U:</string>

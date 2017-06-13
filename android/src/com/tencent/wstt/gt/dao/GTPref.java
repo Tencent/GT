@@ -53,6 +53,9 @@ public class GTPref {
 
 	// 是否已授权弹出悬浮框标志，在API23以上起作用
 	public static final String FLOAT_ALLOWED = "ac_float_allowed_flag";
+
+	// 是否已授权允许WRITE_SETTINGS，在API23以上起作用
+	public static final String WRITE_SETTINGS = "write_settings_allowed_flag";
 	
 	// 法律条款接受与否
 	public static final String PREFERENCE_EULA_ACCEPTED = "eula.accepted";

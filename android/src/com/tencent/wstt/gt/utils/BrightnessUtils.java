@@ -34,9 +34,13 @@ public class BrightnessUtils {
 	 * 设置为非自动调节亮度的模式
 	 */
 	public static void setManualMode() {
-		Settings.System.putInt(GTApp.getContext().getContentResolver(),
-				Settings.System.SCREEN_BRIGHTNESS_MODE,
-				Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+		try {
+			Settings.System.putInt(GTApp.getContext().getContentResolver(),
+					Settings.System.SCREEN_BRIGHTNESS_MODE,
+					Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+		}catch(Exception e) { // api23以上需要申请权限android.permission.WRITE_SETTINGS
+			e.fillInStackTrace();
+		}
 	}
 
 	/**
@@ -46,7 +50,7 @@ public class BrightnessUtils {
 		try {
 			Settings.System.putInt(GTApp.getContext().getContentResolver(),
 					Settings.System.SCREEN_BRIGHTNESS, value);
-		} catch (Exception localException) {
+		} catch (Exception localException) { // api23以上需要申请权限android.permission.WRITE_SETTINGS
 			localException.printStackTrace();
 		}
 	}
