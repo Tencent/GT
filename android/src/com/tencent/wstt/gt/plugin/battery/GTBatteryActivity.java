@@ -181,7 +181,7 @@ public class GTBatteryActivity extends GTBaseActivity
 			public void run() {
 				tv_switch.setBackgroundResource(R.drawable.switch_on_border);
 				tv_switch.setText(getString(R.string.start));
-				ToastUtil.ShowLongToast(GTApp.getContext(), R.string.pi_battery_sample_tip4);
+//				ToastUtil.ShowLongToast(GTApp.getContext(), R.string.pi_battery_sample_tip4);
 			}
 		});
 	}

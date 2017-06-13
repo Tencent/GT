@@ -38,6 +38,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -138,12 +139,6 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 
 		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
 				Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
-		
-		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
-				Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED);
-
-		hasPermission = hasPermission && (ContextCompat.checkSelfPermission(this,
-				Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED);
 
 		if (!hasPermission) {
 			ActivityCompat.requestPermissions(
@@ -152,6 +147,10 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 							Manifest.permission.ACCESS_FINE_LOCATION,
 							Manifest.permission.READ_PHONE_STATE},
 					REQUEST_NEED_PERMISSION);
+		}
+		else // 若前三个已赋予，则只判断悬浮窗权限和WriteSetting权限
+		{
+			requestAlertWindowPermission();
 		}
 	}
 
@@ -167,6 +166,11 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 				{
 					requestAlertWindowPermission();
 				}
+				else if (!isWriteSettingAllowed)
+				{
+					// 在已获取AlertWindow权限的情况下，继续直接在这里判断WriteSetting权限
+					requestWriteSettingPermission();
+				}
 				// 在授权后，需要将之前没权限创建的目录重新创建一次
 				Env.init();
 			} else {
@@ -179,30 +183,40 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 
 	@TargetApi(23)
 	private void requestAlertWindowPermission() {
-		Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-		intent.setData(Uri.parse("package:" + getPackageName()));
-		try{
-			startActivityForResult(intent, REQUEST_FLOAT_VIEW);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+		    // 判断是否有SYSTEM_ALERT_WINDOW权限
+		    if(!Settings.canDrawOverlays(this)) {
+		        // 申请SYSTEM_ALERT_WINDOW权限
+		        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, 
+		                                Uri.parse("package:" + getPackageName()));
+		        try{
+					startActivityForResult(intent, REQUEST_FLOAT_VIEW);
+				}
+				catch(Exception e)
+				{
+					// 有的定制系统会抛异常，这样的系统也不需要额外的悬浮窗授权
+				}
+		    }
 		}
-		catch(Exception e)
-		{
-			// 有的定制系统会抛异常，这样的系统也不需要额外的悬浮窗授权
-		}
-		
 	}
 
 	@TargetApi(23)
 	private void requestWriteSettingPermission() {
-		Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-		intent.setData(Uri.parse("package:" + getPackageName()));
-		try{
-			startActivityForResult(intent, REQUEST_WRITE_SETTINGS);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+		    // 判断是否有WRITE_SETTINGS权限
+		    if(!Settings.System.canWrite(this)) {
+		        // 申请WRITE_SETTINGS权限
+		        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, 
+		                                Uri.parse("package:" + getPackageName()));
+		        try{
+					startActivityForResult(intent, REQUEST_WRITE_SETTINGS);
+				}
+				catch(Exception e)
+				{
+					// 有的定制系统会抛异常，这样的系统也不需要额外的悬浮窗授权
+				}
+		    }
 		}
-		catch(Exception e)
-		{
-			// 有的定制系统会抛异常，这样的系统也不需要额外的悬浮窗授权
-		}
-		
 	}
 
 	@Override
@@ -489,33 +503,50 @@ public class GTMainActivity extends GTBaseFragmentActivity implements OnClickLis
 
 	/* 进行验证码验证，或者进行快速登录的回调，这两个是进行快速登录可能遇到的情况 */
 	@Override
+	@TargetApi(23) // 目前api23以下都不可能触发REQUEST_FLOAT_VIEW和REQUEST_WRITE_SETTINGS这俩分支
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case REQUEST_FLOAT_VIEW:
-			// 得到权限，置标志位，相应的提示用户重启GT等
-			isFloatViewAllowed = true;
-			GTPref.getGTPref().edit().putBoolean(GTPref.FLOAT_ALLOWED, true).commit();
-			
-			// 因为授权之前的启动悬浮窗会报异常关闭，所以这里重新启动悬浮窗服务
-			if ( GTPref.getGTPref().getBoolean(GTPref.AC_SWITCH_FLAG, true))
-			{
-				Intent intent = new Intent(this, GTLogo.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startService(intent);
+			// 判断是否有SYSTEM_ALERT_WINDOW权限
+		    if(Settings.canDrawOverlays(this)) {
+				// 得到权限，置标志位，相应的提示用户重启GT等
+				isFloatViewAllowed = true;
+				GTPref.getGTPref().edit().putBoolean(GTPref.FLOAT_ALLOWED, true).commit();
 
-				Intent mintent = new Intent(this, GTFloatView.class);
-				mintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startService(mintent);
+				// 因为授权之前的启动悬浮窗会报异常关闭，所以这里重新启动悬浮窗服务
+				if ( GTPref.getGTPref().getBoolean(GTPref.AC_SWITCH_FLAG, true))
+				{
+					Intent intent = new Intent(this, GTLogo.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startService(intent);
+
+					Intent mintent = new Intent(this, GTFloatView.class);
+					mintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startService(mintent);
+				}
 			}
-			// 继续进行WriteSetting权限的申请
+			else
+			{
+				isFloatViewAllowed = false;
+				GTPref.getGTPref().edit().putBoolean(GTPref.FLOAT_ALLOWED, false).commit();
+			}
+
+			// 为了设计简单点，这里在悬浮窗权限通过后才继续进行WriteSetting权限的申请
 			if (!isWriteSettingAllowed)
 			{
 				requestWriteSettingPermission();
 			}
 			break;
 		case REQUEST_WRITE_SETTINGS:
-			isWriteSettingAllowed = true;
-			GTPref.getGTPref().edit().putBoolean(GTPref.WRITE_SETTINGS, true).commit();
+			if(Settings.System.canWrite(this)) {
+				isWriteSettingAllowed = true;
+				GTPref.getGTPref().edit().putBoolean(GTPref.WRITE_SETTINGS, true).commit();
+			}
+			else
+			{
+				isWriteSettingAllowed = false;
+				GTPref.getGTPref().edit().putBoolean(GTPref.WRITE_SETTINGS, false).commit();
+			}
 			break;
 		default:
 			break;
