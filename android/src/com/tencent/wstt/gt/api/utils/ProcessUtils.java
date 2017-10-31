@@ -98,8 +98,7 @@ public class ProcessUtils {
 
 	/**
 	 * 根据进程名，获取进程UID，反查UID，性能需要高
-	 * 
-	 * @param context
+	 *
 	 *            当前进程的上下文环境
 	 * @param pName
 	 *            进程名
@@ -111,8 +110,7 @@ public class ProcessUtils {
 
 	/**
 	 * 根据进程名，获取进程PID
-	 * 
-	 * @param context
+	 *
 	 *            当前进程的上下文环境
 	 * @param pName
 	 *            进程名
@@ -265,6 +263,12 @@ public class ProcessUtils {
 			int zygotePid = -1;
 			int zygotePid64 = -1;
 
+			/*
+			 * 如果使用了较新版本的root权限控制工具，ps命令会看不到zygote进程，这时需要用su命令
+			 */
+			boolean needRoot = true;
+
+			// 先尝试sh命令
 			BufferedReader readerZ = null;
 			try {
 				ProcessBuilder execBuilderZ = null;
@@ -274,9 +278,10 @@ public class ProcessUtils {
 				InputStream isZ = execZ.getInputStream();
 				readerZ = new BufferedReader(
 						new InputStreamReader(isZ));
-
 				String lineZ = "";
+
 				while ((lineZ = readerZ.readLine()) != null) {
+					needRoot = false;
 					String[] arrayZ = lineZ.trim().split("\\s+");
 					if (arrayZ.length >= 9) {
 						if (arrayZ[8].equals("zygote"))
@@ -295,12 +300,49 @@ public class ProcessUtils {
 			} finally {
 				FileUtil.closeReader(readerZ);
 			}
+
+			/*
+			 * sh若搞不定，改用su权限执行ps命令
+			 */
+			if (needRoot)
+			{
+				try {
+					ProcessBuilder execBuilderZ = null;
+					execBuilderZ = new ProcessBuilder("su", "-c", "ps |grep zygote");
+					execBuilderZ.redirectErrorStream(true);
+					Process execZ = execBuilderZ.start();
+					InputStream isZ = execZ.getInputStream();
+					readerZ = new BufferedReader(
+							new InputStreamReader(isZ));
+					String lineZ = "";
+
+					while ((lineZ = readerZ.readLine()) != null) {
+						String[] arrayZ = lineZ.trim().split("\\s+");
+						if (arrayZ.length >= 9) {
+							if (arrayZ[8].equals("zygote"))
+							{
+								zygotePid = Integer.parseInt(arrayZ[1]);
+							}
+							else if (arrayZ[8].equals("zygote64"))
+							{
+								zygotePid64 = Integer.parseInt(arrayZ[1]);
+							}
+						}
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					FileUtil.closeReader(readerZ);
+				}
+			}
+
 			if (zygotePid < 0)
 			{
 				return appProcessList;
 			}
 
-			// 正式取可用的Android进程
+			// 正式取可用的Android进程，前面不管是sh还是su搞定的，这里都用sh即可。
 			BufferedReader reader = null;
 			try {
 				ProcessBuilder execBuilder = null;
