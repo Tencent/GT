@@ -24,17 +24,13 @@
 package com.tencent.wstt.gt.plugin.gps;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.R;
@@ -535,39 +531,6 @@ public class GTGPSReplayEngine extends BaseService {
 			for (GPSReplayListener listener : listeners)
 			{
 				listener.onReplayStop();
-			}
-
-			/*
-			 * add on 20141226 将回放位置的时刻记录在文件中，以便使用模拟位置的应用核对事件发生时的位置
-			 * TODO 回放记录放在GT/Log/gpsreplay/<原回放文件名>_log.gps
-			 */
-			File folder = new File(Env.S_ROOT_LOG_FOLDER + "gpsreplay/");
-			folder.mkdirs();
-			// GT/Log/gpsreplay/xxxx_log.gps
-			String recordFileName = orgiFileName;
-			if (orgiFileName.toLowerCase(Locale.ENGLISH).endsWith(".gps"))
-			{
-				recordFileName = orgiFileName.substring(0, orgiFileName.length() - 4) + "_log.gps";
-			}
-			
-			File f = new File(folder, recordFileName);
-			
-			BufferedWriter bw = null;
-
-			try {
-				f.createNewFile();
-				bw = new BufferedWriter(new FileWriter(f));
-				for(int i = 0; i < timezones.size(); i++)
-				{
-					String relayLine = timezones.get(i) + "," + data[i].trim() + "\r\n";
-					bw.write(relayLine);
-				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			finally
-			{
-				FileUtil.closeWriter(bw);
 			}
 
 			return null;
