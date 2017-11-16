@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/save_editor_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/save_folder"
+        android:textColor="#b7bdcf"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/save_editor_Area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/save_editor_title" >
+
+        <LinearLayout
+            android:id="@+id/save_editor_pre_area"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dip"
+            android:layout_marginRight="0dip"
+            android:layout_marginTop="0dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/save_editor_pre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="14dp"
+                android:text="@string/gw_root_folder"
+                android:textColor="@drawable/text_green"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/save_editor_folder_parent1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dip"
+                android:layout_marginTop="0dip"
+                android:layout_weight="1"
+                android:hint="@string/must_fill_hint"
+                android:maxLength="100"
+                android:singleLine="true"
+                android:textColor="@drawable/text_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/save_editor_pre_area"
+            android:layout_marginLeft="0dip"
+            android:layout_marginRight="0dip"
+            android:layout_marginTop="0dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:paddingTop="7dp"
+                android:text="@string/斜杠"
+                android:textColor="@drawable/text_green"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/save_editor_folder_parent2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dip"
+                android:layout_weight="1"
+                android:hint="@string/must_fill_hint"
+                android:maxLength="100"
+                android:singleLine="true"
+                android:textColor="@drawable/text_green"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="7dp"
+                android:text="@string/斜杠"
+                android:textColor="@drawable/text_green"
+                android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <EditText
+                    android:id="@+id/save_editor"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dip"
+                    android:hint="@string/must_fill_hint"
+                    android:maxLength="150"
+                    android:singleLine="true"
+                    android:textColor="@drawable/text_green"
+                    android:textSize="16sp" >
+
+                    <requestFocus />
+                </EditText>
+
+                <ImageButton
+                    android:id="@+id/save_clean"
+                    android:layout_width="16sp"
+                    android:layout_height="16sp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dip"
+                    android:layout_marginTop="10dip"
+                    android:background="#00FFFFFF"
+                    android:src="@drawable/a_search_delete" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/save_editor_desc_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/save_editor_Area"
+        android:paddingLeft="10dp"
+        android:paddingTop="14dp"
+        android:text="@string/test_desc"
+        android:textColor="#b7bdcf"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/save_editor_desc"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/save_editor_desc_title"
+        android:layout_marginLeft="1dip"
+        android:layout_marginRight="1dip"
+        android:layout_marginTop="0dip"
+        android:hint="@string/not_must_fill_hint"
+        android:singleLine="true"
+        android:textSize="16sp" />
+        
+    <TextView
+        android:id="@+id/invalid_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/save_editor_desc"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/red"
+        android:textSize="15sp"
+        android:visibility="gone"/>
+</RelativeLayout>

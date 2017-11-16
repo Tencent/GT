@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<resources>
+
+    <!-- 通用 -->
+    <string name="app_name">GT</string>
+    <string name="back">Back</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="desc">Description:</string>
+    <!-- 声明 -->
+    <string name="eula_title">AGREEMENT</string>
+    <string name="eula_accept">I know</string>
+    <string name="eula_refuse">Refuse</string>
+    <string name="eula_accept_text">I have read and accept all the terms of this Agreement</string>
+    <string name="company_name">Tencent</string>
+        <string name="privacy">Terms and Privacy</string>
+    <string name="copyright">Copyright© 1998#8211;2014 Tencent</string>
+    <string name="reserved">All Rights Reserved</string>
+    <!-- 内存助手 -->
+    <string name="Dump">Dump</string>
+    <string name="GC">GC</string>
+    <string name="Refresh">Refresh</string>
+    <string name="HeapSize">HeapSize：0 \nAllocated：0</string>
+    <!-- 其他 -->
+    <string name="timer_start">0.0  </string>
+    <string name="timer_10s">10s</string>
+    <string name="timer_0.1s">0.1s</string>
+    <string name="sKey">sKey</string>
+    <string name="Key">Key</string>
+    <string name="value">value</string>
+    <string name="Input">Input</string>
+    <string name="search_count">0 / 0</string>
+    <string name="ALL">ALL</string>
+    <string name="TAG">TAG</string>
+    <string name="sss0">0</string>
+    <string name="sss1">1</string>
+    <string name="Empty">Empty</string>
+    <string name="Detail">Detail</string>
+    <string name="左中括号">[</string>
+    <string name="右中括号">]</string>
+    <string name="减号">-</string>
+    <string name="右括号">)</string>
+    <string name="左括号">(</string>
+    <string name="na">n/a</string>
+    <string name="off">off</string>
+    <string name="PSS">PSS</string>
+    <string name="Private_Dirty">Private Dirty</string>
+    <string name="CPU">CPU</string>
+    <string name="jiffies">jiffies</string>
+    <string name="Net">Net</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Installed_Application_List">Installed Application List</string>
+    <string name="appName">appName</string>
+    <string name="tcpdump_params">-p -s 0 -vv -w</string>
+    <string name="cpu_unknow">cpu [unknow]</string>
+    <string name="curFreq">curFreq</string>
+    <string name="curGov">curGov</string>
+    <string name="Sys">Sys</string>
+    <string name="Scal">Scal</string>
+    <string name="Cpu_Freq">Cpu Freq</string>
+    <string name="Back">Back</string>
+    <string name="init">init</string>
+    <string name="Info">Info</string>
+    <string name="Set">Set</string>
+    <string name="MaxFreq">MaxFreq</string>
+    <string name="MinFreq">MinFreq</string>
+    <string name="Governor">Governor</string>
+    <string name="Apply">Apply</string>
+    <string name="June_2011_12">12_June_2011</string>
+    <string name="sss6177">6177</string>
+    <string name="SomeActivity">SomeActivity</string>
+    <string name="verbose">verbose</string>
+    <string name="debug">debug</string>
+    <string name="info">info</string>
+    <string name="warn">warn</string>
+    <string name="error">error</string>
+    <string name="assert2">assert</string>
+    <string name="Add_Filters">Add Filters</string>
+    <string name="Delete_Filters">Delete Filters</string>
+    <!-- 配置 -->
+    <string name="setting_about">About GT</string>
+    <string name="setting_about_tab">About</string>
+    <string name="setting_account_tab">Account</string>
+    <string name="setting_log_tab">Log Switch</string>
+    <string name="setting_air_tab">AirConsole</string>
+    <string name="setting_msg_tab">Message Switch</string>
+    <string name="setting_intervals_tab">Intervals</string>
+    <string name="setting_exit_tab">Exit</string>
+    <string name="setting_about_homepage">Homepage</string>
+    <string name="setting_about_feedback">Feedback</string>
+    <string name="setting_log_title">Log</string>
+    <string name="setting_log_switch">GTLog Switch</string>
+    <string name="setting_log_autosave">GTLog auto save</string>
+    <string name="setting_log_as_qf">Auto save quick flush</string>
+    <string name="setting_log_retain_prefix">Retain GTLog prefix</string>
+    <string name="setting_logcat_redirct2_gtlog">Logcat auto save as GTLog</string>
+    <string name="setting_air_title">AirConsole</string>
+    <string name="setting_air_select">AirConsole Quick Switch</string>
+    <string name="setting_air_show_prof">Show profiler switch</string>
+    <string name="setting_air_show_gw">Show G&amp;W switch</string>
+    <string name="setting_air_switch">Show AirConsole</string>
+    <string name="setting_msg_title">Message Switch</string>
+    <string name="setting_msg_switch">Update Message Remind</string>
+    <string name="setting_intervals_title">Intervals</string>
+    <string name="setting_intervals_gather">Gather Interval:</string>
+    <string name="setting_intervals_gather_FPS">Gather FPS Interval\r\n(need GT restart):</string>
+    <!-- 对话框&通用 -->
+    <string name="save">Save</string>
+    <string name="save_folder">Save to local:</string>
+    <string name="save_file">Save File</string>
+    <string name="delete">Delete</string>
+    <string name="deleteall">Delete all</string>
+    <string name="delete_tip">delete log?</string>
+    <string name="operate_tip">Operate:</string>
+    <string name="clear">Clear</string>
+    <string name="clear_tip">clear data?</string>
+    <string name="clear_and_reset">Clear and Reset</string>
+    <string name="clear_and_reset_tip">clear and reset data?</string>
+    <string name="cancel">Cancel</string>
+    <string name="upload">Upload</string>
+    <string name="rename">rename</string>
+    <string name="please_enter">Rename</string>
+    <string name="attention">attention</string>
+    <string name="load">load</string>
+    <string name="save_folder_valid">input name must be normal letter.</string>
+    <string name="digit_valid">input value must digit</string>
+    <string name="gw_root_folder">/sdcard/GT/GW/</string>
+    <string name="test_desc">description:</string>
+    <!-- AUT页 -->
+    <string name="AUT_page_title">AUT</string>
+    <string name="AUT_tab_name">AUT</string>
+    <string name="AUT_app_refresh">refresh</string>
+    <string name="AUT_app_lanuch">lanuch</string>
+    <string name="AUT_under_test">APP Under Debug:</string>
+    <string name="AUT_choose">choose debug app..</string>
+    <string name="AUT_meminfo_title">Memory Info</string>
+    <string name="AUT_mem_assistant">Mem Assistant:</string>
+    <string name="AUT_ohterinfo_title">Other Info</string>
+    <string name="AUT_page_tip_title">Attention</string>
+    <string name="AUT_page_tip1">this operation may clear history data of current App,continue?</string>
+    <string name="AUT_page_tip2">please stop G/W first.</string>
+    <string name="AUT_page_tip3">can not start App:</string>
+    <!-- Para页 -->
+    <string name="para_in_title">in</string>
+    <string name="para_out_title">out</string>
+    <string name="para_tab_name">Para.</string>
+    <string name="para_edit">edit</string>
+    <string name="para_done">done</string>
+    <string name="para_top_drag">Drag</string>
+    <string name="para_out_list_title">    Out Param Items</string>
+    <string name="para_in_list_title">    In Param Items</string>
+    <string name="para_out_btn_title">Gather &amp; Warning(G&amp;W)</string>
+    <string name="para_air_title">Show on Air-console(&lt;=3)</string>
+    <string name="para_default_title">Optional Parameters</string>
+    <string name="para_disable_title">Disabled Parameters</string>
+    <string name="para_out_toast">please select at least one item.</string>
+    <string name="para_out_toast_clearall">delete all selected history data.</string>
+    <string name="para_out_toast_saveto">save data to sdcard complete</string>
+    <!-- Profiler页 -->
+    <string name="prof_title">Prof.</string>
+    <string name="prof_started">Profiling..</string>
+    <string name="prof_notstart">Not Start Profiling</string>
+    <string name="prof_counts">Counts</string>
+    <string name="prof_sum">Sum</string>
+    <string name="prof_max">Max</string>
+    <string name="prof_ave">Ave.</string>
+    <string name="prof_detail_score">Score</string>
+    <string name="prof_detail_good">Good</string>
+    <string name="prof_detail_bad">Bad</string>
+    <!-- Profiler详情页 -->
+    <string name="prof_detail_title">Detail</string>
+    <string name="prof_detail_value">Val:</string>
+    <string name="prof_detail_Count">Count:</string>
+    <string name="prof_detail_ave">Ave:</string>
+    <string name="prof_detail_max">Max:</string>
+    <string name="prof_detail_min">Min:</string>
+    <string name="prof_detail_attent_hint">select observe item here</string>
+    <!-- 告警 -->
+    <string name="warning_title">Warning Area(Enable)</string>
+    <string name="warning_title_disable">Warning Area(Disable)</string>
+    <string name="warning_title_mul">Warning Area(</string>
+    <string name="warning_title_mul_disable">Warning Area(disable</string>
+    <string name="warning_ltime">Time(s)</string>
+    <string name="warning_range">Out of Range</string>
+    <string name="warning_range_max_hint">MAX</string>
+    <string name="warning_range_min_hint">MIN</string>
+    <string name="warning_times">Warning Times:</string>
+    <string name="warning_times_short">WTimes:</string>
+    <!-- Log页 -->
+    <string name="log_tab_name">Log</string>
+    <string name="log_gtLog_title">GTLog</string>
+    <string name="log_logcat_title">LogCat</string>
+    <string name="log_filter_hint">by message</string>
+    <string name="log_search_hint">input keyword here</string>
+    <string name="log_search_results"> results</string>
+    <string name="no_saved_logs">no saved logs</string>
+    <string name="open_log">open log</string>
+    <!-- 插件 -->
+    <string name="plugin_tab_name">Plugin</string>
+    <string name="battery_desc">This plug-in is used to collect current, voltage, power, temperature, Google Nexus4/Nexus5 and ZTE_Red_Bull_V5 can accurately output current value. Before use to determine the sampling rate, recommended 100ms~1000ms, and then check the observed items (current I / voltage U / electricity)</string>
+    <string name="capture_desc">This is a tcpdump plugin. Press "start" directly to capture network packets. The file that records the network data will be saved until the button "stop" clicked. The saved files can be analysed by wireshark.</string>
+    <string name="screenlock_desc">This is a wakelock control plug-in, click on the Full wakelock, the phone will not take the initiative off the screen and off the screen manually, it will not go to sleep. When you click Partial wakelock, the phone will not sleep after the off-screen.</string>
+    <string name="memfill_desc">This plugin can be used for filling memory. GT will allocate xxxxMB memory in native, if the button "fill" clicked. The total memory occupied by GT can be tracked in pss.</string>
+    <string name="gps_desc">GPS Collection: Click "Record" to start. The collection file is saved in /GT/Log/gps directory.\r\nGPS Replay: Choose a GPS Collection file and click "Replay" to start. The system settings should: 1. only enable the GPS function while others remain disabled in the location services; 2. select the "Allow mock locations" in the Developer options.</string>
+    <string name="gps_replay_desc">Drag seekbar to change replay progress, become effective after click save button.</string>
+    <string name="othersm_desc">Usage  :Check(if OK)->select App->Start\nSetting:Check(if NOT OK)->Modify->Restart\nNotice :if want resume setting, Resume->Restart</string>
+    <string name="octopus_desc">This plugin can upload collected data to web.The web resource is Provided by bugly.qq.com and use QQ account quick login.Notice:\r\n1.install Mobile QQ first.\r\n2.regist product on bugly.qq.com.</string>
+    <string name="pi_battery_title">GTBattery</string>
+    <string name="pi_battery_item">display battery,Nexus 4/5 supported</string>
+    <string name="pi_battery_sample_rate">Samping Rate(ms):</string>
+    <string name="pi_battery_sample_hint">input digit greater than 100</string>
+    <string name="pi_battery_sample_tip">the sample rate or brightness you typed is not a number!</string>
+    <string name="pi_battery_sample_tip2">The Input parameter should be greater than 100!</string>
+    <string name="pi_battery_sample_tip3">must stop current debug first!</string>
+    <string name="pi_battery_sample_tip4">this phone or system not adapted</string>
+    <string name="pi_battery_select_items">Select observed items:</string>
+    <string name="pi_battery_i">I:</string>
+    <string name="pi_battery_u">U:</string>
+    <string name="pi_battery_power">Power:</string>
+    <string name="pi_battery_temp">Temp:</string>
+    <string name="pi_battery_setbrightness">Set Brightness(0–255):</string>
+    <string name="pi_pcap_title">GTPcap</string>
+    <string name="pi_pcap_item">capture the network traffic by tcpdump</string>
+    <string name="pi_pcap_foldername">Save Folder Name</string>
+    <string name="pi_pcap_arg">Argument</string>
+    <string name="pi_sclock_title">GTScreenlock</string>
+    <string name="pi_sclock_item">prevent from screen being locked or sleep</string>
+    <string name="pi_sclock_fwakelock">Full wakelock</string>
+    <string name="pi_sclock_pwakelock">Partial wakelock</string>
+    <string name="pi_memfill_title">GTMemFill</string>
+    <string name="pi_memfill_item">Fill Memory</string>
+    <string name="pi_memfill_alloc">Alloc memory(MB):</string>
+    <string name="pi_memfill_btn">fill memory or free memory:</string>
+    <string name="pi_memfill_on">Fill</string>
+    <string name="pi_memfill_off">Free</string>
+    <string name="pi_memfill_hint">less than 1100</string>
+    <string name="pi_othersm_title">GTSMTools</string>
+    <string name="pi_othersm_item">App Smoothness Debug</string>
+    <string name="pi_othersm_check_status_btn">Check</string>
+    <string name="pi_othersm_write_property_btn">Modify</string>
+    <string name="pi_othersm_recover_property_btn">Resume</string>
+    <string name="pi_othersm_restart_btn">Restart</string>
+    <string name="pi_gps_title">月光宝盒</string>
+    <string name="pi_gps_item">record&amp;replay GPS</string>
+    <string name="pi_gps_record">Record</string>
+    <string name="pi_gps_record_stop">Stop Record</string>
+    <string name="pi_gps_replay">Replay</string>
+    <string name="pi_gps_replay_stop">Stop Replay</string>
+    <string name="pi_gps_replay_tip">please choose a file</string>
+    <string name="pi_gps_tag">Tag</string>
+    <string name="pi_gps_warn_tip">Please allow mock locations in Developer options.</string>
+    <string name="pi_gps_warn_tip2">Empty location record.</string>
+    <string name="pi_gps_warn_tip3">Please do not operate files when replaying.</string>
+    <string name="gps_replayspeed_normal">normal speed</string>
+    <string name="gps_replayspeed_double">x2 speed</string>
+    <string name="gps_replayspeed_treble">x4 speed</string>
+    <string name="use_detail">Use Detail</string>
+    <string name="about">about</string>
+    <string name="cannot_empty">Required can not empty</string>
+</resources>

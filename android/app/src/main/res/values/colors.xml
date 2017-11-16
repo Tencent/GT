@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<resources>
+
+    <drawable name="transparent">#E6000000</drawable>
+    <drawable name="text_title_gray">#878c98</drawable>
+    <drawable name="text_content_gray">#b7bdcf</drawable>
+    <drawable name="area_title_orange">#DD843F</drawable>
+    <drawable name="white">#FFFFFF</drawable>
+    <drawable name="black">#000000</drawable>
+    <drawable name="selected_Blue">#3c4a76</drawable>
+    <drawable name="bottom_gray">#3c3c42</drawable>
+    <drawable name="bottom_line_gray">#1f1f22</drawable>
+    <drawable name="sortable_bottom_gray">#29292d</drawable>
+    <drawable name="top_line_gray">#35353b</drawable>
+    <drawable name="btn_gray">#35353b</drawable>
+    <drawable name="text_green">#38ad29</drawable>
+    <drawable name="text_bluegreen">#607d8b</drawable>
+    <drawable name="text_hint_gray">#616676</drawable>
+
+    <color name="orange">#FF9900</color>
+    <color name="red">#FF0000</color>
+    <color name="page_dark_bg">#ffe7e7e7</color>
+
+    <color name="swbtn_select_textcolor">#ffffff</color>
+    <color name="swbtn_default_textcolor">#878c98</color>
+    <color name="tab_default_textcolor">#9398a6</color>
+    <color name="tab_select_textcolor">#ffffff</color>
+
+</resources>

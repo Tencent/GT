@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/floatviewandlogo"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/gt_floatview_left_img"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/gt_floatview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@id/gt_floatview_left_img"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/fl_floatview_title"
+            android:layout_width="188dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_floatview_title"
+                android:layout_width="188dp"
+                android:layout_height="24dp"
+                android:background="@drawable/floatview_title_bar" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/floatview_timer"
+                    android:layout_width="66dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="left|center"
+                    android:paddingLeft="20dp"
+                    android:text="@string/timer_start"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp" />
+
+                <ImageView
+                    android:id="@+id/floatview_profiler_switch"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_toRightOf="@id/floatview_timer"
+                    android:background="@drawable/gw_start"
+                    android:padding="20dp" />
+            </RelativeLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/floatview_op1"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"
+                android:background="@drawable/floatview_op_textview_left"
+                android:gravity="left|bottom"
+                android:paddingLeft="2dp"
+                android:singleLine="true"
+                android:textColor="#9398a6" />
+
+            <TextView
+                android:id="@+id/floatview_op1_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:background="@drawable/floatview_op_textview_right"
+                android:paddingBottom="0dp"
+                android:singleLine="true"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/floatview_op2"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"
+                android:background="@drawable/floatview_op_textview_left"
+                android:gravity="left|bottom"
+                android:paddingLeft="2dp"
+                android:singleLine="true"
+                android:textColor="#9398a6" />
+
+            <TextView
+                android:id="@+id/floatview_op2_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:background="@drawable/floatview_op_textview_right"
+                android:gravity="left|bottom"
+                android:singleLine="true"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/floatview_op3"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"
+                android:background="@drawable/floatview_op_textview_left"
+                android:paddingLeft="2dp"
+                android:gravity="left|bottom"
+                android:singleLine="true"
+                android:textColor="#9398a6" />
+
+            <TextView
+                android:id="@+id/floatview_op3_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:background="@drawable/floatview_op_textview_right"
+                android:gravity="left|bottom"
+                android:singleLine="true"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_floatview_ip"
+            android:layout_width="188dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/floatview_ip_bottom"
+                android:layout_width="188dp"
+                android:layout_height="40dp"
+                android:background="@drawable/floatview_ip_bottom" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/floatview_ip1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:paddingLeft="1dp"
+                    android:paddingRight="1dp"
+                    android:singleLine="true"
+                    android:textColor="#9398a6" />
+
+                <TextView
+                    android:id="@+id/floatview_ip1_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/floatview_ip1"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF" />
+
+                <ImageView
+                    android:id="@+id/ip1_divid_line"
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/floatview_ip1"
+                    android:background="@drawable/divid_line" />
+
+                <TextView
+                    android:id="@+id/floatview_ip2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_toRightOf="@id/ip1_divid_line"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#9398a6" />
+
+                <TextView
+                    android:id="@+id/floatview_ip2_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/floatview_ip2"
+                    android:layout_toRightOf="@id/ip1_divid_line"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF" />
+
+                <ImageView
+                    android:id="@+id/ip2_divid_line"
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/floatview_ip2"
+                    android:background="@drawable/divid_line" />
+
+                <TextView
+                    android:id="@+id/floatview_ip3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_toRightOf="@id/ip2_divid_line"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#9398a6" />
+
+                <TextView
+                    android:id="@+id/floatview_ip3_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/floatview_ip3"
+                    android:layout_toRightOf="@id/ip2_divid_line"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF" />
+            </RelativeLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_floatview_bottom"
+            android:layout_width="188dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/ip_fold"
+                android:layout_width="188dp"
+                android:layout_height="20dp"
+                android:background="@drawable/floatview_bottom_bar" />
+
+            <ImageView
+                android:id="@+id/floatview_bottom_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/fold_arrow" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fm_floatview_top_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/floatview_top_layout"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_gt_logo_top_left"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/logo3" />
+
+            <TextView
+                android:id="@+id/floatview_top_border"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/img_gt_logo_top_left" />
+
+            <ImageView
+                android:id="@+id/img_gt_logo_top_right"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/logo3" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fm_floatview_bottom_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gt_floatview"
+        android:layout_gravity="center" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/floatview_bottom_layout"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/img_gt_logo_bottom_left"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/logo3" />
+
+            <TextView
+                android:id="@+id/floatview_bottom_border"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/img_gt_logo_bottom_left" />
+
+            <ImageView
+                android:id="@+id/img_gt_logo_bottom_right"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/logo3" />
+        </RelativeLayout>
+    </FrameLayout>
+
+</RelativeLayout>

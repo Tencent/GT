@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp" >
+
+    <TextView
+        android:id="@+id/draglist_item_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/a_gt_sortable_bottom" />
+
+    <TextView
+        android:id="@+id/listrow_top_border"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#3c3c42" />
+
+    <TextView
+        android:id="@+id/listrow_left_border"
+        android:layout_width="2dp"
+        android:layout_height="52dp"
+        android:layout_alignParentLeft="true"
+        android:background="#3c3c42" />
+
+    <TextView
+        android:id="@+id/listrow_right_border"
+        android:layout_width="2dp"
+        android:layout_height="52dp"
+        android:layout_alignParentRight="true"
+        android:background="#3c3c42" />
+
+    <RelativeLayout
+        android:id="@+id/rl_drag_img"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/listrow_right_border"
+         >
+
+        <TextView
+            android:id="@+id/data_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/cb_tick"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/textview_his_shape"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:text="@string/sss1"
+            android:paddingLeft="2dp"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" 
+            />
+<!-- gravity="center"兼容乐视等系统checkbox在gravity="right"时无法显示的bug -->
+        <CheckBox
+            android:id="@+id/cb_tick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:focusable="false"
+            android:gravity="center" 
+           />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_drag_key_value"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listrow_top_border"
+        android:layout_toRightOf="@id/listrow_left_border" >
+
+        
+        <TextView
+            android:id="@+id/listrow_bg"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" 
+            android:background="#FFFFFF"/>
+        <TextView
+            android:id="@+id/draglist_shotkey"
+            android:layout_width="58dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:gravity="bottom"
+            android:singleLine="true"
+            android:text="@string/sKey"
+            android:textColor="#b7bdcf"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/draglist_key"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/draglist_shotkey"
+            android:ellipsize="middle"
+            android:gravity="bottom"
+            android:singleLine="true"
+            android:text="@string/Key"
+            android:textColor="#b7bdcf"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/draglist_value"
+            android:layout_width="208dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/draglist_shotkey"
+            android:layout_marginLeft="8dp"
+            android:gravity="top"
+            android:singleLine="true"
+            android:text="@string/value"
+            android:textColor="#b7bdcf"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/listrow_bottom_border"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/rl_drag_key_value"
+        android:layout_gravity="bottom"
+        android:background="#3c3c42" />
+
+</RelativeLayout>

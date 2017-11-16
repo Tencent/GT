@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<resources>
+    <dimen name="text_size_xsmall">8px</dimen>
+	<dimen name="text_size_small">10px</dimen>
+	<dimen name="text_size_medium">12px</dimen>
+	<dimen name="text_size_large">14px</dimen>
+	<dimen name="text_size_xlarge">16px</dimen>
+	
+	<!-- dialog -->
+    <dimen name="dialog_width">280dip</dimen>
+    <dimen name="dialog_body_height">80dip</dimen>
+    <dimen name="dialog_content_margin">5dip</dimen>
+    <item type="dimen" name="setup_title_height">15%</item>
+    <item type="dimen" name="setup_border_width">5%</item>
+    <dimen name="divider_height">3dip</dimen>
+    <dimen name="divider_margin_top">6dip</dimen>
+    <dimen name="divider_margin_bottom">7dip</dimen>
+
+    <!--  Size of icons in the top-level of settings  -->
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    </resources>

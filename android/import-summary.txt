@@ -1,0 +1,215 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gitignore
+* LICENSE.TXT
+* demo\
+* demo\.classpath
+* demo\.project
+* demo\.settings\
+* demo\.settings\org.eclipse.core.resources.prefs
+* demo\.settings\org.eclipse.jdt.core.prefs
+* demo\AndroidManifest.xml
+* demo\LICENSE.TXT
+* demo\libs\
+* demo\libs\gt_sdk_2.2.x.jar
+* demo\project.properties
+* demo\res\
+* demo\res\drawable\
+* demo\res\drawable\background.png
+* demo\res\drawable\error.png
+* demo\res\drawable\gt_0.jpg
+* demo\res\layout\
+* demo\res\layout\activity_main.xml
+* demo\res\layout\demo.xml
+* demo\res\layout\gt_demo.xml
+* demo\res\layout\gt_gridview_item.xml
+* demo\res\menu\
+* demo\res\menu\activity_main.xml
+* demo\res\values\
+* demo\res\values\strings.xml
+* demo\src\
+* demo\src\com\
+* demo\src\com\tencent\
+* demo\src\com\tencent\wstt\
+* demo\src\com\tencent\wstt\gtdemo\
+* demo\src\com\tencent\wstt\gtdemo\GTDemoActivity.java
+* demo\src\com\tencent\wstt\gtdemo\MainActivity.java
+* demo\src\com\tencent\wstt\gtdemo\UserStrings.java
+* docs\
+* docs\AndroidGTFAQ2.2.6.pdf
+* docs\GTAndroidQuickStart.pdf
+* docs\GTAndroidUserGuide.pdf
+* docs\HowTestNet.pdf
+* docs\UseGtWithBroadcast.txt
+* readme.txt
+* sdk\
+* sdk\.classpath
+* sdk\.project
+* sdk\.settings\
+* sdk\.settings\org.eclipse.core.resources.prefs
+* sdk\AndroidManifest.xml
+* sdk\LICENSE.TXT
+* sdk\docs\
+* sdk\docs\APIUserGuide4Android.pdf
+* sdk\docs\javadoc.zip
+* sdk\javadoc.xml
+* sdk\project.properties
+* sdk\res\
+* sdk\res\layout\
+* sdk\res\layout\main.xml
+* sdk\res\values\
+* sdk\res\values\strings.xml
+* sdk\src\
+* sdk\src\com\
+* sdk\src\com\tencent\
+* sdk\src\com\tencent\wstt\
+* sdk\src\com\tencent\wstt\gt\
+* sdk\src\com\tencent\wstt\gt\AidlEntry.java
+* sdk\src\com\tencent\wstt\gt\AidlTask.aidl
+* sdk\src\com\tencent\wstt\gt\AidlTask.java
+* sdk\src\com\tencent\wstt\gt\BooleanEntry.aidl
+* sdk\src\com\tencent\wstt\gt\BooleanEntry.java
+* sdk\src\com\tencent\wstt\gt\Functions.java
+* sdk\src\com\tencent\wstt\gt\GTConfig.java
+* sdk\src\com\tencent\wstt\gt\IService.aidl
+* sdk\src\com\tencent\wstt\gt\InPara.aidl
+* sdk\src\com\tencent\wstt\gt\InPara.java
+* sdk\src\com\tencent\wstt\gt\OutPara.aidl
+* sdk\src\com\tencent\wstt\gt\OutPara.java
+* sdk\src\com\tencent\wstt\gt\PerfDigitalEntry.aidl
+* sdk\src\com\tencent\wstt\gt\PerfDigitalEntry.java
+* sdk\src\com\tencent\wstt\gt\PerfStringEntry.aidl
+* sdk\src\com\tencent\wstt\gt\PerfStringEntry.java
+* sdk\src\com\tencent\wstt\gt\QueryPerfEntry.aidl
+* sdk\src\com\tencent\wstt\gt\QueryPerfEntry.java
+* sdk\src\com\tencent\wstt\gt\client\
+* sdk\src\com\tencent\wstt\gt\client\AbsGTConnectListener.java
+* sdk\src\com\tencent\wstt\gt\client\AbsGTParaLoader.java
+* sdk\src\com\tencent\wstt\gt\client\GT.java
+* sdk\src\com\tencent\wstt\gt\client\GTAutoTesterForApp.java
+* sdk\src\com\tencent\wstt\gt\client\GTAutoTesterForSelf.java
+* sdk\src\com\tencent\wstt\gt\client\GTConnectListener.java
+* sdk\src\com\tencent\wstt\gt\client\GTSetting.java
+* sdk\src\com\tencent\wstt\gt\client\InParaManager.java
+* sdk\src\com\tencent\wstt\gt\client\OutParaManager.java
+* sdk\src\com\tencent\wstt\gt\client\communicate\
+* sdk\src\com\tencent\wstt\gt\client\communicate\ComAdaptor.java
+* sdk\src\com\tencent\wstt\gt\client\communicate\ComImpl.java
+* sdk\src\com\tencent\wstt\gt\client\communicate\ICom.java
+* sdk\src\com\tencent\wstt\gt\client\internal\
+* sdk\src\com\tencent\wstt\gt\client\internal\GTInternal.java
+* sdk\src\com\tencent\wstt\gt\client\internal\GTServiceConnection.java
+* sdk\src\com\tencent\wstt\gt\client\internal\GTUncaughtExceptionHandler.java
+* sdk\src\com\tencent\wstt\gt\client\internal\InParaManagerInternal.java
+* sdk\src\com\tencent\wstt\gt\client\internal\OutParaManagerInternal.java
+* sdk\src\com\tencent\wstt\gt\client\internal\SplashHandler.java
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\AbsConnState.java
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\AbsDataCachedConnState.java
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\ConnectedState.java
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\ConnectingState.java
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\DisconnectingState.java
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\IConnState.java
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\NotConnectedState.java
+* sdk\src\com\tencent\wstt\gt\client\internal\connect\NotInstalledState.java
+* sdk\src\com\tencent\wstt\gt\data\
+* sdk\src\com\tencent\wstt\gt\data\CommandTaskCache.java
+* sdk\src\com\tencent\wstt\gt\data\LocalTimePerfCache.java
+* sdk\src\com\tencent\wstt\gt\data\LogCache.java
+* sdk\src\com\tencent\wstt\gt\data\ParaTaskCache.java
+* sdk\src\com\tencent\wstt\gt\data\PerfDataCache.java
+* sdk\src\com\tencent\wstt\gt\data\PerfInParaCache.java
+* sdk\src\com\tencent\wstt\gt\data\PerfOutParaCache.java
+* sdk\src\com\tencent\wstt\gt\data\PerfTaskCache.java
+* sdk\src\com\tencent\wstt\gt\data\control\
+* sdk\src\com\tencent\wstt\gt\data\control\CommandTaskConsumer.java
+* sdk\src\com\tencent\wstt\gt\data\control\DataCacheController.java
+* sdk\src\com\tencent\wstt\gt\data\control\GTLogTaskConsumer.java
+* sdk\src\com\tencent\wstt\gt\data\control\ParaTaskConsumer.java
+* sdk\src\com\tencent\wstt\gt\data\control\PerfTaskConsumer.java
+* sdk\src\com\tencent\wstt\gt\data\local\
+* sdk\src\com\tencent\wstt\gt\data\local\LocalEndTimePerfEntry.java
+* sdk\src\com\tencent\wstt\gt\data\local\LocalNumberDataPerfEntry.java
+* sdk\src\com\tencent\wstt\gt\data\local\LocalStartTimePerfEntry.java
+* sdk\src\com\tencent\wstt\gt\data\local\LocalStringDataPerfEntry.java
+* sdk\src\com\tencent\wstt\gt\data\local\LocalTimePerfEntry.java
+* sdk\test\
+* sdk\test\test\
+* sdk\test\test\tencent\
+* sdk\test\test\tencent\wstt\
+* sdk\test\test\tencent\wstt\gt\
+* sdk\test\test\tencent\wstt\gt\client\
+* sdk\test\test\tencent\wstt\gt\client\ClientMain.java
+* sdk\test\test\tencent\wstt\gt\client\DemoApplication.java
+* sdk\test\test\tencent\wstt\gt\receiver\
+* sdk\test\test\tencent\wstt\gt\receiver\GPSMockReceiver.java
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* a_clear.PNG => a_clear.png
+* a_expand.PNG => a_expand.png
+* a_expand_r.PNG => a_expand_r.png
+* a_next.PNG => a_next.png
+* a_next_sel.PNG => a_next_sel.png
+* a_pre.PNG => a_pre.png
+* a_pre_sel.PNG => a_pre_sel.png
+* a_search.PNG => a_search.png
+* a_search_delete.PNG => a_search_delete.png
+* a_search_sel.PNG => a_search_sel.png
+* bg_slip_off_1.PNG => bg_slip_off_1.png
+* bg_slip_on_1.PNG => bg_slip_on_1.png
+* btn_slip_1.PNG => btn_slip_1.png
+* AndroidManifest.xml => app\src\main\AndroidManifest.xml
+* jni\ => app\src\main\jni\
+* libs\android-support-v13.jar => app\libs\android-support-v13.jar
+* libs\armeabi-v7a\libMtaNativeCrash.so => app\src\main\jniLibs\armeabi-v7a\libMtaNativeCrash.so
+* libs\armeabi\libMtaNativeCrash.so => app\src\main\jniLibs\armeabi\libMtaNativeCrash.so
+* libs\bugly_crash_release.jar => app\libs\bugly_crash_release.jar
+* libs\mid-sdk-3.6.jar => app\libs\mid-sdk-3.6.jar
+* libs\mips\libMtaNativeCrash.so => app\src\main\jniLibs\mips\libMtaNativeCrash.so
+* libs\mta-sdk-2.2.1.jar => app\libs\mta-sdk-2.2.1.jar
+* libs\x86\libMtaNativeCrash.so => app\src\main\jniLibs\x86\libMtaNativeCrash.so
+* res\ => app\src\main\res\
+* src\ => app\src\main\java\
+* src\com\tencent\wstt\gt\AidlTask.aidl => app\src\main\aidl\com\tencent\wstt\gt\AidlTask.aidl
+* src\com\tencent\wstt\gt\BooleanEntry.aidl => app\src\main\aidl\com\tencent\wstt\gt\BooleanEntry.aidl
+* src\com\tencent\wstt\gt\InPara.aidl => app\src\main\aidl\com\tencent\wstt\gt\InPara.aidl
+* src\com\tencent\wstt\gt\IService.aidl => app\src\main\aidl\com\tencent\wstt\gt\IService.aidl
+* src\com\tencent\wstt\gt\OutPara.aidl => app\src\main\aidl\com\tencent\wstt\gt\OutPara.aidl
+* src\com\tencent\wstt\gt\PerfDigitalEntry.aidl => app\src\main\aidl\com\tencent\wstt\gt\PerfDigitalEntry.aidl
+* src\com\tencent\wstt\gt\PerfStringEntry.aidl => app\src\main\aidl\com\tencent\wstt\gt\PerfStringEntry.aidl
+* src\com\tencent\wstt\gt\QueryPerfEntry.aidl => app\src\main\aidl\com\tencent\wstt\gt\QueryPerfEntry.aidl
+* src\com\tencent\wstt\gt\receiver\UseGtWithBroadcast.txt => app\src\main\resources\com\tencent\wstt\gt\receiver\UseGtWithBroadcast.txt
+* divid_line.PNG => divid_line.png
+* floatview_title_bar.PNG => floatview_title_bar.png
+* floatview_title_bar_gw.PNG => floatview_title_bar_gw.png
+* gt_entrlogo2.PNG => gt_entrlogo2.png
+* gw_pause.PNG => gw_pause.png
+* gw_start.PNG => gw_start.png
+* pi_capture.PNG => pi_capture.png
+* splash_gt.PNG => splash_gt.png
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

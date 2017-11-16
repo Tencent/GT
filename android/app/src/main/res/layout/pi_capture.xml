@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tcptump_title"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:background="#3c3c42"
+            android:gravity="center"
+            android:text="@string/pi_pcap_title"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tcpdump_back_gt"
+            android:layout_width="76dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/a_gt_inparam_top"
+            android:gravity="center"
+            android:text="@string/back"
+            android:textColor="#9398a6"
+            android:textSize="17sp" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#1c1c21" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#35353b" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tcpdump_foldername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:paddingTop="15dp"
+                android:text="@string/pi_pcap_foldername"
+                android:textColor="#b7bdcf"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/et_tcpdump_filename"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tcpdump_border"
+                android:paddingLeft="10dp"
+                android:textColor="#FFFFFF" />
+
+            <RelativeLayout
+                android:id="@+id/rl_tcpdump_param_switch"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="18dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tcpdump_param_switch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/seekbar_border"
+                    android:gravity="left|center"
+                    android:paddingLeft="15dp"
+                    android:text="@string/pi_pcap_arg"
+                    android:textColor="#b7bdcf"
+                    android:textSize="18sp" />
+
+                <com.tencent.wstt.gt.views.GTCheckBox
+                    android:id="@+id/cb_param_switch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="10dp"
+                    android:background="@null"
+                    android:button="@drawable/gtcheckbox"
+                    android:clickable="true" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tcpdump_param_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:gravity="bottom|left"
+                android:paddingLeft="15dp"
+                android:text="@string/pi_pcap_arg"
+                android:textColor="#b7bdcf"
+                android:textSize="18sp" />
+
+            <FrameLayout
+                android:id="@+id/tcpdump_param_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp" >
+
+                <EditText
+                    android:id="@+id/tcpdump_param"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/tcpdump_border"
+                    android:paddingLeft="10dp"
+                    android:text="@string/tcpdump_params"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/tcpdump_param_cancel"
+                    android:layout_width="18sp"
+                    android:layout_height="18sp"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/input_cancel" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tcpdump_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/switch_on_border"
+                android:gravity="center"
+                android:text="@string/start"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tcpdump_curFile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tcpdump_progress"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="@drawable/text_green" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:text="@string/desc"
+        android:textColor="#b7bdcf"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/capture_desc"
+        android:textColor="@drawable/text_title_gray"
+        android:textSize="14sp" />
+
+</LinearLayout>

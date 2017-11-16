@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "26.0.0"
+
+    defaultConfig {
+        applicationId "com.tencent.wstt.gt"
+        minSdkVersion 14
+        targetSdkVersion 23
+
+        ndk {
+            moduleName "mem_fill_tool"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile files('libs/android-support-v13.jar')
+    compile files('libs/bugly_crash_release.jar')
+    compile files('libs/mid-sdk-3.6.jar')
+    compile files('libs/mta-sdk-2.2.1.jar')
+}

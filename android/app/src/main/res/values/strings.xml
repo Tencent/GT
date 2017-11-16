@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- 通用 -->
+    <string name="app_name">GT</string>
+    <string name="back">返回</string>
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+    <string name="desc">描述:</string>
+    <!-- 声明 -->
+    <string name="eula_title">软件许可协议</string>
+    <string name="eula_accept">接受</string>
+    <string name="eula_refuse">拒绝</string>
+    <string name="eula_accept_text">我已经阅读并同意以上条款</string>
+    <string name="company_name">腾讯公司</string>
+    <string name="privacy">Terms and Privacy</string>
+    <string name="copyright">Copyright© 1998#8211;2015 Tencent</string>
+    <string name="reserved">All Rights Reserved</string>
+    <!-- 内存助手 -->
+    <string name="Dump">Dump</string>
+    <string name="GC">GC</string>
+    <string name="Refresh">Refresh</string>
+    <string name="HeapSize">HeapSize：0 \nAllocated：0</string>
+    <!-- 其他 -->
+    <string name="timer_start">0.0  </string>
+    <string name="timer_10s">10s</string>
+    <string name="timer_0.1s">0.1s</string>
+    <string name="sKey">sKey</string>
+    <string name="Key">Key</string>
+    <string name="value">value</string>
+    <string name="Input">Input</string>
+    <string name="search_count">0 / 0</string>
+    <string name="ALL">ALL</string>
+    <string name="TAG">TAG</string>
+    <string name="sss0">0</string>
+    <string name="sss1">1</string>
+    <string name="Empty">Empty</string>
+    <string name="Detail">Detail</string>
+    <string name="左中括号">[</string>
+    <string name="右中括号">]</string>
+    <string name="斜杠">/</string>
+    <string name="减号">-</string>
+    <string name="右括号">)</string>
+    <string name="左括号">(</string>
+    <string name="na">n/a</string>
+    <string name="off">off</string>
+    <string name="PSS">PSS</string>
+    <string name="Private_Dirty">Private Dirty</string>
+    <string name="CPU">CPU</string>
+    <string name="jiffies">jiffies</string>
+    <string name="Net">Net</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Installed_Application_List">Installed Application List</string>
+    <string name="appName">appName</string>
+    <string name="tcpdump_params">-p -s 0 -vv -w</string>
+    <string name="cpu_unknow">cpu [unknow]</string>
+    <string name="curFreq">curFreq</string>
+    <string name="curGov">curGov</string>
+    <string name="Sys">Sys</string>
+    <string name="Scal">Scal</string>
+    <string name="Cpu_Freq">Cpu Freq</string>
+    <string name="Back">Back</string>
+    <string name="init">init</string>
+    <string name="Info">Info</string>
+    <string name="Set">Set</string>
+    <string name="MaxFreq">MaxFreq</string>
+    <string name="MinFreq">MinFreq</string>
+    <string name="Governor">Governor</string>
+    <string name="Apply">Apply</string>
+    <string name="June_2011_12">12_June_2011</string>
+    <string name="sss6177">6177</string>
+    <string name="SomeActivity">SomeActivity</string>
+    <string name="verbose">verbose</string>
+    <string name="debug">debug</string>
+    <string name="info">info</string>
+    <string name="warn">warn</string>
+    <string name="error">error</string>
+    <string name="assert2">assert</string>
+    <string name="Add_Filters">Add Filters</string>
+    <string name="Delete_Filters">Delete Filters</string>
+    <!-- 配置 -->
+    <string name="setting_about">关于GT</string>
+    <string name="setting_about_tab">关于</string>
+    <string name="setting_account_tab">帐号</string>
+    <string name="setting_log_tab">日志</string>
+    <string name="setting_air_tab">悬浮窗</string>
+    <string name="setting_msg_tab">消息</string>
+    <string name="setting_intervals_tab">间隔</string>
+    <string name="setting_exit_tab">退出</string>
+    <string name="setting_about_homepage">主页</string>
+    <string name="setting_about_feedback">反馈</string>
+    <string name="setting_log_title">日志</string>
+    <string name="setting_log_switch">GT日志总开关</string>
+    <string name="setting_log_autosave">GT日志自动保存</string>
+    <string name="setting_log_as_qf">自动保存快速刷新</string>
+    <string name="setting_log_retain_prefix">保留GT日志前缀</string>
+    <string name="setting_logcat_redirct2_gtlog">Logcat以GTLog形式自动保存</string>
+    <string name="setting_air_title">悬浮窗</string>
+    <string name="setting_air_select">悬浮窗显示统计开关切换</string>
+    <string name="setting_air_show_prof">显示耗时统计开关</string>
+    <string name="setting_air_show_gw">显示 G&amp;W开关</string>
+    <string name="setting_air_switch">显示悬浮框</string>
+    <string name="setting_msg_title">消息</string>
+    <string name="setting_msg_switch">允许弹出升级提示</string>
+    <string name="setting_intervals_title">间隔</string>
+    <string name="setting_intervals_gather">性能数据采集间隔:</string>
+    <string name="setting_intervals_gather_FPS">FPS采集间隔(重启GT生效):</string>
+    <!-- 对话框&通用 -->
+    <string name="save">保存</string>
+    <string name="save_folder">将选中的数据保存在:</string>
+    <string name="must_fill_hint">[必填]</string>
+    <string name="not_must_fill_hint">[非必填]</string>
+    <string name="save_file">保存文件</string>
+    <string name="delete">删除</string>
+    <string name="deleteall">删除所有</string>
+    <string name="delete_tip">删除日志?</string>
+    <string name="operate_tip">操作:</string>
+    <string name="clear">清理</string>
+    <string name="clear_tip">清理数据?</string>
+    <string name="clear_and_reset">清理并重置</string>
+    <string name="clear_and_reset_tip">清理并重置数据?</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="upload">上传</string>
+    <string name="rename">重命名</string>
+    <string name="please_enter">请输入</string>
+    <string name="attention">attention</string>
+    <string name="load">load</string>
+    <string name="save_folder_valid">输入的文字不能包含特殊字符</string>
+    <string name="digit_valid">输入的必须是数字</string>
+    <string name="gw_root_folder">/sdcard/GT/GW/</string>
+    <string name="test_desc">备注:</string>
+    <!-- AUT页 -->
+    <string name="AUT_page_title">AUT</string>
+    <string name="AUT_tab_name">AUT</string>
+    <string name="AUT_app_refresh">刷新</string>
+    <string name="AUT_app_lanuch">启动</string>
+    <string name="AUT_under_test">被调试的应用:</string>
+    <string name="AUT_choose">请选择被调试的应用..</string>
+    <string name="AUT_meminfo_title">内存指标</string>
+    <string name="AUT_mem_assistant">内存助手:</string>
+    <string name="AUT_ohterinfo_title">其他指标</string>
+    <string name="AUT_page_tip_title">警告</string>
+    <string name="AUT_page_tip1">本操作将清理当前被调试的应用已记录的调试数据,是否继续?</string>
+    <string name="AUT_page_tip2">请先停止数据采集</string>
+    <string name="AUT_page_tip3">无法启动应用:</string>
+    <!-- Para页 -->
+    <string name="para_in_title">入参</string>
+    <string name="para_out_title">出参</string>
+    <string name="para_tab_name">参数</string>
+    <string name="para_edit">编辑</string>
+    <string name="para_done">完成</string>
+    <string name="para_top_drag">拖拽</string>
+    <string name="para_out_list_title">    出参列表</string>
+    <string name="para_in_list_title">    入参列表</string>
+    <string name="para_out_btn_title">数据采集与告警操作栏(G&amp;W)</string>
+    <string name="para_air_title">悬浮窗展示的参数(&lt;=3)</string>
+    <string name="para_default_title">已关注的参数</string>
+    <string name="para_disable_title">已取消关注的参数</string>
+    <string name="para_out_toast">请选中至少一个关注项!</string>
+    <string name="para_out_toast_clearall">删除所有选中的历史数据</string>
+    <string name="para_out_toast_saveto">数据已保存到手机！</string>
+    <!-- Profiler页 -->
+    <string name="prof_title">耗时</string>
+    <string name="prof_started">统计中..</string>
+    <string name="prof_notstart">该功能需配合GT的SDK使用</string>
+    <string name="prof_counts">次数</string>
+    <string name="prof_sum">合计</string>
+    <string name="prof_max">最大值</string>
+    <string name="prof_ave">平均值</string>
+    <!-- Profiler详情页 -->
+    <string name="prof_detail_title">详情</string>
+    <string name="prof_detail_value">当前值:</string>
+    <string name="prof_detail_Count">次数:</string>
+    <string name="prof_detail_ave">平均值:</string>
+    <string name="prof_detail_max">最大值:</string>
+    <string name="prof_detail_min">最小值:</string>
+    <string name="prof_detail_score">整体分:</string>
+    <string name="prof_detail_good">流畅:</string>
+    <string name="prof_detail_bad">卡顿:</string>
+    
+    <string name="prof_detail_attent_hint">请选择关注的项</string>
+    <!-- 告警 -->
+    <string name="warning_title">告警区(可用)</string>
+    <string name="warning_title_disable">告警区(停用)</string>
+    <string name="warning_title_mul">告警区(</string>
+    <string name="warning_title_mul_disable">告警设置(停用</string>
+    <string name="warning_ltime">时间(s)</string>
+    <string name="warning_range">告警阈值</string>
+    <string name="warning_range_max_hint">最大边界</string>
+    <string name="warning_range_min_hint">最小边界</string>
+    <string name="warning_times">告警次数:</string>
+    <string name="warning_times_short">告警次数:</string>
+    <!-- Log页 -->
+    <string name="log_tab_name">日志</string>
+    <string name="log_gtLog_title">GTLog</string>
+    <string name="log_logcat_title">LogCat</string>
+    <string name="log_filter_hint">按文本过滤</string>
+    <string name="log_search_hint">请输入搜索关键字</string>
+    <string name="log_search_results"> 结果</string>
+    <string name="no_saved_logs">没有已保存的日志文件.</string>
+    <string name="open_log">打开日志</string>
+    <!-- 插件 -->
+    <string name="plugin_tab_name">插件</string>
+    <string name="battery_desc">本插件用于采集电流、电压、电量、温度值，已知Google Nexus4/Nexus5和中兴红牛V5能够准确的输出电流值。使用前先确定采样率，推荐100ms~1000ms，然后勾选被观测项（电流I/电压U/电量Power/温度Temp）,点Start确定后，会在出参界面显示选中的观测项。</string>
+    <string name="capture_desc">这是一个抓包插件，直接点击Start即可抓包，点击Stop后保存已抓包的内容到文件。抓包文件可用PC上的Wireshark软件分析。</string>
+    <string name="screenlock_desc">这是一个wakelock的控制插件，当点击Full wakelock时，手机不会主动灭屏，并且手动灭屏了也不会进入休眠状态。当点击Partial wakelock时，手机灭屏后也不会休眠。</string>
+    <string name="memfill_desc">这是一个内存填充插件，当点击fill时，会为GT进程在Native层分配xxxMB的内存。GT所占用的内存数在PSS数据中可以体现出来。</string>
+    <string name="gps_desc">GPS采集：点击record开始采集，再点击会停止采集。文件存放在gt日志目录下的gps目录里。\r\nGPS回放：选择gps目录里的文件，点击replay开始，再点击停止。回放需要系统设置如下：1、设置里的位置选项，只打开通过GPS定位，其他关闭。2、开发者选项里选择允许模仿位置。</string>
+    <string name="gps_replay_desc">拖动进度条改变GPS回放的进度后，点击保存即可生效。</string>
+    <string name="othersm_desc">使用：检测（结果为OK）->选中被调试的进程->启动调试\n设置：检测（结果NOT OK）->点击更改->点击重启\n注意：无需检测时请点击停止调试，调试完毕时请点击恢复并重启系统还原设置</string>
+    <string name="octopus_desc">本插件用于将采集的数据上传到web端进行展示。GT的web资源由Bugly平台提供，Bugly平台可以使用QQ帐号快速登录，使用前请确保:\r\n1.手机上安装了手机QQ\r\n2.在bugly.qq.com注册过产品\r\n</string>
+    <string name="pi_battery_title">耗电数据采集</string>
+    <string name="pi_battery_item">采集电流电量指标,支持Nexus4/5和红牛V5等</string>
+    <string name="pi_battery_sample_rate">采样间隔(ms):</string>
+    <string name="pi_battery_sample_hint">输入的数字必须大于100</string>
+    <string name="pi_battery_sample_tip">您输入刷新率或亮度不是数字!</string>
+    <string name="pi_battery_sample_tip2">输入的数字应大于100!</string>
+    <string name="pi_battery_sample_tip3">请先停止已进行的耗电数据采集!</string>
+    <string name="pi_battery_sample_tip4">该机型或系统尚未适配</string>
+    <string name="pi_battery_select_items">选择关注的指标:</string>
+    <string name="pi_battery_i">电流:</string>
+    <string name="pi_battery_u">电压:</string>
+    <string name="pi_battery_power">电量:</string>
+    <string name="pi_battery_temp">温度:</string>
+    <string name="pi_battery_setbrightness">固定屏幕亮度(0–255):</string>
+    <string name="pi_pcap_title">抓包</string>
+    <string name="pi_pcap_item">使用tcpdump抓包</string>
+    <string name="pi_pcap_foldername">保存目录名</string>
+    <string name="pi_pcap_arg">参数调整</string>
+    <string name="pi_sclock_title">Wakelock锁</string>
+    <string name="pi_sclock_item">可以设置手机不自动灭屏或休眠</string>
+    <string name="pi_sclock_fwakelock">Full wakelock</string>
+    <string name="pi_sclock_pwakelock">Partial wakelock</string>
+    <string name="pi_memfill_title">内存填充</string>
+    <string name="pi_memfill_item">内存填充</string>
+    <string name="pi_memfill_alloc">分配内存数(MB):</string>
+    <string name="pi_memfill_btn">填充或释放内存:</string>
+    <string name="pi_memfill_on">填充</string>
+    <string name="pi_memfill_off">释放</string>
+    <string name="pi_memfill_hint">输入的数字请小于1100</string>
+    <string name="pi_othersm_item">流畅度调试</string>
+    <string name="pi_othersm_title">流畅度调试</string>
+    <string name="pi_othersm_check_status_btn">检测</string>
+    <string name="pi_othersm_write_property_btn">更改</string>
+    <string name="pi_othersm_recover_property_btn">恢复</string>
+    <string name="pi_othersm_restart_btn">重启</string>
+    <string name="pi_gps_title">月光宝盒</string>
+    <string name="pi_gps_item">录制GPS轨迹并模拟回放</string>
+    <string name="pi_gps_record">录制</string>
+    <string name="pi_gps_record_stop">结束录制</string>
+    <string name="pi_gps_replay">回放</string>
+    <string name="pi_gps_replay_stop">结束回放</string>
+    <string name="pi_gps_replay_tip">请选择一个路径文件</string>
+    <string name="pi_gps_tag">打标记</string>
+    <string name="pi_gps_warn_tip">请在开发者选项里允许模拟位置</string>
+    <string name="pi_gps_warn_tip2">选择的是空位置文件!</string>
+    <string name="pi_gps_warn_tip3">请不要在回放的时候做文件操作</string>
+    <string name="gps_replayspeed_normal">正常速回放</string>
+    <string name="gps_replayspeed_double">2倍速回放</string>
+    <string name="gps_replayspeed_treble">4倍速回放</string>
+    <string name="use_detail">使用详情</string>
+    <string name="about">关于</string>
+    <string name="cannot_empty">*必填项不能为空!</string>
+
+</resources>

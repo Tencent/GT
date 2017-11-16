@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="48dip"
+        android:background="@drawable/bottom_gray"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/perf_detail_back"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:background="#00000000"
+            android:src="@drawable/a_gt_imgbtn_back_selector" />
+
+        <TextView
+            android:id="@+id/perf_detail_title"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/Detail"
+            android:textColor="@drawable/white"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/perf_detail_delete"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:background="#00000000"
+            android:src="@drawable/a_gt_imgbtn_clear_selector"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#00000000" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#29292d" />
+
+    <TextView
+        android:id="@+id/op_perf_detail_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="6dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/switch_on_border"
+        android:gravity="center"
+        android:text="@string/about"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/op_perf_detail_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:ellipsize="middle"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:textColor="@drawable/text_title_gray"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/a_gt_perf_tag_list_item_border"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/prof_detail_value"
+                    android:textColor="@drawable/text_title_gray"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/op_perf_detail_value"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:singleLine="false"
+                    android:textColor="@drawable/text_green"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="9dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/bh_perf_detail_times_toast"
+                    android:layout_width="55dp"
+                    android:layout_height="fill_parent"
+                    android:gravity="top"
+                    android:text="@string/prof_detail_Count"
+                    android:textColor="@drawable/text_title_gray"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/bh_perf_detail_times"
+                    android:layout_width="100dp"
+                    android:layout_height="fill_parent"
+                    android:gravity="top"
+                    android:textColor="@drawable/text_green"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/bh_perf_detail_ave_toast"
+                    android:layout_width="55dp"
+                    android:layout_height="fill_parent"
+                    android:gravity="top"
+                    android:text="@string/prof_detail_ave"
+                    android:textColor="@drawable/text_title_gray"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/bh_perf_detail_ave"
+                    android:layout_width="100dp"
+                    android:layout_height="fill_parent"
+                    android:gravity="top"
+                    android:textColor="@drawable/text_green"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="9dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/bh_perf_detail_max_toast"
+                    android:layout_width="55dip"
+                    android:layout_height="fill_parent"
+                    android:gravity="top"
+                    android:text="@string/prof_detail_max"
+                    android:textColor="@drawable/text_title_gray"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/bh_perf_detail_max"
+                    android:layout_width="100dip"
+                    android:layout_height="fill_parent"
+                    android:gravity="top"
+                    android:textColor="@drawable/text_green"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/bh_perf_detail_min_toast"
+                    android:layout_width="55dip"
+                    android:layout_height="fill_parent"
+                    android:gravity="top"
+                    android:text="@string/prof_detail_min"
+                    android:textColor="@drawable/text_title_gray"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/bh_perf_detail_min"
+                    android:layout_width="100dip"
+                    android:layout_height="fill_parent"
+                    android:gravity="top"
+                    android:textColor="@drawable/text_green"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bh_perf_detail_chart"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/a_gt_perf_tag_list_item_border"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/a_gt_perf_tag_list_item_border"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/warning_fold"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/op_perf_detail_interval_toast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="top"
+                    android:singleLine="true"
+                    android:text="@string/warning_title"
+                    android:textColor="@drawable/area_title_orange"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <ImageView
+                        android:id="@+id/bottom_arrow"
+                        android:layout_width="25dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/fold_arrow" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/op_perf_detail_warnarea"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="6dp"
+                        android:gravity="top"
+                        android:singleLine="true"
+                        android:text="@string/warning_ltime"
+                        android:textColor="@drawable/text_title_gray"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/op_perf_detail_value_toast"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/warning_range"
+                        android:textColor="@drawable/text_title_gray"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/op_perf_detail_upper_interval"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="26dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/a_gt_log_ed_default_border"
+                        android:digits="1234567890."
+                        android:gravity="center_vertical"
+                        android:hint=""
+                        android:paddingLeft="9dp"
+                        android:paddingRight="6dp"
+                        android:singleLine="true"
+                        android:textColor="#9398a6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/左中括号"
+                        android:textColor="@drawable/text_title_gray"
+                        android:textSize="26dp" />
+
+                    <EditText
+                        android:id="@+id/op_perf_detail_lower_value"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/a_gt_log_ed_default_border"
+                        android:digits="1234567890."
+                        android:gravity="center_vertical"
+                        android:hint="@string/warning_range_min_hint"
+                        android:paddingLeft="9dp"
+                        android:paddingRight="6dp"
+                        android:singleLine="true"
+                        android:textColor="#9398a6"
+                        android:textColorHint="#AF616676" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/减号"
+                        android:textColor="@drawable/text_title_gray"
+                        android:textSize="26dp" />
+
+                    <EditText
+                        android:id="@+id/op_perf_detail_upper_value"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/a_gt_log_ed_default_border"
+                        android:digits="1234567890."
+                        android:gravity="center_vertical"
+                        android:hint="@string/warning_range_max_hint"
+                        android:paddingLeft="9dp"
+                        android:paddingRight="6dp"
+                        android:singleLine="true"
+                        android:textColor="#9398a6"
+                        android:textColorHint="#AF616676" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/右中括号"
+                        android:textColor="@drawable/text_title_gray"
+                        android:textSize="26dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="4dp"
+                        android:gravity="top"
+                        android:text="@string/warning_times"
+                        android:textColor="@drawable/text_title_gray"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/bh_perf_detail_warning_cnt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="top"
+                        android:textColor="@drawable/text_green"
+                        android:textSize="16dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
