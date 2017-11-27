@@ -90,7 +90,7 @@ public class GTACSettingActivity extends GTBaseActivity implements CompoundButto
 
 	@Override
 	protected void onPause() {
-		super.onResume();
+		super.onPause();
 		cb_show_Switch.setOnCheckedChangeListener(null);
 		this.show_quickswitch.setOnCheckedChangeListener(null);
 	}
