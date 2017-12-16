@@ -23,11 +23,6 @@
  */
 package com.tencent.wstt.gt.manager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -42,6 +37,11 @@ import com.tencent.wstt.gt.GTApp;
 import com.tencent.wstt.gt.api.utils.Env;
 import com.tencent.wstt.gt.api.utils.ProcessUtils;
 import com.tencent.wstt.gt.api.utils.ProcessUtils.ProcessInfo;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
 
 /**
  * 被测APP管理类，主要维护当前被测APP的状态，及测试的指标，目前是初步重构中间状态
@@ -105,9 +105,19 @@ public class AUTManager {
 				if (pkgName != null && pkgName.equals(AUTManager.pkn)) {
 					// 1.pname存在否
 					if (!AUTManager.proNameList.contains(pi.name)) {
-						AUTManager.proNameList.add(pi.name);
-						AUTManager.proPidList.add(String.valueOf(pi.pid));
+						// 把包名同名的进程固定作为0号进程
+						if (pi.name.equals(AUTManager.pkn))
+						{
+							AUTManager.proNameList.add(0, pi.name);
+							AUTManager.proPidList.add(0, String.valueOf(pi.pid));
+						}
+						else
+						{
+							AUTManager.proNameList.add(pi.name);
+							AUTManager.proPidList.add(String.valueOf(pi.pid));
+						}
 						AUTManager.proNameIdMap.put(pi.name, String.valueOf(pi.pid));
+
 					}
 					else
 					{
@@ -129,8 +139,17 @@ public class AUTManager {
 			{
 				// 1.pname存在否
 				if (!AUTManager.proNameList.contains(pi.name)) {
-					AUTManager.proNameList.add(pi.name);
-					AUTManager.proPidList.add(String.valueOf(pi.pid));
+					// 把包名同名的进程固定作为0号进程
+					if (pi.name.equals(AUTManager.pkn))
+					{
+						AUTManager.proNameList.add(0, pi.name);
+						AUTManager.proPidList.add(0, String.valueOf(pi.pid));
+					}
+					else
+					{
+						AUTManager.proNameList.add(pi.name);
+						AUTManager.proPidList.add(String.valueOf(pi.pid));
+					}
 					AUTManager.proNameIdMap.put(pi.name, String.valueOf(pi.pid));
 				}
 				else
@@ -161,6 +180,7 @@ public class AUTManager {
 			}
 		}
 	}
+
 
 	public static void findProcess4x() {
 
