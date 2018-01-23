@@ -65,7 +65,7 @@ GT v3.1 is an important update of the previous version 2.x. Apart from keeping t
 
 3) Report charts are used to demonstrate performance statistics;
 
-4) Newly-added performance presentation pages, such as **UI block call stacks, page loading time, layout rendering speed, IO usage and CPU time slice statistics per thread**；
+4) Newly-added performance presentation pages, such as **UI block call stacks, page loading time, layout rendering speed, IO usage and CPU time slice statistics per thread**.
 
 
 ### <font color=#436EEE>Ⅱ. Importing GT SDK </font>
