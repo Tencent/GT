@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>优测性能分析</title>
+	
+	<!-- 引入css: bootstrap -->
+	<link rel="stylesheet" type="text/css" href="lib/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="lib/css/bootstrap-theme.css">
+	<!-- 引入css: dataTables -->
+	<link rel="stylesheet" type="text/css" href="lib/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="lib/css/dataTables.bootstrap.css"/>
+	<!-- 引css: pdm -->
+	<link rel="stylesheet" type="text/css" href="lib/css/pdm.css">
+	
+	<!-- 引入js: jquary -->
+    <script type="text/javascript" charset="utf8" src="lib/js/jquery-3.1.1.js"></script>
+    <!-- 引入js: echarts -->
+    <script type="text/javascript" charset="utf8" src="lib/js/echarts.js"></script>
+	<!-- 引入js: bootstrap -->
+	<script type="text/javascript" charset="utf8" src="lib/js/bootstrap.js"></script>
+	<!-- 引入js: dataTables -->
+	<script type="text/javascript" charset="utf8" src="lib/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" charset="utf8" src="lib/js/dataTables.bootstrap.js"></script>
+	<!-- 引入js: FileSaver -->
+	<script type="text/javascript" charset="utf8" src="lib/js/FileSaver.js"></script>
+	
+	
+	
+	<!-- 引入数据集&&处理数据:  -->
+	<script type="text/javascript" charset="utf8" src="data/data.js"></script>
+	<script type="text/javascript" charset="utf8" src="data/dataHandler.js"></script>
+	
+	
+	
+</head>
+<body>
+
+	
+	<!-- ::::::::::::::::::::::::::::::::::  HTML页面  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+	
+	<!-- 导航条： -->
+	<nav class="navbar navbar-inverse" style="height:80px;border-radius:0">
+	  <div class="container">
+		<div class="navbar-header">
+		  <a class="navbar-brand" target="_blank"  href="http://utest.qq.com">
+			<img alt="Brand" style="height:50px;border-radius:0" src="lib/image/logo.png">
+		  </a>
+		</div>
+		<div class="row">
+			<h2 style="text-align:center;margin-right:180px"><b id="page_title" style="color:white;">XXAPP-深度性能分析</b></h2>
+		</div>
+	  </div>
+	</nav>
+	<div class="container">
+		<ul class="nav nav-tabs" id="page_nav">
+		  <li role="presentation" class="active"><a href="#">汇总</a></li>
+		  <li role="presentation"><a href="#">基础性能</a></li>
+		  <li role="presentation"><a href="#">卡顿检测</a></li>
+		  <li role="presentation"><a href="#">页面测速</a></li>
+		  <li role="presentation"><a href="#">Fragment测速</a></li>
+		  <li role="presentation"><a href="#">布局检测</a></li>
+		  <li role="presentation"><a href="#"> G C检测</a></li>
+		  <li role="presentation"><a href="#"> I O检测</a></li>
+		  <li role="presentation"><a href="#">线程分析</a></li>
+		  <li role="presentation"><a href="#">关键日志</a></li>
+		</ul>
+	</div>
+
+	<!-- 总结页： -->
+	<div id="page_summary" 	class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+	
+	
+		<div class="row">
+			<h3 class=""><b>测试状态：</b></h3>
+		</div>
+		<div class="row">
+			<table class="table" style="color:#1E90FF">
+				<thead>
+					<tr>
+						<th>状态项</th>
+						<th>状态数据</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>测试时长</td>
+						<td id="testState_testTime_value"></td>
+					</tr>
+					<tr>
+						<td>Activity数</td>
+						<td id="testState_activityNumber_value"></td>
+					</tr>
+					<tr>
+						<td>页面数</td>
+						<td id="testState_pageNumber_value"></td>
+					</tr>
+					<tr>
+						<td>测试机型</td>
+						<td id="testState_testModel_value"></td>
+					</tr>
+					<tr>
+						<td>测试系统</td>
+						<td id="testState_testSystem_value"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="row">
+			<h3 class=""><b>性能问题：</b></h3>
+		</div>
+		<div class="row">
+			<table class="table" style="color:#1E90FF">
+				<thead>
+					<tr>
+						<th>性能项</th>
+						<th>检测结果</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>基础性能</td>
+						<td id="result_normal"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(1)">查看详细</a></td>
+					</tr>
+					<tr>
+						<td>卡顿检测</td>
+						<td id="result_block"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(2)">查看详细</a></td>
+					</tr>
+					<tr>
+						<td>页面测速</td>
+						<td id="result_pageLoad"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(3)">查看详细</a></td>
+					</tr>
+					<tr>
+						<td>Fragment测速</td>
+						<td id="result_fragment"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(4)">查看详细</a></td>
+					</tr>
+					<tr>
+						<td>布局检测</td>
+						<td id="result_view"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(5)">查看详细</a></td>
+					</tr>
+					<tr>
+						<td>G C检测</td>
+						<td id="result_memory"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(6)">查看详细</a></td>
+					</tr>
+					<tr>
+						<td>I O检测</td>
+						<td id="result_io"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(7)">查看详细</a></td>
+					</tr>
+					<tr>
+						<td>线程分析</td>
+						<td id="result_thread"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(8)">查看详细</a></td>
+					</tr>
+					<tr>
+						<td>关键日志</td>
+						<td id="result_log"><p style="color:green">未检测到异常！</p></td>
+						<td><a onclick="openPage(9)">查看详细</a></td>
+					</tr>
+					<!--
+					<tr>
+						<td>内存泄漏</td>
+						<td></td>
+						<td><a></a></td>
+					</tr>
+					<tr>
+						<td>主线程IO</td>
+						<td></td>
+						<td><a></a></td>
+					</tr>
+					<tr>
+						<td>启动分析</td>
+						<td></td>
+						<td><a></a></td>
+					</tr>
+					<tr>
+						<td>APP瘦身</td>
+						<td></td>
+						<td><a></a></td>
+					</tr>
+					-->
+				</tbody>
+			
+		 
+			</table>
+		</div>
+	</div>
+	
+	<!-- 基础性能页： -->
+	<div id="page_base" 	class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+		<!-- 一、基础性能结果 --> 
+		<div class="row">
+			<h3 class=""><b>一、基础性能结果</b></h3>
+		</div>
+		<div class="row"  style="margin-left:10px;margin-right:10px;">
+			<table class="table table-bordered" style="color:#1E90FF">
+				<thead>
+					<tr>
+						<th>评估维度A</th>
+						<th>评估维度B</th>
+						<th colspan="2">评估结果</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- CPU： -->
+					<tr>
+						<td rowspan="4">CPU</td>
+						<td rowspan="2">前台</td>
+						<td >平均cpu</td>
+						<td id="baseTable_front_cpu_average"></td>
+					</tr>
+					<tr>
+						<td >最高cpu</td>
+						<td id="baseTable_front_cpu_max"></td>
+					</tr>
+					<tr>
+						<td rowspan="2">后台</td>
+						<td >平均cpu</td>
+						<td id="baseTable_back_cpu_average"></td>
+					</tr>
+					<tr>
+						<td >最高cpu</td>
+						<td id="baseTable_back_cpu_max"></td>
+					</tr>
+					<!-- 内存(pss): -->
+					<tr>
+						<td rowspan="4">内存(pss)</td>
+						<td rowspan="2">前台</td>
+						<td >平均内存</td>
+						<td id="baseTable_front_memory_average"></td>
+					</tr>
+					<tr>
+						<td >最高内存</td>
+						<td id="baseTable_front_memory_max"></td>
+					</tr>
+					<tr>
+						<td rowspan="2">后台</td>
+						<td >平均内存</td>
+						<td id="baseTable_back_memory_average"></td>
+					</tr>
+					<tr>
+						<td >最高内存</td>
+						<td id="baseTable_back_memory_max"></td>
+					</tr>
+					<!-- 流量: -->
+					<tr>
+						<td rowspan="4">流量</td>
+						<td rowspan="2">前台</td>
+						<td >总上行流量</td>
+						<td id="baseTable_front_flow_up"></td>
+					</tr>
+					<tr>
+						<td >总下行流量</td>
+						<td id="baseTable_front_flow_down"></td>
+					</tr>
+					<tr>
+						<td rowspan="2">后台</td>
+						<td >总上行流量</td>
+						<td id="baseTable_back_flow_up"></td>
+					</tr>
+					<tr>
+						<td >总下行流量</td>
+						<td id="baseTable_back_flow_down"></td>
+					</tr>
+					<!-- 流畅值: -->
+					<tr>
+						<td rowspan="2">流畅值</td>
+						<td rowspan="2">前台</td>
+						<td >平均流畅值</td>
+						<td id="baseTable_front_sm_average"></td>
+					</tr>
+					<tr>
+						<td >最低流畅值</td>
+						<td id="baseTable_front_sm_min"></td>
+					</tr>
+					
+					
+					
+					
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="row">
+			<h3 class=""><b>二、基础性能详细数据</b></h3>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>基础性能走向图：</b></h4>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+			<div id="div_baseSummaryChart" class="" style="height:350px" ></div>
+		</div>
+	</div>
+	
+	<!-- 卡顿检测页： -->
+	<div id="page_block" 	class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+	
+			<!-- 一、卡顿检测结果 --> 
+		<div class="row">
+			<h3 class=""><b>一、卡顿检测结果</b></h3>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>低流畅值区间（连续丢帧）：</b></h4>
+		</div>
+		<div class="row" id="div_LowSM" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>主线程阻塞超过70ms：</b></h4>
+		</div>
+		<div class="row" id="div_BigTable" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+		</div>
+
+	</div>
+	
+	<!-- 页面测速页： -->
+	<div id="page_pageLoad" class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+		<!-- 一、页面测速结果 --> 
+		<div class="row">
+			<h3 class=""><b>一、页面测速结果</b></h3>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>超时页面：</b></h4>
+		</div>
+		<div class="row" id="div_pageLoadOverTable" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+		</div>
+		
+		<!-- 二、页面测速详细数据 --> 
+		<div class="row">
+			<h3 class=""><b>二、页面测速详细数据</b></h3>
+		</div>
+		<div class="row" div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>所有页面：</b></h4>
+		</div>
+		<div class="row" id="div_pageLoadAllTable" style="border:1px solid #aaa;padding:10px;margin-left:10px;margin-right:10px;">
+		</div>
+		
+		
+	</div>
+	
+	<!-- Fragment测速页： -->
+	<div id="page_fragment" class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+		<!-- 一、Fragment测速结果  --> 
+		<div class="row">
+			<h3 class=""><b>一、Fragment测速结果</b></h3>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>超时Fragment：</b></h4>
+		</div>
+		<div class="row" id="div_overFragmentTable" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+			<table id="table_overFragmentData" class="display" style="word-break:break-all; word-wrap:break-word;">
+			</table>
+		</div>
+		
+		<!-- 二、Fragment测速详细数据 --> 
+		<div class="row">
+			<h3 class=""><b>二、Fragment测速详细数据</b></h3>
+		</div>
+		<div class="row" div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>所有Fragment：</b></h4>
+		</div>
+		<div class="row" id="div_allFragmentTable" style="border:1px solid #aaa;padding:10px;margin-left:10px;margin-right:10px;">
+			<table id="allFragmentTable" class="display">
+				<thead>
+					<tr>
+						<th>启动次序</th>
+						<th>Fragment名</th>
+						<th>冷热启动</th>
+						<th>启动时长</th> 
+						<th>详细</th>
+					</tr>
+				</thead>
+		 
+			</table>
+		</div>
+		
+		
+	</div>
+	
+	<!-- 布局检测页： -->
+	<div id="page_view" class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+		<!-- 一、布局检测结果  --> 
+		<div class="row">
+			<h3 class=""><b>一、布局检测结果</b></h3>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>Layout构建超时：</b></h4>
+		</div>
+		<div class="row" id="div_table_overViewBuildData" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+			<table id="table_overViewBuildData" class="display" style="word-break:break-all; word-wrap:break-word;">
+			</table>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>页面绘制超时：</b></h4>
+		</div>
+		<div class="row" id="div_table_overViewDrawData" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+			<table id="table_overViewDrawData" class="display" style="word-break:break-all; word-wrap:break-word;">
+			</table>
+		</div>
+	</div>
+	
+	<!-- G C检测页： -->
+	<div id="page_memory" 	class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+		<!-- 一、G C检测结果 --> 
+		<div class="row">
+			<h3 class=""><b>一、GC检测结果</b></h3>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>发现显示GC调用：</b></h4>
+		</div>
+		<div class="row" id="div_table_explicitGC" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+		</div>
+
+
+		
+	</div>
+	
+	<!--  I O检测页： -->
+	<div id="page_io" 	class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+		<!-- 一、 I O检测结果 --> 
+		<div class="row">
+			<h3 class=""><b>一、I O检测结果：</b></h3>
+		</div>
+	<!-- 
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>发现主线程文件操作：</b></h4>
+		</div>
+		
+		<div class="row" id="div_fileActionInMainThreadTable" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+		</div>
+	-->
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4><b>发现主线程数据库操作：</b></h4>
+		</div>
+		<div class="row" id="div_dbActionInMainThreadTable" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+
+		</div>
+	<!-- 
+		<div class="row">
+			<h3 class=""><b>二、I O详细数据：</b></h3>
+		</div>
+	-->
+		
+	</div>
+	
+	<!-- 线程分析页： -->
+	<div id="page_thread" 	class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+		<!-- 一、线程分析结果 --> 
+		<div class="row">
+			<h3 class=""><b>一、线程分析结果</b></h3>
+		</div>
+		<div class="row" id="div_table_thread" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+		</div>
+	</div>
+
+	<!-- 关键日志页： -->
+	<div id="page_log" class="container" style="display:none;margin-top:35px;margin-bottom:80px;">
+		<!-- 一、关键日志  --> 
+		<div class="row">
+			<h3 class=""><b>一、关键日志</b></h3>
+		</div>
+		<div class="row" style="margin-left:10px;margin-right:10px;color:#4876FF;">
+			<h4>
+				<b>筛选条件：</b>
+				<label>
+					<div class="dropdown">
+					  <button id="button_logGrage" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					  Error<span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						<li><a onclick="switchLogGrade('Assert')" href="#">Assert</a></li>
+						<li><a onclick="switchLogGrade('Error')" href="#">Error</a></li>
+						<li><a onclick="switchLogGrade('Warn')" href="#">Warn</a></li>
+						<li><a onclick="switchLogGrade('Info')" href="#">Info</a></li>
+						<li><a onclick="switchLogGrade('Debug')" href="#">Debug</a></li>
+						<li><a onclick="switchLogGrade('Verbose')" href="#">Verbose</a></li>
+					  </ul>
+					</div>
+				</label>
+				<label > <input type="email" class="form-control" id="tagFilter" placeholder="标签过滤"  onchange="show_logcatTable()"> </label> 
+				
+				<label style="color:#555555;"><input id="checkbox_isUtest" type="checkbox"  onclick="show_logcatTable()"/> 展示GT日志 </label> 
+				<label style="float:right">
+					<button type="button" class="btn btn-info" onclick="exportLog()" >导出日志</button>
+				</label>
+				
+			</h4>
+		</div>
+		<form action="" method="get"> 
+			
+		</form> 
+		<div class="row" id="div_table_log" style="margin-left:10px;margin-right:10px;border:1px solid #aaa;padding:10px;">
+			<table id="table_log" class="display" style="word-break:break-all; word-wrap:break-word;">
+			</table>
+		</div>
+	</div>
+	
+	
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

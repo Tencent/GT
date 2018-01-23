@@ -1,0 +1,24 @@
+
+
+
+
+
+/* datatable 展开折叠图标： */
+td.details-control {
+    background: url('../image/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../image/details_close.png') no-repeat center center;
+}
+
+/* datatable 排序图标： */
+table.dataTable thead .sorting {
+  background-image: url("../image/sort_both.png");
+}
+table.dataTable thead .sorting_asc {
+  background-image: url("../image/sort_asc.png");
+}
+table.dataTable thead .sorting_desc {
+  background-image: url("../image/sort_desc.png");
+}
