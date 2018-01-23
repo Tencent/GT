@@ -43,7 +43,7 @@ SDK的引入完全可以参照GTDemo工程，这是一个已经引入了sdk的�
 
 4) 将导出的文件data.js复制到<u>GT/GT_Report/data</u>目录下，替换原有的data.js即可
 
-5) 双击”GT/GT_Report/性能结果.html”即可查看报告
+5) 双击”GT/GT_Report/result.html”即可查看报告
 
 #### ② 注意事项：
 
@@ -96,7 +96,7 @@ GTDemo is a good example of how to import GT SDK into target application.
 
 4) Copy the exported data.js file to the <u>GT/GT_Report/data</u> directory, overwriting the one that exists if needed;
 
-5) Double-click the ”GT/GT_Report/性能结果.html” icon to read the report.
+5) Double-click the ”GT/GT_Report/result.html” icon to read the report.
 
 #### ② Notes：
 
