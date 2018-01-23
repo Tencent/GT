@@ -84,7 +84,7 @@ GTDemo is a good example of how to import GT SDK into target application.
 
 5) Remember to call GTRController.init(Context context) to initialze and configure GT, usually in the Application class.
 
-### <font color=#436EEE>Ⅲ. Test Your Apps and Read the Report：</font>
+### <font color=#436EEE>Ⅲ. Test Your Apps and Read the Report</font>
 
 #### ① Testing Procedure：
 
