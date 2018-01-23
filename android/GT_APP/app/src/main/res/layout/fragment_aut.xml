@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Notwithstanding anything to the contrary herein, any previous version
+     of Tencent GT shall not be subject to the license hereunder.
+     All right, title, and interest, including all intellectual property rights,
+     in and to the previous version of Tencent GT (including any and all copies thereof)
+     shall be owned and retained by Tencent and subject to the license under the
+     Tencent GT End User License Agreement (http://gt.qq.com/wp-content/EULA_EN.html).
+
+     Copyright (C) 2015 THL A29 Limited, a Tencent company. All rights reserved.
+
+     Licensed under the MIT License (the "License"); you may not use this file
+     except in compliance with the License. You may obtain a copy of the License at
+
+     http://opensource.org/licenses/MIT
+
+     Unless required by applicable law or agreed to in writing, software distributed
+     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+     CONDITIONS OF ANY KIND, either express or implied. See the License for the
+     specific language governing permissions and limitations under the License.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/setting_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dip">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/tested_app_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/AUT_under_test"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/tested_app_desc">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="25dp">
+
+                    <TextView
+                        android:id="@+id/selected_app_bg"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/seekbar_border" />
+
+                    <TextView
+                        android:id="@+id/app_pic"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/pi_procinfo"
+                        android:gravity="left" />
+
+                    <TextView
+                        android:id="@+id/selected_apn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@+id/app_pic"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/AUT_choose"
+                        android:textColor="#b7bdcf"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/select_tested_pkn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/app_pic"
+                        android:layout_alignLeft="@+id/selected_apn"
+                        android:gravity="top"
+                        android:singleLine="true"
+                        android:text="@string/na"
+                        android:textColor="#b7bdcf"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/select_app"
+                        android:layout_width="35dip"
+                        android:layout_height="50dip"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:gravity="right" />
+
+                    <TextView
+                        android:id="@+id/select_app_icon"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="14dp"
+                        android:background="@drawable/a_expand_r"
+                        android:gravity="right" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/app_pid_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/button_start"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/switch_on_border"
+                android:gravity="center"
+                android:text="@string/start"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/button_stop"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/switch_on_border"
+                android:gravity="center"
+                android:text="停止"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/button_clean"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/switch_on_border"
+                android:gravity="center"
+                android:text="清除数据"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/button_pulldata"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/switch_on_border"
+                android:gravity="center"
+                android:text="导出数据"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="4dp"
+                android:text="悬浮窗"
+                android:textColor="#b7bdcf"
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:id="@+id/basedata_switch"
+                android:layout_width="65dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:background="@drawable/seekbar_border"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_float_on"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/swbtn_selected"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_float_off"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:layout_toRightOf="@id/tv_float_on"
+                    android:background="@drawable/swbtn_default"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/item_cpu"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_cpu_tv"
+                style="@style/main_text_style"
+                android:text="CPU" />
+
+            <TextView
+                android:id="@+id/item_cpu_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_cpu_tv"
+                android:text="CPU数据" />
+
+
+            <TextView
+                android:id="@+id/item_cpu_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_cpu_tv" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/item_memory"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_mem_tv"
+                style="@style/main_text_style"
+                android:text="内存" />
+
+            <TextView
+                android:id="@+id/item_mem_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_mem_tv"
+                android:text="内存数据" />
+
+
+            <TextView
+                android:id="@+id/item_mem_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_mem_tv" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/item_flow"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_flow_tv"
+                style="@style/main_text_style"
+                android:text="流量" />
+
+            <TextView
+                android:id="@+id/item_flow_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_flow_tv"
+                android:text="应用消耗流量" />
+
+
+            <TextView
+                android:id="@+id/item_flow_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_flow_tv" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/item_sm"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_sm_tv"
+                style="@style/main_text_style"
+                android:text="SM" />
+
+            <TextView
+                android:id="@+id/item_sm_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_sm_tv"
+                android:text="流畅值" />
+
+
+            <TextView
+                android:id="@+id/item_sm_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_sm_tv" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/item_activity"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_checkact_tv"
+                style="@style/main_text_style"
+                android:text="Activity测速" />
+
+            <TextView
+                android:id="@+id/item_checkact_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_checkact_tv"
+                android:text="检测activity的冷热启动时间" />
+
+
+            <TextView
+                android:id="@+id/item_checkact_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_checkact_tv" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/item_fragment"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_checkfrag_tv"
+                style="@style/main_text_style"
+                android:text="Fragment测速" />
+
+            <TextView
+                android:id="@+id/item_checkfrag_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_checkfrag_tv" />
+
+
+            <TextView
+                android:id="@+id/item_checkfrag_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_checkfrag_tv" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/item_viewbuild"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_viewconstruct_tv"
+                style="@style/main_text_style"
+                android:text="View构建" />
+
+            <TextView
+                android:id="@+id/item_viewcon_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_viewconstruct_tv" />
+
+
+            <TextView
+                android:id="@+id/item_viewcon_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_viewconstruct_tv" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/item_viewdraw"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_viewdraw_tv"
+                style="@style/main_text_style"
+                android:text="view绘制" />
+
+            <TextView
+                android:id="@+id/item_viewdraw_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_viewdraw_tv" />
+
+
+            <TextView
+                android:id="@+id/item_viewdraw_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_viewdraw_tv" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/item_io"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_io_tv"
+                style="@style/main_text_style"
+                android:text="DB检测" />
+
+            <TextView
+                android:id="@+id/item_io_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_io_tv" />
+
+
+            <TextView
+                android:id="@+id/item_io_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_io_tv" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/item_gc"
+            style="@style/main_layout_style">
+
+            <TextView
+                android:id="@+id/item_gc_tv"
+                style="@style/main_text_style"
+                android:text="GC检测" />
+
+            <TextView
+                android:id="@+id/item_gc_des_tv"
+                style="@style/main_text_des_style"
+                android:layout_toRightOf="@id/item_gc_tv" />
+
+
+            <TextView
+                android:id="@+id/item_gc_value_tv"
+                style="@style/main_text_value_style"
+                android:layout_below="@id/item_gc_tv" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,42 @@
+
+GUTData.data数据格式说明：
+Log.TAG = "PDM_DATA_TAG";
+data.separator = "_&&PDM&_";
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+参数0                         参数1         参数2         参数3         参数4         参数5         参数6
+
+
+
+
+
+
+
+file_open                     tid           fd           path           time
+file_read                     tid           fd           size           time
+file_pread64                  tid           fd           size           time
+file_write                    tid           fd           size           time
+file_pwrite64                 tid           fd           size           time
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

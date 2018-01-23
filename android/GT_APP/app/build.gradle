@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        gtkeystore {
+            keyAlias 'gt.keystore'
+            keyPassword '21kunpeng'
+            storeFile file("${project.getProjectDir()}/gt.keystore")
+            storePassword '21kunpeng'
+        }
+    }
+
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+    defaultConfig {
+        applicationId "com.tencent.wstt.gt"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 22067
+        versionName "3.1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        multiDexEnabled true
+
+        externalNativeBuild {
+            // For ndk-build, instead use ndkBuild {}
+            cmake {
+//                cppFlags "-std=gnu++11","-fpermissive"
+            }
+        }
+        ndk {
+            abiFilters 'x86', 'armeabi-v7a'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.gtkeystore
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path 'src/main/jni/CMakeLists.txt'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+    implementation project(':datatool')
+    implementation 'com.android.support:support-v13:25.3.1+'
+}

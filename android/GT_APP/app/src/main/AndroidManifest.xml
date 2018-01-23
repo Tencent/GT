@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    coreApp="true"
+    package="com.tencent.wstt.gt"
+    android:installLocation="auto"
+    android:versionCode="22065"
+    android:versionName="3.1.0.0">
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="25" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
+    <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
+    <uses-permission android:name="android.permission.SET_KEYBOARD_LAYOUT" />
+    <uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
+    <uses-permission android:name="android.permission.READ_OWNER_DATA" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
+        android:name="android.permission.ACCESS_CHECKIN_PROPERTIES"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.FACTORY_TEST"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.ACCESS_SURFACE_FLINGER"
+        tools:ignore="ProtectedPermissions" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
+    <application
+        android:name=".GTApp"
+        android:allowBackup="false"
+        android:icon="@drawable/gt_apk"
+        android:label="@string/app_name">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.GTMainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucentWithTitle"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.GTLogSearchActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.GTPerfGroupDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".activity.GTOpMulPerfActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".activity.GTOpSinglePerfActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".activity.GTOpSMActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <!-- launchMode="singleInstance"这样从悬浮进入，回的时候会回到原来位置 -->
+        <activity
+            android:name=".activity.GTInputParamSetActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".activity.GTAboutActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".activity.GTLogSwitchActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".activity.GTACSettingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".activity.GTIntervalSettingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".plugin.tcpdump.GTCaptureActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".plugin.battery.GTBatteryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".activity.GTShowPackageActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".plugin.screenlock.GTScreenlockActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".plugin.memfill.GTMemFillActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name="com.tencent.wstt.gt.activity.ShowhtmlActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".plugin.gps.GTGPSActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".plugin.gps.GTGPSReplayActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".plugin.smtools.SMActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+
+        <!-- use for gt base -->
+        <service
+            android:name=".service.GTService"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.tencent.wstt.gt.service"
+                    android:exported="true" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.GTFloatView" />
+        <service android:name=".service.GTLogo" />
+        <service android:name=".plugin.internal.PluginService" />
+        <service android:name=".plugin.smtools.SMLogService" />
+        <service android:name=".plugin.smtools.SMDataService" />
+        <service
+            android:name=".service.GTRService"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="GTR.GTRService"
+                    android:exported="true" />
+            </intent-filter>
+        </service>
+        <!-- use for battery -->
+        <receiver
+            android:name=".plugin.battery.BTBroadcast"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.battery.startTest"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.battery.endTest"
+                    android:exported="true" />
+            </intent-filter>
+        </receiver>
+        <!-- use for memfill -->
+        <receiver
+            android:name=".plugin.memfill.MFBroadcast"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.memfill.fill"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.memfill.free"
+                    android:exported="true" />
+            </intent-filter>
+        </receiver>
+        <!-- use for capture -->
+        <receiver
+            android:name=".plugin.tcpdump.CaptureBroadcast"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.tcpdump.startTest"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.tcpdump.endTest"
+                    android:exported="true" />
+            </intent-filter>
+        </receiver>
+        <!-- use for GPS -->
+        <receiver
+            android:name=".plugin.gps.GPSMockBroadcast"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.gps.startRecord"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.gps.endRecord"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.gps.startReplay"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.gps.endReplay"
+                    android:exported="true" />
+            </intent-filter>
+        </receiver>
+        <!-- use for sm -->
+        <receiver
+            android:name=".plugin.smtools.SMBroadcast"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.sm.check"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.sm.modify"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.sm.resume"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.sm.restart"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.sm.startTest"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.plugin.sm.endTest"
+                    android:exported="true" />
+            </intent-filter>
+        </receiver>
+        <!-- use for base param auto test -->
+        <receiver
+            android:name=".receiver.BaseCommandReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.startTest"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.sampleData"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.endTest"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.exitGT"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.startAppMonitoring"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.endAppMonitoring"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.exportData"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.clearData"
+                    android:exported="true" />
+                <action
+                    android:name="com.tencent.wstt.gt.baseCommand.addFlag"
+                    android:exported="true" />
+            </intent-filter>
+        </receiver>
+
+        <!-- use for MTA -->
+        <meta-data
+            android:name="TA_APPKEY"
+            android:value="Aqc1101346885" />
+        <meta-data
+            android:name="InstallChannel"
+            android:value="play" />
+
+        <provider
+            android:name="com.tencent.mid.api.MidProvider"
+            android:authorities="com.tencent.wstt.gt.TENCENT.MID.V3"
+            android:exported="true"></provider>
+
+        <activity android:name=".activity.GTRDetail_LineChartActivity"
+            android:theme="@style/translucent" >
+        </activity>
+        <activity android:name=".activity.GTRDetail_ListViewActivity"
+            android:theme="@style/translucent" >
+        </activity>
+        <activity android:name=".activity.ShowFileListActivity"
+            android:label="@string/pi_filelist_label"/>
+
+        <!-- use for share to WX -->
+        <receiver
+            android:name=".share.AppRegisterToWX"
+            android:permission="com.tencent.mm.plugin.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".wxapi.WXEntryActivity"
+                  android:exported="true">
+
+        </activity>
+    </application>
+
+</manifest>
