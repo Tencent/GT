@@ -1,1 +1,1 @@
-include ':app', ':gtrsdk', ':yhook'
+include ':gtrsdk', ':yhook'

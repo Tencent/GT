@@ -1,0 +1,86 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            ndkBuild {
+                abiFilters "armeabi-v7a", "x86"
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
+
+}
+
+dependencies {
+    compile project(':yhook')
+
+}
+
+def deleteDir(String filePath) {
+    if (file(filePath).exists()) {
+        println "delete Dir:${filePath}"
+        file(filePath).deleteDir()
+    }
+}
+
+
+def makeSDK() {
+
+    String yhookSrc = "${rootProject.getRootDir()}/yhook/build/intermediates/classes/debug/com/"
+    String sdkSrc = "${project.getBuildDir()}/intermediates/classes/debug/com/"
+    String classPath = "${project.getProjectDir()}/achievements/classes/"
+    String destPath = "${project.getProjectDir()}/achievements/"
+    String archiveName = "gt_sdk_3.1.0.jar"
+    deleteDir("${destPath}")
+
+    copy {
+        from("${yhookSrc}")
+        into("${classPath}/com/")
+    }
+    copy {
+        from("${sdkSrc}")
+        into("${classPath}/com/")
+    }
+
+    Jar myJar = task(myJar, type: Jar)
+    //指定jar的名字
+    myJar.archiveName = "${archiveName}"
+    //指定class生成的包路径
+    myJar.destinationDir = new File("${destPath}")
+    //指定我们需要构建的class的路径
+    myJar.from("${classPath}")
+    //排除我们需要打包的资源
+    myJar.exclude('**/BuildConfig.class', '**/R.class')
+    myJar.exclude { it.name.startsWith('R$') }
+    myJar.execute()
+
+}
+
+android.libraryVariants.all { variant ->
+
+    String suffix = variant.variantData.name.capitalize()
+    tasks.getByName("assemble${suffix}").doLast {
+        makeSDK()
+    }
+}
