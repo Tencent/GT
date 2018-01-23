@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">GTDemo</string>
+
+    <string name="connect">Connect GT</string>
+    <string name="intodemo">Into Demo</string>
+    <string name="disconnect">Disconnect GT</string>
+
+    <string name="showimg">下载图片</string>
+
+    <string name="connect_gt">已连接到GT控制台</string>
+    <string name="disconnect_gt">与GT控制台断开连接</string>
+</resources>

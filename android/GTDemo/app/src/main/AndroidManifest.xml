@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.wstt.gtr.sdkdemo">
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+
+    <application
+        android:name="com.gtr.test.MyApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:allowBackup="false"
+        android:supportsRtl="true">
+        <activity android:name="com.gtr.test.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.gtr.test.Test_Block_Activity" />
+        <activity android:name="com.gtr.test.Test_DB_Activity" />
+        <activity android:name="com.gtr.test.Test_File_Activity" />
+        <activity android:name="com.gtr.test.Test_Fragment_Activity" />
+        <activity android:name="com.gtr.test.Test_FragmentV4_Activity" />
+        <activity android:name="com.gtr.test.Test_FragmentV4_Switch_Activity" />
+        <activity android:name="com.gtr.test.Test_Memory_Activity" />
+        <activity android:name="com.gtr.test.Test_Operation_Activity" />
+        <activity android:name="com.gtr.test.Test_ViewBuild_Activity" />
+        <activity android:name="com.gtr.test.Test_WebView_Activity" />
+        <activity android:name="com.gtr.test.Test_Test_Activity" />
+        <activity android:name="com.gtr.test.Test_Input_Output_Activity" />
+        <activity android:name="com.gtr.test.GTDemoActivity" />
+    </application>
+
+</manifest>

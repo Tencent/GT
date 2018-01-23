@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical" 
+    >-->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/showimg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/showimg" 
+            />
+        <GridView    
+			android:id="@+id/gridview"  
+			android:layout_width="fill_parent"   
+			android:layout_height="wrap_content"  
+			android:numColumns="auto_fit"  
+			android:verticalSpacing="10dp"  
+			android:horizontalSpacing="10dp"  
+			android:columnWidth="90dp"  
+			android:stretchMode="columnWidth"  
+			android:gravity="center"  
+			android:scrollingCache="true"
+			android:scrollbars="vertical"
+		/>
+	</LinearLayout>

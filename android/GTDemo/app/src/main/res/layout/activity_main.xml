@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="15dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_below="@+id/device_info_ll">
+        <Button
+            android:id="@+id/button1"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="WebView测试"/>
+        <Button
+            android:id="@+id/button2"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="Memory测试" />
+        <Button
+            android:id="@+id/button3"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="FragmentV4测试" />
+        <Button
+            android:id="@+id/button4"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="Fragment测试"/>
+        <Button
+            android:id="@+id/button5"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="DB测试"/>
+        <Button
+            android:id="@+id/button6"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="AIDL测试"/>
+        <Button
+            android:id="@+id/button7"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="入参出参"/>
+    </LinearLayout>
+</ScrollView>
+
+
+
