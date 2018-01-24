@@ -263,6 +263,24 @@ public class GTRDataToJsManager {
     private static void toDataJs() {
         File des = isWX ? new File(getResultDataFilePath)
                 : new File(resultDataFilePath);
-        toDataJs(des);
+        if (toCreateFileDir(des)) {
+            toDataJs(des);
+        } else {
+            System.out.println("ErrorData: 文件创建失败，请开启系统读写权限后重试");
+        }
+    }
+    
+    private static boolean toCreateFileDir(File des) {
+        try {
+            if (des.exists()) {
+                des.delete();
+            }
+            des.getParentFile().mkdirs();
+            des.createNewFile();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
