@@ -485,51 +485,38 @@ function getChartDataInArea_xAxis(startTime, endTime){				//图-区间X轴数据
 }
 
 function getChartDataInArea_smData(startTime, endTime){
-	// oscar
 	//图-区间sm数据
-	let lastSM = 0;
-	let low = -1;
-	let high = 0;
-	let lastIdx = endTime - startTime;
-	var smData = new Array();
+	let lastSM = new Array();
+	let smData = new Array();
+	let lastScanned = -1;
 	
-	for (let i = 0; i < frames.length; i++) {
-		if (startTime - frames[i] >= 500) {
-			continue;
-		} else if (frames[i] - startTime > 500) {
-			break;
+	for (let i = 0; i < endTime - startTime; i++) {
+		let time = i + startTime;
+		if (lastSM.length != 0) {
+			if (frames[lastSM[0]] <= time - 500) {
+				lastSM.shift();
+			}
 		}
 		
-		if (low === -1) {
-			low = i;
+		if (lastSM.length != 0) {
+			let high = lastSM[lastSM.length - 1];
+			if (high + 1 < frames.length && frames[high + 1] - time <= 500) {
+				lastSM.push(high + 1);
+				lastScanned = high + 1;
+			}
+		} else {
+			for (let j = lastScanned + 1; j < frames.length && frames[j] - 500 <= time; j++) {
+				lastScanned = j;
+				if (frames[j] <= time - 500) {
+					continue;
+				}
+				lastSM.push(j);				
+			}
 		}
 		
-		high = i;
-		lastSM++;
+		smData.push(lastSM.length);
 	}
 	
-	smData.push(lastSM);
-	
-	for (let i = 1; i <= lastIdx; i++) {
-		let current = startTime + i;
-		if (current - frames[low] >= 500) {
-			lastSM--;
-			low++;
-		}
-		
-		if (high + 1 < frames.length && 
-			frames[high + 1] - current <= 500) {
-			lastSM++;
-			high++;
-		}
-		
-		smData.push(lastSM);
-	}
-	
-	
-	//for(var i=0; i<endTime-startTime; i++){
-	//	smData.push(getSMAtTime(startTime+i));
-	//}
 	return smData;
 }
 function getChartDataInArea_blockData(startTime, endTime){			//图-区间block数据
