@@ -4637,7 +4637,7 @@ function show_threadTable(){
 				+'<tr>'
 					+'<th>线程ID</th>'
 					+'<th>线程名</th>'
-					+'<th>总时间片</th>'
+					+'<th>总时间片(jiffies)</th>'
 					+'<th>详细</th>'
 				+'</tr>'
 			+'</thead>'
@@ -4793,7 +4793,7 @@ function show_threadChartDetail(thread){
 		],
 		yAxis: [
 			{
-				name: '时间片/s',
+				name: '时间片/jiffies',
 				type: 'value',
 				position: 'left',
 				offset: 0
