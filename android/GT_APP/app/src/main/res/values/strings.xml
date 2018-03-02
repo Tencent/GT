@@ -243,7 +243,7 @@
     <string name="pi_battery_temp">温度:</string>
     <string name="pi_battery_setbrightness">固定屏幕亮度(0–255):</string>
     <string name="pi_pcap_title">抓包</string>
-    <string name="pi_pcap_item">使用tcpdump抓包</string>
+    <string name="pi_pcap_item">使用tcpdump抓包(设备需获取root权限)</string>
     <string name="pi_pcap_foldername">保存目录名</string>
     <string name="pi_pcap_arg">参数调整</string>
     <string name="pi_sclock_title">Wakelock锁</string>

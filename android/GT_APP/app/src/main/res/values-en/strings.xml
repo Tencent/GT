@@ -239,7 +239,7 @@
     <string name="pi_battery_temp">Temp:</string>
     <string name="pi_battery_setbrightness">Set Brightness(0–255):</string>
     <string name="pi_pcap_title">GTPcap</string>
-    <string name="pi_pcap_item">capture the network traffic by tcpdump</string>
+    <string name="pi_pcap_item">Capture the network traffic by tcpdump(root permission needed)</string>
     <string name="pi_pcap_foldername">Save Folder Name</string>
     <string name="pi_pcap_arg">Argument</string>
     <string name="pi_sclock_title">GTScreenlock</string>
