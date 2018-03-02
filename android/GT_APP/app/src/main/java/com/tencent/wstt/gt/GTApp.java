@@ -55,7 +55,6 @@ import com.tencent.wstt.gt.plugin.gps.GTGPSReplayEngine;
 import com.tencent.wstt.gt.plugin.internal.PluginService;
 import com.tencent.wstt.gt.plugin.memfill.GTMemFillPluginItem;
 import com.tencent.wstt.gt.plugin.screenlock.ScreenlockPluginItem;
-import com.tencent.wstt.gt.plugin.smtools.SMToolsPluginItem;
 import com.tencent.wstt.gt.plugin.tcpdump.TcpdumpPluginItem;
 import com.tencent.wstt.gt.utils.GTUtils;
 
@@ -159,7 +158,6 @@ public class GTApp extends Application {
 		pm.register(new TcpdumpPluginItem());
 		pm.register(new ScreenlockPluginItem());
 		pm.register(new GTMemFillPluginItem());
-		pm.register(new SMToolsPluginItem());
 		pm.register(new GTGPSPluginItem());
 	}
 
