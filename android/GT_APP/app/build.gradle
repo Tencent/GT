@@ -16,7 +16,7 @@ android {
         applicationId "com.tencent.wstt.gt"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 22067
+        versionCode 33001
         versionName "3.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 //        multiDexEnabled true
