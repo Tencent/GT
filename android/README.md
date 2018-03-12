@@ -15,8 +15,17 @@
 
 
 ### <font color=#436EEE>二、SDK的引入：</font>
+目前有两种方式引入SDK：
 
-SDK的引入完全可以参照GTDemo工程，这是一个已经引入了sdk的样例
+方式一(推荐)：通过Gradle引入依赖包：compile 'com.tencent.wstt.gt:gt-sdk:3.1.0' 或者 implementation 'com.tencent.wstt.gt:gt-sdk:3.1.0'
+
+#### 注意事项
+
+1) 按此方式引入的sdk包含so库，目前支持的abi有armeabi, armeabi-v7a, arm64-v8a, 和x86。若工程有自编译so库，或者引入其它第三方so库，请注意匹配相应的so库路径；
+
+2) GT目前最低支持Android 5.0(API level 21)。
+
+方式二：参照GTDemo工程，这是一个已经引入了sdk的样例
 
 #### 注意事项
 
@@ -70,7 +79,17 @@ GT v3.1 is an important update of the previous version 2.x. Apart from keeping t
 
 ### <font color=#436EEE>Ⅱ. Importing GT SDK </font>
 
-GTDemo is a good example of how to import GT SDK into target application.
+Currently there are two ways to import our sdk:
+
+First, import gradle dependencies: compile 'com.tencent.wstt.gt:gt-sdk:3.1.0' or implementation 'com.tencent.wstt.gt:gt-sdk:3.1.0';
+
+#### Notes：
+
+1) Sdk imported from gradle supports armeabi, armeabi-v7a, arm64-v8a, and x86 ABIs. Please be careful about path matching if your projects compile native libraries or you want to import some third-party native libraries;
+
+2) The minimum Android version is 5.0 (API level 21).
+
+Second, our GTDemo, is a good example of how to import GT SDK into target application.
 
 #### Notes：
 
