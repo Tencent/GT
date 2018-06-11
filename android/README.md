@@ -62,7 +62,7 @@
 
 3) 尽可能遍历应用所有应用的所有功能和页面；
 
-#### 混淆
+### <font color=#436EEE>三、混淆：</font>
 
 若被测应用需要混淆，请将SDK工程gtrsdk模块下proguard-rules.pro文件中的相关内容拷贝到您工程使用的proguard文件中。
 
@@ -129,6 +129,6 @@ Second, our GTDemo, is a good example of how to import GT SDK into target applic
 
 3) Go through as many features and pages as possible.
 
-#### Obfuscation
+### <font color=#436EEE>IV. Obfuscation</font>
 
 If the target application needs to be obfuscated, please copy the content of proguard-fules.pro file under the SDK/gtrsdk folder to your proguard file.
