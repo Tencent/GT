@@ -62,6 +62,10 @@
 
 3) 尽可能遍历应用所有应用的所有功能和页面；
 
+#### 混淆
+
+若被测应用需要混淆，请将SDK工程gtrsdk模块下proguard-rules.pro文件中的相关内容拷贝到您工程使用的proguard文件中。
+
 # <font color=black>GT3.1 User Manual</font>
 
 GT v3.1 is an important update of the previous version 2.x. Apart from keeping the feature of implanting incoming and outgoing parameters, the new changes are:
@@ -124,3 +128,7 @@ Second, our GTDemo, is a good example of how to import GT SDK into target applic
 2) The interval between two press actions is better not to be shorter than 5 seconds;
 
 3) Go through as many features and pages as possible.
+
+#### Obfuscation
+
+If the target application needs to be obfuscated, please copy the content of proguard-fules.pro file under the SDK/gtrsdk folder to your proguard file.
