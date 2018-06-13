@@ -69,7 +69,7 @@ public class GTRAnalysisManager {
         try {
             distribute(data.split(GTConfig.separator));
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
