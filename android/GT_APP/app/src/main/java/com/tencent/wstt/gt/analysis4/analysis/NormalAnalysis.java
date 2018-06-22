@@ -37,7 +37,8 @@ public class NormalAnalysis {
         }
 
         if (lastTime != 0) {
-            gtrAnalysisResult.nowCPU = (cpuApp_noGTR - lastCPUApp) * 100L / (cpuTotal - lastCPUTotal);
+            gtrAnalysisResult.nowCPU = (cpuTotal - lastCPUTotal) == 0 ? 0
+                : (cpuApp_noGTR - lastCPUApp) * 100L / (cpuTotal - lastCPUTotal);
             gtrAnalysisResult.nowMemory = memory / 1024;
             gtrAnalysisResult.nowFlow = gtrAnalysisResult.nowFlow + (flowUpload + flowDownload - lastFlowUpload - lastFlowDownload);
             gtrAnalysisResult.nowFlowSpeed = (flowUpload + flowDownload - lastFlowUpload - lastFlowDownload) * 1000 / 1024 / (time - lastTime);
