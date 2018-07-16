@@ -305,7 +305,6 @@ function getSMAtTime(time){//获取指定时间的SM值
 			sm++;
 		}
 	}
-
 	return sm;
 }
 function getFrameNum(startTime,endTime){
@@ -319,6 +318,7 @@ function getFrameNum(startTime,endTime){
 }
 /* 判断前后台 */
 function isFront(time){
+	console.log("isFront: " + time);
 	var isF = false;
 	var lastChangeTime = 0;
 	for(var i=0;i<frontBackStates.length;i++){
@@ -483,40 +483,68 @@ function getChartDataInArea_xAxis(startTime, endTime){				//图-区间X轴数据
 	}
 	return xAxis;
 }
-
-function getChartDataInArea_smData(startTime, endTime){
-	//图-区间sm数据
-	let lastSM = new Array();
-	let smData = new Array();
-	let lastScanned = -1;
+function getChartDataInArea_smData(startTime, endTime){				//图-区间sm数据
+	let lastSM = 0;
 	
-	for (let i = 0; i < endTime - startTime; i++) {
-		let time = i + startTime;
-		if (lastSM.length != 0) {
-			if (frames[lastSM[0]] <= time - 500) {
-				lastSM.shift();
-			}
-		}
-		
-		if (lastSM.length != 0) {
-			let high = lastSM[lastSM.length - 1];
-			if (high + 1 < frames.length && frames[high + 1] - time <= 500) {
-				lastSM.push(high + 1);
-				lastScanned = high + 1;
-			}
-		} else {
-			for (let j = lastScanned + 1; j < frames.length && frames[j] - 500 <= time; j++) {
-				lastScanned = j;
-				if (frames[j] <= time - 500) {
-					continue;
-				}
-				lastSM.push(j);				
-			}
-		}
-		
-		smData.push(lastSM.length);
+	// low and high are indices of frames between which 
+	// means the frames that belong to current one second.
+	let low = -1;
+	let high = 0;
+	let lastIdx = endTime - startTime;
+	var smData = new Array();
+
+	// get sm for the start time
+	//for (let i = 0; i < frames.length; i++) {
+	//	if (low === -1) {
+	//		low = i;
+	//	}
+	//	if (startTime - frames[i] >= 500) {
+	//		continue;
+	//	} else if (frames[i] - startTime > 500) {
+	//		break;
+	//	}
+	//	high = i;
+	//	lastSM++;
+	//}
+
+	for (let i = 0; i < frames.length; i++) {
+		if (startTime - frames[i] < 500) {
+			low = i;
+			break;
+		}	
 	}
 	
+	for (let i = low; i < frames.length; i++) {
+		if (frames[i] - startTime <= 500) {
+			high = i;
+			lastSM++;
+		} else {
+			break;
+		}
+	}	
+	
+	smData.push(lastSM);
+
+	for (let i = 1; i <= lastIdx; i++) {
+		let current = startTime + i;
+		if (current - frames[low] >= 500) {
+			lastSM--;
+			low++;
+		}
+
+		if (high + 1 < frames.length &&
+			frames[high + 1] - current <= 500) {
+			lastSM++;
+			high++;
+		}
+
+		smData.push(lastSM);
+	}
+
+	// var smData = new Array();
+	// for(var i=0; i<endTime-startTime; i++){
+	// 	smData.push(getSMAtTime(startTime+i));
+	// }
 	return smData;
 }
 function getChartDataInArea_blockData(startTime, endTime){			//图-区间block数据
@@ -619,6 +647,37 @@ function getChartDataInArea_gc(startTime,endTime){							//函数：View曲线�
 	return array;
 }
 
+function getChartDataInArea_flag(startTime, endTime){				//图-区间X轴数据
+	let temm =  {
+			"label": {
+				"position": "end",
+				"formatter": "flag"
+			},
+			"xAxis": "4949504"
+		};
+		
+	var flag = new Array();
+	var flagI = 0;
+	if("undefined" != typeof flagInfo){ 
+		for (var i = 0; i < flagInfo.length; i++) {
+			if(flagInfo[i] > endTime) {
+				break;
+			}
+			var time = flagInfo[i]-startTime ;
+			if(time >= 0) {
+				let flagItem = flagI + 1;
+				temm.label.formatter = "flag"+flagItem;
+				temm.xAxis=time;
+				flagI = flagI + 1;
+				flag.push(temm);
+			}
+			
+		}
+	}
+	return flag;
+	
+	
+}
 
 
 /* 生成栈信息的table的HTML */
@@ -958,6 +1017,16 @@ function getTableData_base(){
 	
 	return tableData_base;
 }
+//取数字小数位后的几位  因为 echarts包中重写toFixed 所以又重新定义
+function myToFixed(number,age){
+	var nu = Math.pow(10,age)
+	if (!isNaN(number)) { 
+		number = Math.round(number*nu)/nu; 
+		return number;
+	}else{
+		return 1;
+	}
+}
 //基础性能模块：
 function getTableData_baseChartData(){	
 	//封装每条曲线的数据
@@ -966,46 +1035,169 @@ function getTableData_baseChartData(){
 	var memoryData = new Array();
 	var flowData = new Array();
 	var smData = new Array();
-	
+	var flagData = new Array();
+	var data = new Object();
+
 	var tempLastCpuApp = -1;
 	var tempLastCpuTotal = -1;
-	for(var i=0;i<normalInfos.length;i++){
-		if(tempLastCpuApp!=-1){
-			var cpu = (normalInfos[i].cpuApp-tempLastCpuApp)*100/(normalInfos[i].cpuTotal-tempLastCpuTotal).toFixed(1);
-			var memory = normalInfos[i].memory;
-			var flow = (normalInfos[i].flowUpload+normalInfos[i].flowDownload)/1024;
-		
-			cpuData.push(cpu);
-			memoryData.push(memory);
-			flowData.push(flow);
-			
-			//var sm = getSMAtTime(normalInfos[i].time);
-			//smData.push(sm);
-			
-			xAxis.push(normalInfos[i].time-appInfo.startTestTime);
+	var flagI = 0;
+	var twoPointsFlagNum = 0;
+	var xAxisNumber = 0;
+
+	if("undefined" != typeof flagInfo){ 
+			for(var i=0;i<normalInfos.length;i++){
+			if(tempLastCpuApp!=-1){
+				var flagITemp = flagI;
+				for(twoPointsFlagNum=0;flagInfo[flagITemp] > normalInfos[i-1].time && flagInfo[flagITemp] < normalInfos[i].time ;twoPointsFlagNum++){
+					flagITemp = flagITemp + 1;
+				}
+
+				if(flagInfo[flagI] == normalInfos[i-1].time || flagInfo[flagI] == normalInfos[i].time){
+					let flagDataTemp =  {
+						"label": {
+							"position": "end",
+							"formatter": "用户标记"
+						},
+						"xAxis": "4949504"
+					};
+					let flagItem = flagI + 1;
+					flagDataTemp.label.formatter = "用户标记" + flagItem ;
+					flagDataTemp.xAxis=xAxisNumber;
+					flagData.push(flagDataTemp);
+					flagI = flagI + 1;
+					xAxisNumber = xAxisNumber + 1;
+				}
+
+				if(flagInfo[flagI] > normalInfos[i-1].time && flagInfo[flagI] < normalInfos[i].time) {
+
+					var cpu = (normalInfos[i].cpuApp-tempLastCpuApp)*100/(normalInfos[i].cpuTotal-tempLastCpuTotal);
+					cpu = myToFixed(cpu,1);
+					
+					var memory = normalInfos[i].memory;
+
+					var flow = (normalInfos[i].flowUpload+normalInfos[i].flowDownload)/1024;     //flat
+					flow = myToFixed(flow,3);
+				
+					var sm = getSMAtTime(normalInfos[i].time);
+
+					for(var j = twoPointsFlagNum ; j>0;j--){
+					
+						var Denominator = twoPointsFlagNum+1;
+						if(cpu > cpuData[cpuData.length-1]){
+							var	flagcpu = (cpu - cpuData[cpuData.length-1] )*(Denominator-j)/Denominator + cpuData[cpuData.length-1];
+						}else{
+							var	flagcpu = (cpuData[cpuData.length-1] - cpu )*j/Denominator + cpu;
+						}
+						flagcpu = myToFixed(flagcpu,1);
+					
+						if(memory > memoryData[memoryData.length-1]){
+							var flagmemory =  (memory - memoryData[memoryData.length-1] )*(Denominator-j)/Denominator + memoryData[memoryData.length-1];
+						}else{
+							var flagmemory =  ( memoryData[memoryData.length-1] - memory)*j/Denominator + memory;
+						}	
+						flagmemory = parseInt(flagmemory);
+
+						if(flow > flowData[flowData.length-1]){
+							var flagflow = (flow - flowData[flowData.length-1]  )*(Denominator-j)/Denominator + flowData[flowData.length-1] ;
+						}else{
+							var flagflow = (flowData[flowData.length-1] - flow)*j/Denominator + flow ;
+						}
+						flagflow = myToFixed(flagflow,3);
+
+						if(sm > smData[smData.length-1]){
+							var flagSM = (sm - smData[smData.length-1] )*(Denominator-j)/Denominator+smData[smData.length-1] ;
+						}else{
+							var flagSM = (smData[smData.length-1] - sm )*j/Denominator+sm ;
+						}
+						flagSM = parseInt(flagSM);
+
+						cpuData.push(flagcpu);
+						memoryData.push(flagmemory);
+						flowData.push(flagflow);
+						smData.push(flagSM);
+						xAxis.push(flagInfo[flagI]-appInfo.startTestTime);
+
+						let flagDataTemp =  {
+							"label": {
+								"position": "end",
+								"formatter": "用户标记"
+							},
+							"xAxis": "4949504"
+						};
+						let flagItem = flagI + 1;
+						flagDataTemp.label.formatter = "用户标记" + flagItem ;
+						flagDataTemp.xAxis=xAxisNumber;
+						flagData.push(flagDataTemp);
+						flagI = flagI + 1;
+						xAxisNumber = xAxisNumber + 1;
+					}
+					cpuData.push(cpu);
+					memoryData.push(memory);
+					flowData.push(flow);
+					smData.push(sm);
+					xAxis.push(normalInfos[i].time-appInfo.startTestTime);
+					xAxisNumber = xAxisNumber + 1;
+				}else{
+					var cpu = (normalInfos[i].cpuApp-tempLastCpuApp)*100/(normalInfos[i].cpuTotal-tempLastCpuTotal);
+					cpu = myToFixed(cpu,2);
+					var memory = normalInfos[i].memory;
+					var flow = (normalInfos[i].flowUpload+normalInfos[i].flowDownload)/1024;     //flat
+					flow = myToFixed(flow,3);
+
+					var sm = getSMAtTime(normalInfos[i].time);
+					cpuData.push(cpu);
+					memoryData.push(memory);
+					flowData.push(flow);
+					smData.push(sm);
+					xAxis.push(normalInfos[i].time-appInfo.startTestTime);
+					xAxisNumber = xAxisNumber + 1;
+				 }
+			}
+			tempLastCpuApp = normalInfos[i].cpuApp;
+			tempLastCpuTotal = normalInfos[i].cpuTotal;
 		}
-		tempLastCpuApp = normalInfos[i].cpuApp;
-		tempLastCpuTotal = normalInfos[i].cpuTotal;
-	}
-	
-	// oscar -------------------------------------------------------------
-	if (normalInfos != undefined && normalInfos.length > 0) {
-		let allSM = getChartDataInArea_smData(normalInfos[0].time, normalInfos[normalInfos.length - 1].time);
-		if (allSM.length > 0) {
-			let smStartTime = normalInfos[0].time;
-			for (let i = 1; i < normalInfos.length; i++) {
-				smData.push(allSM[normalInfos[i].time - smStartTime]);
+			
+
+	}else{
+		for(var i=0;i<normalInfos.length;i++){
+			if(tempLastCpuApp!=-1){
+				var cpu = (normalInfos[i].cpuApp-tempLastCpuApp)*100/(normalInfos[i].cpuTotal-tempLastCpuTotal).toFixed(1);
+				var memory = normalInfos[i].memory;
+				var flow = (normalInfos[i].flowUpload+normalInfos[i].flowDownload)/1024;
+			
+				cpuData.push(cpu);
+				memoryData.push(memory);
+				flowData.push(flow);
+				
+				//var sm = getSMAtTime(normalInfos[i].time);
+				//smData.push(sm);
+				
+				xAxis.push(normalInfos[i].time-appInfo.startTestTime);
+			}
+			tempLastCpuApp = normalInfos[i].cpuApp;
+			tempLastCpuTotal = normalInfos[i].cpuTotal;
+		}
+		
+		
+		if (normalInfos != undefined && normalInfos.length > 0) {
+			let allSM = getChartDataInArea_smData(normalInfos[0].time, normalInfos[normalInfos.length - 1].time);
+			if (allSM.length > 0) {
+				let smStartTime = normalInfos[0].time;
+				for (let i = 1; i < normalInfos.length; i++) {
+					smData.push(allSM[normalInfos[i].time - smStartTime]);
+				}
 			}
 		}
 	}
-	// --------------------------------------------
 
-	var data = new Object();
+	
 	data.xAxis = xAxis;
 	data.cpuData = cpuData;
 	data.memoryData = memoryData;
 	data.flowData = flowData;
 	data.smData = smData;
+	data.flagData = flagData;
+	
 	//数据分析（平均值、最高值、最低值）
 	var cpuSum = 0;
 	var cpuMax = 0;
@@ -1064,6 +1256,7 @@ function getTableData_baseChartData(){
 	PDMTemp_BaseData = data;
 	return data;
 }
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1142,7 +1335,8 @@ function getChartDataInArea_forBlock(startTime,endTime){
 	chartDataInArea_forBlock.blockData = getChartDataInArea_blockData(startTime,endTime);
 	chartDataInArea_forBlock.operationData = getChartDataInArea_operation(startTime, endTime);
 	chartDataInArea_forBlock.viewBuildData = getChartDataInArea_viewBuild(startTime, endTime);
-	
+	chartDataInArea_forBlock.flagData = getChartDataInArea_flag(startTime, endTime);
+
 	return chartDataInArea_forBlock;
 	
 	
@@ -1201,6 +1395,7 @@ function getChartDataInArea_forPage(pageLoadInfo){
 	chartDataInArea_forPage.lifecycle = getChartDataInArea_Lifecycle(pageLoadInfo);
 	chartDataInArea_forPage.operationMarkArea = getChartDataInArea_operation(startTime,endTime);
 	chartDataInArea_forPage.viewBuild = getChartDataInArea_viewBuild(startTime,endTime);
+	chartDataInArea_forPage.flagData = getChartDataInArea_flag(startTime,endTime);
 	
 	
 	return chartDataInArea_forPage;
@@ -1266,7 +1461,7 @@ function getChartDataInArea_forFragment(fragmentInfo,pageLoadInfo){
 	chartDataInArea_forPage.lifecycle = getChartDataInArea_FragmentLifecycle(fragmentInfo);
 	chartDataInArea_forPage.operationMarkArea = getChartDataInArea_operation(startTime,endTime);
 	chartDataInArea_forPage.viewBuild = getChartDataInArea_viewBuild(startTime,endTime);
-	
+	chartDataInArea_forPage.flagData = getChartDataInArea_flag(startTime,endTime);
 	
 	return chartDataInArea_forPage;
 	
@@ -1337,6 +1532,8 @@ function getChartDataInArea_forGC(gcInfo){
 	chartDataInArea_forGC.blockData = getChartDataInArea_blockData(startTime,endTime);
 	chartDataInArea_forGC.operationMarkArea = getChartDataInArea_operation(startTime,endTime);
 	chartDataInArea_forGC.gcMarkArea = getChartDataInArea_gc(startTime,endTime);
+	chartDataInArea_forGC.flagData = getChartDataInArea_flag(startTime,endTime);
+	
 	
 	return chartDataInArea_forGC;
 	
@@ -1822,7 +2019,6 @@ function show_baseTable(){
 function show_baseChart(){
 	var chartDivID = "div_baseSummaryChart";
 	var data = getTableData_baseChartData();
-	
 	var option = {
 		 title : {
 			text: '基础性能检测',
@@ -1929,7 +2125,30 @@ function show_baseChart(){
 					}
 				},
 				data:data.smData
-			}
+			},
+			// {
+		 //        name: 'flag',
+		 //        type: 'line',
+		 //        markLine: {
+			// 		silent: true,
+			// 		data: [{
+			// 			label: {
+			// 				position: "end",
+			// 				formatter: "用户标记"
+			// 			},
+			// 			xAxis: 2
+			// 		}]
+			// 	}
+		 //    }
+
+		    {
+		        name: 'flag',
+		        type: 'line',
+		        markLine: {
+					silent: true,
+					data: data.flagData
+				}
+		    }
 		],
 		//数据缩放模式
 		dataZoom: [
@@ -1961,6 +2180,9 @@ function show_baseChart(){
 				if(xAxisValue == null){
 					return "";
 				}
+				
+				xAxisValue = parseInt(xAxisValue);
+				
 				//获取tip
 				var tip = "";
 				tip = tip + getToolTip_Time(xAxisValue);
@@ -2098,6 +2320,8 @@ function html_LowSMTableDetail(data){
 	return html;
 }
 function show_LowSMTableDetail(data){
+	console.log(data);
+	
 	//ID：
 	var dataID = data.dataID;
 	var chartDivId = "lowSMTableDetail_chartDiv_"+dataID;
@@ -2215,7 +2439,15 @@ function show_LowSMTableDetail(data){
 					silent: true,
 					data: chartData.operationData
 				}
-			}
+			},
+			{
+		        name: 'flag',
+		        type: 'line',
+		        markLine: {
+					silent: true,
+					data: chartData.flagData
+				}
+		    }
 		],
 		//设置提示框
 		tooltip: {
@@ -2232,6 +2464,9 @@ function show_LowSMTableDetail(data){
 				if(xAxisValue == null){
 					return "";
 				}
+				
+				xAxisValue = parseInt(xAxisValue);
+				
 				//获取tip
 				var tip = "";
 				tip = tip + getToolTip_Time(xAxisValue);
@@ -2555,7 +2790,15 @@ function show_bigTableDetail(data){
 					}
 				},
 				data: chartData.blockData
-			}
+			},
+			{
+		        name: 'flag',
+		        type: 'line',
+		        markLine: {
+					silent: true,
+					data: chartData.flagData
+				}
+		    }
 		],
 		//设置提示框
 		tooltip: {
@@ -2572,6 +2815,9 @@ function show_bigTableDetail(data){
 				if(xAxisValue == null){
 					return "";
 				}
+				
+				xAxisValue = parseInt(xAxisValue);
+				
 				//获取tip
 				var tip = "";
 				tip = tip + getToolTip_Time(xAxisValue);
@@ -2694,6 +2940,7 @@ function show_pageLoadAllTable(){
 	
 
 	var data = getTableData_allPage();
+	
 	var divTableId = "div_pageLoadAllTable";
 	var tableId = "pageLoadAllTable";
 	
@@ -3002,7 +3249,15 @@ function show_pageLoadDetail(fatherTable,pageLoadInfo){
 					}  
 				},  
 				data: chartData.drawData
-			}
+			},
+			{
+		        name: 'flag',
+		        type: 'line',
+		        markLine: {
+					silent: true,
+					data: chartData.flagData
+				}
+		    }
 		],
 		//设置提示框
 		tooltip: {
@@ -3019,6 +3274,9 @@ function show_pageLoadDetail(fatherTable,pageLoadInfo){
 				if(xAxisValue == null){
 					return "";
 				}
+				
+				xAxisValue = parseInt(xAxisValue);
+				
 				//获取tip
 				var tip = "";
 				tip = tip + getToolTip_Time(xAxisValue);
@@ -3500,7 +3758,15 @@ function show_fragmentDetail(fatherTable,fragmentInfo,pageLoadInfo){
 					}  
 				},  
 				data: chartData.blockData
-			}
+			},
+			{
+		        name: 'flag',
+		        type: 'line',
+		        markLine: {
+					silent: true,
+					data: chartData.flagData
+				}
+		    }
 		],
 		//设置提示框
 		tooltip: {
@@ -3517,6 +3783,9 @@ function show_fragmentDetail(fatherTable,fragmentInfo,pageLoadInfo){
 				if(xAxisValue == null){
 					return "";
 				}
+				
+				xAxisValue = parseInt(xAxisValue);
+				
 				//获取tip
 				var tip = "";
 				tip = tip + getToolTip_Time(xAxisValue);
@@ -4020,7 +4289,15 @@ function show_overViewTableDetail(fatherTable,data){
 					}  
 				},  
 				data: chartData.drawData
-			}
+			},
+			{
+		        name: 'flag',
+		        type: 'line',
+		        markLine: {
+					silent: true,
+					data: chartData.flagData
+				}
+		    }
 		],
 		//设置提示框
 		tooltip: {
@@ -4037,6 +4314,9 @@ function show_overViewTableDetail(fatherTable,data){
 				if(xAxisValue == null){
 					return "";
 				}
+				
+				xAxisValue = parseInt(xAxisValue);
+				
 				//获取tip
 				var tip = "";
 				tip = tip + getToolTip_Time(xAxisValue);
@@ -4307,7 +4587,15 @@ function show_gcTableDetail(fatherTable,data){
 					silent: true,
 					data: chartData.gcMarkArea
 				}
-			}
+			},
+			{
+		        name: 'flag',
+		        type: 'line',
+		        markLine: {
+					silent: true,
+					data: chartData.flagData
+				}
+		    }
 			
 			
 			
@@ -4328,6 +4616,9 @@ function show_gcTableDetail(fatherTable,data){
 				if(xAxisValue == null){
 					return "";
 				}
+				
+				xAxisValue = parseInt(xAxisValue);
+				
 				//获取tip
 				var tip = "";
 				tip = tip + getToolTip_Time(xAxisValue);
@@ -4342,9 +4633,7 @@ function show_gcTableDetail(fatherTable,data){
 		
 	};
 	var chart = echarts.init(document.getElementById(chartId));
-	chart.setOption(chart_option);
-	
-	
+	chart.setOption(chart_option);	
 }
 
 
@@ -4637,7 +4926,7 @@ function show_threadTable(){
 				+'<tr>'
 					+'<th>线程ID</th>'
 					+'<th>线程名</th>'
-					+'<th>总时间片(jiffies)</th>'
+					+'<th>总时间片</th>'
 					+'<th>详细</th>'
 				+'</tr>'
 			+'</thead>'
@@ -4793,7 +5082,7 @@ function show_threadChartDetail(thread){
 		],
 		yAxis: [
 			{
-				name: '时间片/jiffies',
+				name: '时间片/s',
 				type: 'value',
 				position: 'left',
 				offset: 0
@@ -4843,6 +5132,9 @@ function show_threadChartDetail(thread){
 				if(xAxisValue == null){
 					return "";
 				}
+				
+				xAxisValue = parseInt(xAxisValue);
+				
 				//获取tip
 				var tip = "";
 				tip = tip + getToolTip_Time(xAxisValue);
