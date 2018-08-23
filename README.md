@@ -14,7 +14,6 @@ With the help of GT, you can carry out the following jobs only using one smartph
 
 If the functions GT provides cannot meet your requirements, you can also develop your own GT plugins with special functions to help solving more complicated debugging issues.
 
-For more details, please refer to http://gt.qq.com
 
 
 How to use?
