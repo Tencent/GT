@@ -53,6 +53,7 @@ public class NormalAnalysis {
 
         for (String s : cpuThs) {
             String[] sdsd = s.split(":");
+            if (sdsd.length < 3) continue;
             normalInfo.threadCpus.add(new NormalInfo.ThreadCpu(Integer.parseInt(sdsd[0]), sdsd[2].replace("@@@", ",").replace("%%%", ":"), Long.parseLong(sdsd[1])));
         }
 
